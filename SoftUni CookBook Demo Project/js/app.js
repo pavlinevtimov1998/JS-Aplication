@@ -1,5 +1,5 @@
 async function getRecipesInfo() {
-  const url = `http://localhost:3030/data/recipes?select=_id%2Cname%2Cimg`;
+  const url = `http://localhost:3030/data/recipes`;
 
   const response = await fetch(url);
   const data = response.json();
