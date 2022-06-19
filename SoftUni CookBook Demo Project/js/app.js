@@ -87,11 +87,29 @@ function createElements(el, text, className) {
   return element;
 }
 
+function logOut() {
+  const logOutBtn = document.getElementById('logoutBtn');
+  logOutBtn.addEventListener('click', e => {
+
+    user.style.display = "none";
+    guest.style.display = "block";
+    sessionStorage.clear();
+  })
+}
+
 window.addEventListener("load", async () => {
   const main = document.querySelector("main");
   main.innerHTML = "";
-  const guest = document.getElementById('guest');
-  guest.style.display = 'block';
+  const guest = document.getElementById("guest");
+  const user = document.getElementById("user");
+  logOut();
+
+  if (sessionStorage.getItem("authToken") != null) {
+    user.style.display = "block";
+    guest.style.display = "none";
+  } else {
+    guest.style.display = 'block';
+  }
 
   const data = await getRecipesInfo();
 
