@@ -5,9 +5,6 @@ form.addEventListener("submit", async (e) => {
 
   const url = "http://localhost:3030/data/recipes";
 
-  const imgUrlValidation =
-    /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/m;
-
   const data = new FormData(e.currentTarget);
 
   const name = data.get("name");
@@ -17,8 +14,6 @@ form.addEventListener("submit", async (e) => {
 
   if (name == "" || img == "" || ingredients == "" || steps == "") {
     return alert("Empty inputs!");
-  } else if (img.match(imgUrlValidation) == null) {
-    return alert('Invalid image URL!');
   }
 
   const body = JSON.stringify({
