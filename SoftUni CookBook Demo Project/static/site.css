@@ -28,9 +28,10 @@ main {
 }
 
 nav {
-    display: inline-block;
+    display: flex;
     position: absolute;
     right: 16px;
+    top: 30px;
     text-align: right;
 }
 

@@ -90,6 +90,8 @@ function createElements(el, text, className) {
 window.addEventListener("load", async () => {
   const main = document.querySelector("main");
   main.innerHTML = "";
+  const guest = document.getElementById('guest');
+  guest.style.display = 'block';
 
   const data = await getRecipesInfo();
 
