@@ -1,5 +1,5 @@
 async function getRecipesInfo() {
-  const url = `http://localhost:3030/jsonstore/cookbook/recipes`;
+  const url = `http://localhost:3030/data/recipes?select=_id%2Cname%2Cimg`;
 
   const response = await fetch(url);
   const data = response.json();
@@ -61,7 +61,7 @@ function recipesDetails(data, element) {
 }
 
 async function loadDetailsFromClick(e) {
-  const url = `http://localhost:3030/jsonstore/cookbook/details`;
+  const url = `http://localhost:3030/data/recipes`;
   let id = e.currentTarget.id;
   let element = e.currentTarget;
 
