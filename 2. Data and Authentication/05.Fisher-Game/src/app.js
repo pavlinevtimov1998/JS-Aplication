@@ -1,5 +1,3 @@
-// navigating between pages
-
 import { showHome } from "./home.js";
 import { showLogin } from "./login.js";
 import { logout } from "./logout.js";
