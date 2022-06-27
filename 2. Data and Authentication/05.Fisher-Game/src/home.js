@@ -1,4 +1,4 @@
-import { updateNav } from "./router.js";
+import { updateNav } from "./utill.js";
 
 const home = document.querySelector(".home-view");
 const fieldset = document.querySelector("#main");

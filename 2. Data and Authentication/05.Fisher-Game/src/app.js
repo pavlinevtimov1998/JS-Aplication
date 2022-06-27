@@ -2,7 +2,7 @@ import { showHome } from "./home.js";
 import { showLogin } from "./login.js";
 import { logout } from "./logout.js";
 import { showRegister } from "./register.js";
-import { updateNav } from "./router.js";
+import { updateNav } from "./utill.js";
 
 const navigation = document.querySelector("header nav");
 
