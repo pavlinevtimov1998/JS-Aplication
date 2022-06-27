@@ -18,7 +18,9 @@ async function loading(e) {
   const response = await fetch(allCatchesUrl);
   const data = await response.json();
 
-  createCatches(data);
+  if (data.length > 0) {
+    createCatches(data);
+  }
 }
 
 function createCatches(data) {

@@ -3,6 +3,7 @@
 import { showHome } from "./home.js";
 import { showLogin } from "./login.js";
 import { showRegister } from "./register.js";
+import { updateNav } from "./router.js";
 
 const navigation = document.querySelector("header nav");
 
@@ -10,6 +11,7 @@ const routes = {
   "/home": showHome,
   "/login": showLogin,
   "/register": showRegister,
+  '/logout': logout,
 };
 
 navigation.addEventListener("click", (e) => {
@@ -33,4 +35,5 @@ function hideAll() {
   );
 }
 
+updateNav(navigation);
 showHome();
