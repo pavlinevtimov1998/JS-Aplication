@@ -130,89 +130,89 @@ function createCatches(data) {
     catchesContainer.append(div);
   });
 
-  async function catchAction(
-    e,
-    angler,
-    weight,
-    species,
-    location,
-    bait,
-    captureTime,
-    id
-  ) {
-    e.preventDefault();
-
-    if (e.target.textContent == "Update") {
-      await updateCatche(
-        angler,
-        weight,
-        species,
-        location,
-        bait,
-        captureTime,
-        id
-      );
-    } else if (e.target.textContent == "Delete") {
-      await deleteCatche(id);
-    }
-    await loading(e);
-  }
-
-  async function deleteCatche(id) {
-    let user = JSON.parse(sessionStorage.getItem("user"));
-
-    const response = await fetch(`${allCatchesUrl}/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Authorization": user.accessToken,
-      },
-    });
-  }
-
-  async function updateCatche(
-    angler,
-    weight,
-    species,
-    location,
-    bait,
-    captureTime,
-    id
-  ) {
-    let user = JSON.parse(sessionStorage.getItem("user"));
-
-    const response = await fetch(`${allCatchesUrl}/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Authorization": user.accessToken,
-      },
-      body: JSON.stringify({
-        angler,
-        weight,
-        species,
-        location,
-        bait,
-        captureTime,
-      }),
-    });
-  }
-
-  function isCreator(elOne, elTwo) {
-    let user = JSON.parse(sessionStorage.getItem("user"));
-    console.log(user);
-
-    if (user && elOne.dataset.id == user._id) {
-      elOne.disabled = false;
-      elTwo.disabled = false;
-    } else {
-      elOne.disabled = true;
-      elTwo.disabled = true;
-    }
-  }
-
   home.children[0].style.display = "none";
   fieldset.style.display = "inline-table";
+}
+
+async function catchAction(
+  e,
+  angler,
+  weight,
+  species,
+  location,
+  bait,
+  captureTime,
+  id
+) {
+  e.preventDefault();
+
+  if (e.target.textContent == "Update") {
+    await updateCatche(
+      angler,
+      weight,
+      species,
+      location,
+      bait,
+      captureTime,
+      id
+    );
+  } else if (e.target.textContent == "Delete") {
+    await deleteCatche(id);
+  }
+  await loading(e);
+}
+
+async function deleteCatche(id) {
+  let user = JSON.parse(sessionStorage.getItem("user"));
+
+  const response = await fetch(`${allCatchesUrl}/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Authorization": user.accessToken,
+    },
+  });
+}
+
+async function updateCatche(
+  angler,
+  weight,
+  species,
+  location,
+  bait,
+  captureTime,
+  id
+) {
+  let user = JSON.parse(sessionStorage.getItem("user"));
+
+  const response = await fetch(`${allCatchesUrl}/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Authorization": user.accessToken,
+    },
+    body: JSON.stringify({
+      angler,
+      weight,
+      species,
+      location,
+      bait,
+      captureTime,
+    }),
+  });
+}
+
+function isCreator(elOne, elTwo) {
+  let user = JSON.parse(sessionStorage.getItem("user"));
+  console.log(user);
+
+  if (user && elOne.dataset.id == user._id) {
+    elOne.disabled = false;
+    elTwo.disabled = false;
+  } else {
+    elOne.disabled = true;
+    elTwo.disabled = true;
+  }
 }
 
 function showAndHideContainer() {
