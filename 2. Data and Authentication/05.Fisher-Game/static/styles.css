@@ -233,3 +233,11 @@ main {
 .home-view {
   display: none;
 }
+
+.message {
+    text-align: center;
+}
+
+#main {
+    display: none;
+}
