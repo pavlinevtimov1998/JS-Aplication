@@ -11,3 +11,14 @@ export function updateNav(navigation) {
     navigation.querySelector(".email span").textContent = "Guest";
   }
 }
+
+export function addShowing(btn) {
+  let user = sessionStorage.getItem('user');
+
+  if(user) {
+    btn.disabled = false;
+  } else {
+    btn.disabled = true;
+
+  }
+}

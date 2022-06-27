@@ -1,18 +1,64 @@
-import { updateNav } from "./utill.js";
+import { addShowing, updateNav } from "./utill.js";
 
 const home = document.querySelector(".home-view");
 const fieldset = document.querySelector("#main");
 const catchesContainer = fieldset.querySelector("#catches");
 const navigation = document.querySelector("nav");
+const addForm = home.querySelector("#addForm fieldset");
+
+const addBtn = addForm.querySelector("button");
+addBtn.addEventListener("click", addingCatche);
+
+const allCatchesUrl = "http://localhost:3030/data/catches";
+
+async function addingCatche(e) {
+  e.preventDefault();
+
+  let user = JSON.parse(sessionStorage.getItem("user"));
+
+  let angler = addForm.children[2].value;
+  let weight = addForm.children[4].value;
+  let species = addForm.children[6].value;
+  let location = addForm.children[8].value;
+  let bait = addForm.children[10].value;
+  let captureTime = addForm.children[12].value;
+
+  if (
+    angler == "" ||
+    weight == "" ||
+    species == "" ||
+    location == "" ||
+    bait == "" ||
+    captureTime == ""
+  ) {
+    return;
+  }
+
+  const response = await fetch(allCatchesUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Authorization": user.accessToken,
+    },
+    body: JSON.stringify({
+      angler,
+      weight,
+      species,
+      location,
+      bait,
+      captureTime,
+    }),
+  });
+
+  await loading(e);
+}
 
 export function showHome() {
   home.style.display = "block";
   updateNav(navigation);
+  addShowing(addBtn);
 }
-
 document.querySelector(".load").addEventListener("click", (e) => loading(e));
-
-const allCatchesUrl = "http://localhost:3030/data/catches";
 
 async function loading(e) {
   e.preventDefault();
@@ -23,13 +69,13 @@ async function loading(e) {
   const data = await response.json();
 
   if (data.length > 0) {
-    createCatches(data);
+    loadingCatches(data);
   } else {
     home.children[0].textContent = "Click to load catches";
   }
 }
 
-function createCatches(data) {
+function loadingCatches(data) {
   data.forEach((d) => {
     const div = createElements("div", undefined, "catch");
     const label = createElements("label", "Angler");
