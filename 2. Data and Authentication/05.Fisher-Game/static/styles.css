@@ -195,8 +195,8 @@ main {
   align-items: center;
   flex-direction: column;
 }
-#register-view h2,
-#login-view h2 {
+.register-view h2,
+.login-view h2 {
   margin-bottom: 50px;
   margin-top: 20px;
 }
