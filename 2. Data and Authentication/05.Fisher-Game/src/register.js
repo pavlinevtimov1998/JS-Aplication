@@ -1,5 +1,5 @@
-const registerView = document.querySelector('.register-view');
+const registerView = document.querySelector(".register-view");
 
 export function showRegister() {
-    registerView.style.display = 'flex';
+  registerView.style.display = "flex";
 }

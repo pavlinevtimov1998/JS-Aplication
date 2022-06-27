@@ -12,7 +12,7 @@ const routes = {
   "/home": showHome,
   "/login": showLogin,
   "/register": showRegister,
-  '/logout': logout,
+  "/logout": logout,
 };
 
 navigation.addEventListener("click", (e) => {
