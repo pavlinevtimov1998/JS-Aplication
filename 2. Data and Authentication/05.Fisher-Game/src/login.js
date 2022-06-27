@@ -1,5 +1,4 @@
 import { showHome } from "./home.js";
-import { updateNav } from "./router.js";
 
 const loginPage = document.querySelector(".login-view");
 
@@ -12,8 +11,6 @@ const inputEmail = loginPage.querySelector('#login input[name="email"]');
 const inputPassword = loginPage.querySelector('#login input[name="password"]');
 
 const btnLogin = loginPage.querySelector("#login button");
-
-console.log(btnLogin);
 
 btnLogin.addEventListener("click", login);
 
@@ -35,15 +32,11 @@ async function login(e) {
       }),
     });
 
-    if (response.status !== 200) {
-      throw new Error("Wrong email or password!");
-    }
     const user = await response.json();
     sessionStorage.setItem("user", JSON.stringify(user));
 
     loginPage.style.display = "none";
     showHome();
-    updateNav()
   } catch (err) {
     alert(err.message);
     inputEmail.value = "";

@@ -2,6 +2,7 @@
 
 import { showHome } from "./home.js";
 import { showLogin } from "./login.js";
+import { logout } from "./logout.js";
 import { showRegister } from "./register.js";
 import { updateNav } from "./router.js";
 

@@ -1,9 +1,13 @@
+import { updateNav } from "./router.js";
+
 const home = document.querySelector(".home-view");
 const fieldset = document.querySelector("#main");
 const catchesContainer = fieldset.querySelector("#catches");
+const navigation = document.querySelector("nav");
 
 export function showHome() {
   home.style.display = "block";
+  updateNav(navigation);
 }
 
 document.querySelector(".load").addEventListener("click", loading);
