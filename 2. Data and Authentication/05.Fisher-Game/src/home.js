@@ -14,14 +14,16 @@ const allCatchesUrl = "http://localhost:3030/data/catches";
 async function addingCatche(e) {
   e.preventDefault();
 
+  const inputs = [...addForm.querySelectorAll("input")];
+
   let user = JSON.parse(sessionStorage.getItem("user"));
 
-  let angler = addForm.children[2].value;
-  let weight = addForm.children[4].value;
-  let species = addForm.children[6].value;
-  let location = addForm.children[8].value;
-  let bait = addForm.children[10].value;
-  let captureTime = addForm.children[12].value;
+  let angler = inputs[0].value;
+  let weight = inputs[1].value;
+  let species = inputs[2].value;
+  let location = inputs[3].value;
+  let bait = inputs[4].value;
+  let captureTime = inputs[5].value;
 
   if (
     angler == "" ||
@@ -51,6 +53,8 @@ async function addingCatche(e) {
   });
 
   await loading(e);
+
+  inputs.forEach((i) => (i.value = ""));
 }
 
 export function showHome() {
@@ -250,7 +254,6 @@ async function updateCatche(
 
 function isCreator(elOne, elTwo) {
   let user = JSON.parse(sessionStorage.getItem("user"));
-  console.log(user);
 
   if (user && elOne.dataset.id == user._id) {
     elOne.disabled = false;
