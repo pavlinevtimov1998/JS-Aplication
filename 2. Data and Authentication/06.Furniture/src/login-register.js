@@ -58,7 +58,7 @@ async function request(path, email, password) {
       }),
     });
     if (response.status !== 200) {
-      throw new Error("Incorrect email or password!");
+      throw new Error("incorrect data!");
     }
 
     const user = await response.json();

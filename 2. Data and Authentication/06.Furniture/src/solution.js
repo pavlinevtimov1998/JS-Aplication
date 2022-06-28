@@ -1,22 +1,60 @@
 const furnitureDataUrl = "http://localhost:3030/data/furniture";
 
 const tBody = document.querySelector(".wrapper tbody");
+const createForm = document.querySelector('form[method="post"]');
+const createInputs = createForm.querySelectorAll("input");
+
+createForm.addEventListener("submit", createFurniture);
+
+async function createFurniture(e) {
+  e.preventDefault();
+
+  const user = JSON.parse(sessionStorage.getItem("user"));
+
+  const dataForm = new FormData(e.target);
+
+  const name = dataForm.get("name");
+  const price = dataForm.get("price");
+  const decFactor = dataForm.get("factor");
+  const img = dataForm.get("img");
+
+  if (name == "" || price == "" || decFactor == "" || img == "") {
+    return alert("Incorrect data. Try again!");
+  }
+
+  const response = await fetch(furnitureDataUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Authorization": user.accessToken,
+    },
+    body: JSON.stringify({
+      name,
+      price,
+      decFactor,
+      img,
+    }),
+  });
+
+  await getData();
+}
 
 async function getData() {
+  tBody.innerHTML = "";
+
   try {
     const response = await fetch(furnitureDataUrl);
-    
-    if(response.status !== 200) {
-      throw new Error('Not Work');
+
+    if (response.status !== 200) {
+      throw new Error("Not Work");
     }
-    
+
     const data = await response.json();
-   
+
     createTable(data);
   } catch (err) {
     alert(err.message);
   }
-
 }
 
 function createTable(data) {
@@ -33,7 +71,7 @@ function createTable(data) {
     const decFatcor = createElements("p", d.decFactor);
     const tdMark = createElements("td");
     const inputCheckbox = createElements("input", undefined, "checkbox");
-    inputCheckbox.disabled = true;
+    isUser(inputCheckbox);
     appending(
       [tdImg, tdName, tdPrice, tdDecFactor, tdMark],
       [img, name, price, decFatcor, inputCheckbox],
@@ -66,32 +104,14 @@ function createElements(el, content, type) {
   return element;
 }
 
-getData();
+function isUser(el) {
+  let user = sessionStorage.getItem("user");
 
-/*
-                        <td>
-                          <p>0.5</p>
-                        </td>
-                        <td>
-                          <input type="checkbox" disabled />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <img
-                            src="https://res.cloudinary.com/maisonsdumonde/image/upload/q_auto,f_auto/w_200/img/grey-3-seater-sofa-bed-200-13-0-175521_9.jpg"
-                          />
-                        </td>
-                        <td>
-                          <p>Sofa</p>
-                        </td>
-                        <td>
-                          <p>259</p>
-                        </td>
-                        <td>
-                          <p>1.2</p>
-                        </td>
-                        <td>
-                          <input type="checkbox" disabled />
-                        </td>
-                      </tr> */
+  if (user) {
+    el.disabled = false;
+  } else {
+    el.disabled = true;
+  }
+}
+
+getData();
