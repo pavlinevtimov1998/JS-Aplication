@@ -2,7 +2,7 @@ import { showCatalogue } from "./catalog.js";
 import { showCreate } from "./createRecipe.js";
 import { showLogin } from "./login.js";
 import { showRegister } from "./register.js";
-import { activeButton, hideAll, rout, userNavigation } from "./util.js";
+import { activeNavButton, hideAll, rout, userNavigation } from "./util.js";
 
 const nav = document.querySelector("nav");
 
@@ -23,7 +23,7 @@ nav.addEventListener("click", (e) => {
 
   if (e.target.tagName == "A") {
     rout(e.target, router);
-    activeButton();
+    activeNavButton();
   }
 });
 
@@ -31,5 +31,5 @@ function logout() {
   sessionStorage.clear();
   userNavigation();
   showCatalogue();
-  activeButton()
+  activeNavButton();
 }

@@ -11,7 +11,7 @@ export const rout = (target, router) => {
   return url.pathname;
 };
 
-export const activeButton = () => {
+export const activeNavButton = () => {
   [...views.children].forEach((ch) => {
     if (ch.style.display == "block") {
       document.querySelector(".active").classList.remove("active");
