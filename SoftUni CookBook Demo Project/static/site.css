@@ -28,10 +28,9 @@ main {
 }
 
 nav {
-    display: flex;
+    display: inline-block;
     position: absolute;
     right: 16px;
-    top: 30px;
     text-align: right;
 }
 
@@ -51,7 +50,6 @@ nav a {
 nav a:hover {
     background-color: #6c8b47;
     color: white;
-    cursor: pointer;
 }
 
 a.active {
@@ -64,5 +62,9 @@ a.active {
 }
 
 #guest {
+    display: none;
+}
+
+#views {
     display: none;
 }
