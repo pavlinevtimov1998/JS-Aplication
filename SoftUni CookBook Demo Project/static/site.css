@@ -50,6 +50,7 @@ nav a {
 nav a:hover {
     background-color: #6c8b47;
     color: white;
+    cursor: pointer;
 }
 
 a.active {
@@ -57,7 +58,7 @@ a.active {
     color: white;
 }
 
-#user {
+/* #user {
     display: none;
 }
 
@@ -67,4 +68,4 @@ a.active {
 
 #views {
     display: none;
-}
+} */
