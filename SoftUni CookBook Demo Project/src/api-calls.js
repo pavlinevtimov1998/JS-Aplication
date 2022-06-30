@@ -16,8 +16,12 @@ async function request(method, url, body, id, accessToken) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(body),
     };
+
+    if (body) {
+      options["body"] = JSON.stringify(body);
+    }
+
     if (accessToken) {
       options.headers["X-Authorization"] = accessToken;
     }
@@ -26,6 +30,8 @@ async function request(method, url, body, id, accessToken) {
   if (id) {
     url += `/${id}`;
   }
+
+  console.log(options);
 
   const response = await fetch(url, options);
   const data = await response.json();
@@ -46,4 +52,8 @@ export const loginUser = request.bind(null, "POST", loginUrl);
 
 export const registerUser = request.bind(null, "POST", registrationUrl);
 
-export const creatingRecipe = request.bind(null, 'POST', createRecipeUrl)
+export const creatingRecipe = request.bind(null, "POST", createRecipeUrl);
+
+export const updateRecipe = request.bind(null, "PUT", createRecipeUrl);
+
+export const deleteRecipe = request.bind(null, "DELETE", createRecipeUrl, undefined);

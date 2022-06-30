@@ -35,25 +35,50 @@ export const userNavigation = () => {
 export const hideAll = () =>
   [...views.children].forEach((ch) => (ch.style.display = "none"));
 
-export function createElements(el, text, className) {
-  let element = document.createElement(el);
-
-  if (text) {
-    element.textContent = text;
-  }
-
-  if (className) {
-    element.classList.add(className);
-  }
-
-  return element;
-}
-
-export const userStorige = (user) => {
+export const userStorige = (user, id, command) => {
   if (user) {
     sessionStorage.setItem("user", JSON.stringify(user));
+    return;
+  }
+  let u = JSON.parse(sessionStorage.getItem("user"));
+
+  if (id) {
+    return u.id;
+  } else if (command) {
+    return u;
   } else {
-    let user = JSON.parse(sessionStorage.getItem("user"));
-    return user.accessToken;
+    return u.accessToken;
   }
 };
+
+export async function creatingOrEditingRecipe(e, request, catalog, id) {
+  e.preventDefault();
+
+  const data = new FormData(e.currentTarget);
+
+  const name = data.get("name");
+  const img = data.get("img");
+  const ingredients = data.get("ingredients").split("\n");
+  const steps = data.get("steps").split("\n");
+
+  if (name == "" || img == "" || ingredients == "" || steps == "") {
+    return alert("Empty inputs!");
+  }
+
+  const body = {
+    name,
+    img,
+    ingredients,
+    steps,
+  };
+
+  const accessToken = userStorige();
+
+  id == undefined
+    ? await request(body, undefined, accessToken)
+    : await request(body, id, accessToken);
+
+  hideAll();
+  catalog();
+  activeNavButton();
+}
