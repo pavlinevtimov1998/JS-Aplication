@@ -1,4 +1,5 @@
 import { getDetails, getRecipes } from "./api-calls.js";
+import { createElements } from "./util.js";
 
 const catalogue = document.querySelector("#catalog");
 
@@ -14,6 +15,16 @@ const showRecipes = async () => {
   catalogue.innerHTML = "";
 
   data.forEach((d) => createRecipes(d));
+};
+
+const loadingDetails = async (e, id) => {
+  const curTarget = e.currentTarget;
+
+  const data = await getDetails(id);
+
+  const element = recipesDetails(data, curTarget);
+
+  curTarget.replaceWith(element);
 };
 
 function createRecipes(data) {
@@ -34,16 +45,6 @@ function createRecipes(data) {
 
   catalogue.append(article);
 }
-
-const loadingDetails = async (e, id) => {
-    const curTarget = e.currentTarget;
-
-    const data = await getDetails(id);
-
-    const element = recipesDetails(data, curTarget);
-
-    curTarget.replaceWith(element);
-};
 
 function recipesDetails(data, element) {
   const article = createElements("article");
@@ -79,16 +80,4 @@ function recipesDetails(data, element) {
   return article;
 }
 
-function createElements(el, text, className) {
-  let element = document.createElement(el);
 
-  if (text) {
-    element.textContent = text;
-  }
-
-  if (className) {
-    element.classList.add(className);
-  }
-
-  return element;
-}
