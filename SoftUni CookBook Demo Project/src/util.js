@@ -49,5 +49,11 @@ export function createElements(el, text, className) {
   return element;
 }
 
-export const userStorige = (user) =>
-  sessionStorage.setItem("user", JSON.stringify(user));
+export const userStorige = (user) => {
+  if (user) {
+    sessionStorage.setItem("user", JSON.stringify(user));
+  } else {
+    let user = JSON.parse(sessionStorage.getItem("user"));
+    return user.accessToken;
+  }
+};

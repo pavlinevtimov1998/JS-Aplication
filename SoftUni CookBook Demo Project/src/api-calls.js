@@ -3,9 +3,9 @@ const loadAllUrl = `${mainUrl}/data/recipes?select=_id%2Cname%2Cimg`;
 const detailsRecipeUrl = `${mainUrl}/data/recipes`;
 const loginUrl = `${mainUrl}/users/login`;
 const registrationUrl = `${mainUrl}/users/register`;
+const createRecipeUrl = `${mainUrl}/data/recipes`;
 
-
-async function request(method, url, body, id) {
+async function request(method, url, body, id, accessToken) {
   let options = {
     method: "GET",
   };
@@ -18,6 +18,9 @@ async function request(method, url, body, id) {
       },
       body: JSON.stringify(body),
     };
+    if (accessToken) {
+      options.headers["X-Authorization"] = accessToken;
+    }
   }
 
   if (id) {
@@ -30,10 +33,17 @@ async function request(method, url, body, id) {
   return data;
 }
 
-export const getRecipes = request.bind(null, 'GET', loadAllUrl);
+export const getRecipes = request.bind(null, "GET", loadAllUrl);
 
-export const getDetails = request.bind(null, 'GET', detailsRecipeUrl, undefined);
+export const getDetails = request.bind(
+  null,
+  "GET",
+  detailsRecipeUrl,
+  undefined
+);
 
-export const loginUser = request.bind(null, 'POST', loginUrl)
+export const loginUser = request.bind(null, "POST", loginUrl);
 
-export const registerUser = request.bind(null, 'POST', registrationUrl);
+export const registerUser = request.bind(null, "POST", registrationUrl);
+
+export const creatingRecipe = request.bind(null, 'POST', createRecipeUrl)
