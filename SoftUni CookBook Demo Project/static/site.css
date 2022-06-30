@@ -51,6 +51,7 @@ nav a {
 nav a:hover {
     background-color: #6c8b47;
     color: white;
+    cursor: pointer;
 }
 
 a.active {

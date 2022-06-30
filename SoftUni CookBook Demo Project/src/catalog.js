@@ -1,11 +1,11 @@
 import { getDetails, getRecipes } from "./api-calls.js";
-import { createElements } from "./util.js";
+import { createElements, hideAll } from "./util.js";
 
 const catalogue = document.querySelector("#catalog");
 
 export const showCatalogue = () => {
+  hideAll();
   catalogue.style.display = "block";
-
   showRecipes();
 };
 
@@ -79,5 +79,3 @@ function recipesDetails(data, element) {
 
   return article;
 }
-
-
