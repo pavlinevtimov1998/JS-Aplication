@@ -1,6 +1,6 @@
 import { loginUser } from "./api-calls.js";
 import { showCatalogue } from "./catalog.js";
-import { hideAll, userNavigation, userStorige } from "./util.js";
+import { activeButton, hideAll, userNavigation, userStorige } from "./util.js";
 
 const loginSection = document.querySelector("#login");
 const form = document.querySelector(".login-form");
@@ -21,6 +21,7 @@ form.addEventListener("submit", async (e) => {
   userStorige(user);
   userNavigation();
   showCatalogue();
+  activeButton();
 });
 
 export const showLogin = () => {

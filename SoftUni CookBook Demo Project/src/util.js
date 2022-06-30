@@ -8,10 +8,16 @@ export const rout = (target, router) => {
   let action = router[url.pathname];
   action();
 
-  if (url.pathname !== "/logout") {
-    document.querySelector(".active").classList.remove("active");
-    target.classList.add("active");
-  }
+  return url.pathname;
+};
+
+export const activeButton = () => {
+  [...views.children].forEach((ch) => {
+    if (ch.style.display == "block") {
+      document.querySelector(".active").classList.remove("active");
+      document.querySelector(`a[href="/${ch.id}"]`).classList.add("active");
+    }
+  });
 };
 
 export const userNavigation = () => {
@@ -43,5 +49,5 @@ export function createElements(el, text, className) {
   return element;
 }
 
-
-export const userStorige = (user) => sessionStorage.setItem('user', JSON.stringify(user));
+export const userStorige = (user) =>
+  sessionStorage.setItem("user", JSON.stringify(user));
