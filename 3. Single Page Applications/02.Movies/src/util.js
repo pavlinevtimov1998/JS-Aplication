@@ -40,3 +40,19 @@ export const isUser = () => {
 export const userStorage = (user) => {
   sessionStorage.setItem("user", JSON.stringify(user));
 };
+
+export function createElements(element, content, attributes) {
+  const el = document.createElement(element);
+
+  if (content) {
+    el.textContent = content;
+  }
+
+  if (attributes) {
+    Object.entries(attributes).forEach(([a, n]) => {
+      el.setAttribute(a, n);
+    });
+  }
+
+  return el;
+}
