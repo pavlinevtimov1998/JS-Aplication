@@ -31,8 +31,6 @@ async function request(method, url, body, id, accessToken) {
     url += `/${id}`;
   }
 
-  console.log(options);
-
   const response = await fetch(url, options);
   const data = await response.json();
 
@@ -56,4 +54,9 @@ export const creatingRecipe = request.bind(null, "POST", createRecipeUrl);
 
 export const updateRecipe = request.bind(null, "PUT", createRecipeUrl);
 
-export const deleteRecipe = request.bind(null, "DELETE", createRecipeUrl, undefined);
+export const deleteRecipe = request.bind(
+  null,
+  "DELETE",
+  createRecipeUrl,
+  undefined
+);

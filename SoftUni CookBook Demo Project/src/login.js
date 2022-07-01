@@ -1,6 +1,11 @@
 import { loginUser } from "./api-calls.js";
 import { showCatalogue } from "./catalog.js";
-import { activeNavButton, hideAll, userNavigation, userStorige } from "./util.js";
+import {
+  activeNavButton,
+  hideAll,
+  userNavigation,
+  userStorige,
+} from "./util.js";
 
 const loginSection = document.querySelector("#login");
 const form = document.querySelector(".login-form");

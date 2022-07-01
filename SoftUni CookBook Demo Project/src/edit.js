@@ -1,6 +1,6 @@
 import { updateRecipe } from "./api-calls.js";
 import { showCatalogue } from "./catalog.js";
-import { creatingOrEditingRecipe } from "./util.js";
+import { creatingOrEditingRecipe as editRecipe } from "./util.js";
 
 const editPage = document.querySelector("#edit");
 
@@ -11,11 +11,13 @@ export const showEdit = (id) => {
   }
 };
 
-
 const form = editPage.querySelector("form");
 
-console.log(form);
-
 form.addEventListener("submit", (e) =>
-  creatingOrEditingRecipe(e, updateRecipe, showCatalogue, form.parentNode.parentNode.dataset.id)
+  editRecipe(
+    e,
+    updateRecipe,
+    showCatalogue,
+    form.parentNode.parentNode.dataset.id
+  )
 );

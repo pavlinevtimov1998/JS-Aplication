@@ -1,4 +1,4 @@
-import { getDetails,deleteRecipe } from "./api-calls.js";
+import { getDetails, deleteRecipe } from "./api-calls.js";
 import { showCatalogue } from "./catalog.js";
 import { createElements } from "./dom-el.js";
 import { showEdit } from "./edit.js";
@@ -45,7 +45,9 @@ function recipesDetails(data, id) {
   divBand.append(divThumb, divIngredients);
   article.append(h2Title, divBand, divDescription);
 
-  if (userStorige(undefined, undefined, "user")) {
+  let user = userStorige(undefined, undefined, "user");
+
+  if (user && user._id == data._ownerId) {
     const div = createElements("div", undefined, "controls");
     const btnEdit = createElements("button", "\u270E Edit");
     btnEdit.setAttribute("data-ownerId", data._ownerId);
@@ -54,17 +56,17 @@ function recipesDetails(data, id) {
     btnEdit.addEventListener("click", (e) => {
       hideAll();
       showEdit(id);
-      console.log(id);
     });
-    btnDelete.addEventListener('click', async e => {
-        let accessToken = userStorige();
-        const confirmed = confirm(`Are you sure you want to delete ${data.name}?`);
-        if(confirmed) {
+    btnDelete.addEventListener("click", async (e) => {
+      let accessToken = userStorige();
+      const confirmed = confirm(
+        `Are you sure you want to delete ${data.name}?`
+      );
+      if (confirmed) {
         await deleteRecipe(id, accessToken);
         showCatalogue();
-        }
-
-    })
+      }
+    });
     div.append(btnEdit, btnDelete);
     article.append(div);
   }
