@@ -16,7 +16,7 @@ form.addEventListener("submit", async (e) => {
 
   let [email, password, rePass] = [...formData.values()];
 
-  if (email == "" || password == "" || password !== rePass) {
+  if (email == "" || password.length < 6 || password !== rePass) {
     return alert("Incorrect input");
   }
 

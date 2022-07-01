@@ -5,7 +5,6 @@ const addMovieBtn = document.querySelector("#add-movie-button");
 
 export const hideAll = () => {
   [...sections].forEach((s) => (s.style.display = "none"));
-  console.log(sections);
 };
 
 export const spinner = () => {
