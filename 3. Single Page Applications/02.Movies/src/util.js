@@ -22,8 +22,12 @@ export const navAction = (user) => {
   }
 };
 
-export const userStorige = () => {
+export const isUser = () => {
   let user = sessionStorage.getItem("user");
 
-  return user;
+  return user
 };
+
+export const userStorage = (user) => {
+    sessionStorage.setItem('user', JSON.stringify(user));
+}
