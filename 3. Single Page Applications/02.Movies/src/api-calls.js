@@ -1,9 +1,9 @@
 const mainUrl = "http://localhost:3030";
 const allMoviesUrl = `${mainUrl}/data/movies`;
 const loginUrl = `${mainUrl}/users/login`;
-const registerUrl = `${mainUrl}/users/register`
+const registerUrl = `${mainUrl}/users/register`;
 
-async function request(method, url, body, accessToken) {
+async function request(method, url, body, accessToken, id) {
   let options = {
     method,
   };
@@ -18,8 +18,12 @@ async function request(method, url, body, accessToken) {
     };
   }
 
-  if(accessToken) {
-    options['headers']['X-Authorization'] = accessToken;
+  if (accessToken) {
+    options["headers"]["X-Authorization"] = accessToken;
+  }
+
+  if (id) {
+    url += `/${id}`;
   }
 
   const response = await fetch(url, options);
@@ -34,4 +38,6 @@ export const loginRequest = request.bind(null, "POST", loginUrl);
 
 export const registerRequest = request.bind(null, "POST", registerUrl);
 
-export const addMovie = request.bind(null, 'POST', allMoviesUrl);
+export const addMovie = request.bind(null, "POST", allMoviesUrl);
+
+export const detailsRequest = request.bind(null, "GET", allMoviesUrl);

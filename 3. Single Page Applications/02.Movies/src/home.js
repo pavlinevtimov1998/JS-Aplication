@@ -1,4 +1,5 @@
 import { loadMovies } from "./api-calls.js";
+import { showDetails } from "./details.js";
 import { createElements, hideAll, isUser, spinner } from "./util.js";
 
 const homePage = document.querySelector("#home-page");
@@ -42,7 +43,9 @@ function loadingMovies(data, parent) {
       type: "button",
       class: "btn btn-info",
       "data-id": data._id,
+      'data-ownerId': data._ownerId
     });
+    btnDetails.addEventListener("click", (e) => showDetails(e));
     a.append(btnDetails);
     divFooter.append(a);
     div.append(divFooter);
