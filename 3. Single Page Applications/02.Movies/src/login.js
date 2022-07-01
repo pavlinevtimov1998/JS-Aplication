@@ -20,5 +20,5 @@ loginPage.querySelector("form").addEventListener("submit", async (e) => {
 
   userStorage(user);
   showHome();
-  navAction();
+  navAction(user);
 });

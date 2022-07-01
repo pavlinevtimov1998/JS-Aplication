@@ -11,6 +11,7 @@ showHome();
 const route = {
   "/movies": showHome,
   "/login": showLogin,
+  "/logout": logout,
   "/register": showRegister,
   "/create": showCreate,
 };
@@ -29,4 +30,10 @@ function navigate(e) {
       show();
     }
   }
+}
+
+function logout() {
+  sessionStorage.clear();
+  showLogin();
+  navAction();
 }

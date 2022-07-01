@@ -1,6 +1,7 @@
 const mainUrl = "http://localhost:3030";
 const allMovies = `${mainUrl}/data/movies`;
 const loginUrl = `${mainUrl}/users/login`;
+const registerUrl = `${mainUrl}/users/register`
 
 async function request(method, url, body) {
   let options = {
@@ -26,3 +27,5 @@ async function request(method, url, body) {
 export const loadMovies = request.bind(null, "GET", allMovies);
 
 export const loginRequest = request.bind(null, "POST", loginUrl);
+
+export const registerRequest = request.bind(null, "POST", registerUrl);

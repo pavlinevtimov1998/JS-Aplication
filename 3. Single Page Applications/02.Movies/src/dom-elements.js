@@ -1,5 +1,4 @@
 export function loadingMovies(data, parent) {
-    
   const div = createElements("div", undefined, { class: "card mb-4" });
   const img = createElements("img", undefined, {
     class: "card-img-top",
@@ -11,12 +10,11 @@ export function loadingMovies(data, parent) {
   const title = createElements("h4", data.title, { class: "card-title" });
   divTitle.append(title);
   const divFooter = createElements("div", undefined, { class: "card-footer" });
-  const a = createElements("a", undefined, {
-    href: "#/details/6lOxMFSMkML09wux6sAF",
-  });
+  const a = createElements("a");
   const btnDetails = createElements("button", "Details", {
     type: "button",
     class: "btn btn-info",
+    "data-id": data._id,
   });
 
   a.append(btnDetails);
