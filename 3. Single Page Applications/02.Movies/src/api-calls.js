@@ -48,6 +48,6 @@ export const likeRequest = request.bind(null, "GET");
 
 export const onLike = request.bind(null, "POST", likeUrl);
 
-export const updateRequest = request.bind(null, 'PUT', updateUrl);
+export const updateRequest = request.bind(null, "PUT", updateUrl);
 
-export const deleteRequest = request.bind(null, 'DELETE', updateUrl);
+export const deleteRequest = request.bind(null, "DELETE", updateUrl);

@@ -21,7 +21,8 @@ form.addEventListener("submit", async (e) => {
   }
 
   const user = await registerRequest({ email, password });
-  console.log(user);
+
+  [...form.querySelectorAll("input")].forEach((i) => (i.value = ""));
 
   userStorage(user);
   showHome();

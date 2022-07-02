@@ -11,12 +11,18 @@ export const showLogin = () => {
 loginPage.querySelector("form").addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  let formData = new FormData(e.currentTarget);
+  let form = e.currentTarget;
+
+  let formData = new FormData(form);
 
   let email = formData.get("email");
   let password = formData.get("password");
 
   let user = await loginRequest({ email, password });
+
+  
+
+  [...form.querySelectorAll("input")].forEach((i) => (i.value = ""));
 
   userStorage(user);
   showHome();
