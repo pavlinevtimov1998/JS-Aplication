@@ -1,13 +1,14 @@
 import { detailsRequest, likeRequest, onLike } from "./api-calls.js";
+import { showEdit } from "./updateMovie.js";
 import { createElements, hideAll, isUser, spinner } from "./util.js";
 
 const detailsPage = document.querySelector("#movie-example");
 const detailsContainer = detailsPage.querySelector(".container");
 
-export const showDetails = (e) => {
+export const showDetails = (id, ownerid) => {
   hideAll();
   detailsPage.style.display = "block";
-  details(e.target.dataset.id, e.target.dataset.ownerid);
+  details(id, ownerid);
 };
 
 async function details(id, ownerid) {
@@ -46,6 +47,7 @@ function createDetails(data, id, ownerid, likes, ownLike) {
   if (isUser()._id == ownerid) {
     const aDelete = createElements("a", "Delete", { class: "btn btn-danger" });
     const aEdit = createElements("a", "Edit", { class: "btn btn-warning" });
+    aEdit.addEventListener('click', e => showEdit(id, showDetails))
     div.append(aDelete, aEdit);
   } else {
     const aLike = createElements("a", "Like", { class: "btn btn-primary" });

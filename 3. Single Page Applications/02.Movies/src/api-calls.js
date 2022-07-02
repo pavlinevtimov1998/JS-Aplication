@@ -2,7 +2,8 @@ const mainUrl = "http://localhost:3030";
 const allMoviesUrl = `${mainUrl}/data/movies`;
 const loginUrl = `${mainUrl}/users/login`;
 const registerUrl = `${mainUrl}/users/register`;
-const likeUrl = `http://localhost:3030/data/likes`;
+const likeUrl = `${mainUrl}/data/likes`;
+const updateUrl = `${mainUrl}/data/movies`;
 
 async function request(method, url, body, accessToken, id) {
   let options = {
@@ -43,6 +44,8 @@ export const addMovie = request.bind(null, "POST", allMoviesUrl);
 
 export const detailsRequest = request.bind(null, "GET", allMoviesUrl);
 
-export const likeRequest = request.bind(null, 'GET');
+export const likeRequest = request.bind(null, "GET");
 
-export const onLike = request.bind(null, 'POST', likeUrl);
+export const onLike = request.bind(null, "POST", likeUrl);
+
+export const updateRequest = request.bind(null, 'PUT', updateUrl);
