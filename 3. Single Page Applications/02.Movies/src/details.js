@@ -1,17 +1,18 @@
 import { detailsRequest, likeRequest, onLike } from "./api-calls.js";
+import { deleteMovie } from "./deleteMovie.js";
 import { showEdit } from "./updateMovie.js";
 import { createElements, hideAll, isUser, spinner } from "./util.js";
 
 const detailsPage = document.querySelector("#movie-example");
 const detailsContainer = detailsPage.querySelector(".container");
 
-export const showDetails = (id, ownerid) => {
+export const showDetails = (id, ownerid, showHome) => {
   hideAll();
   detailsPage.style.display = "block";
-  details(id, ownerid);
+  details(id, ownerid, showHome);
 };
 
-async function details(id, ownerid) {
+async function details(id, ownerid, showHome) {
   detailsContainer.replaceChildren(spinner());
 
   const [movie, likes, ownLike] = await Promise.all([
@@ -21,11 +22,11 @@ async function details(id, ownerid) {
   ]);
 
   detailsContainer.replaceChildren(
-    createDetails(movie, id, ownerid, likes, ownLike)
+    createDetails(movie, id, ownerid, likes, ownLike, showHome)
   );
 }
 
-function createDetails(data, id, ownerid, likes, ownLike) {
+function createDetails(data, id, ownerid, likes, ownLike, showHome) {
   const container = createElements("div", undefined, {
     class: "row bg-light text-dark",
   });
@@ -46,8 +47,11 @@ function createDetails(data, id, ownerid, likes, ownLike) {
   div.append(h3, p);
   if (isUser()._id == ownerid) {
     const aDelete = createElements("a", "Delete", { class: "btn btn-danger" });
+    aDelete.addEventListener("click", (e) => deleteMovie(id, showHome));
+
     const aEdit = createElements("a", "Edit", { class: "btn btn-warning" });
-    aEdit.addEventListener('click', e => showEdit(id, showDetails))
+    aEdit.addEventListener("click", (e) => showEdit(id, showDetails));
+
     div.append(aDelete, aEdit);
   } else {
     const aLike = createElements("a", "Like", { class: "btn btn-primary" });

@@ -45,7 +45,7 @@ function loadingMovies(data, parent) {
       "data-id": data._id,
       'data-ownerid': data._ownerId
     });
-    btnDetails.addEventListener("click", (e) => showDetails(data._id, data._ownerId));
+    btnDetails.addEventListener("click", (e) => showDetails(data._id, data._ownerId, showHome));
     a.append(btnDetails);
     divFooter.append(a);
     div.append(divFooter);
