@@ -43,7 +43,7 @@ function loadingMovies(data, parent) {
       type: "button",
       class: "btn btn-info",
       "data-id": data._id,
-      'data-ownerId': data._ownerId
+      'data-ownerid': data._ownerId
     });
     btnDetails.addEventListener("click", (e) => showDetails(e));
     a.append(btnDetails);

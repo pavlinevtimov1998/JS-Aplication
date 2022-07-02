@@ -17,7 +17,6 @@ export const navAction = (user) => {
   if (user) {
     guestNav[0].style.display = "none";
     guestNav[1].style.display = "none";
-    console.log(userNav);
     userNav[0].textContent = `Welcome, ${user.email}`;
     userNav[0].style.display = "block";
     userNav[1].style.display = "block";
