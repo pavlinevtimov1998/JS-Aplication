@@ -1,39 +1,42 @@
-import { showCreate } from "./create.js";
-import { showHome } from "./home.js";
-import { showLogin } from "./login.js";
-import { showRegister } from "./register.js";
-import { hideAll, isUser, navAction } from "./util.js";
+// import { showCreate } from "./create.js";
+// import { showHome } from "./home.js";
+// import { showLogin } from "./login.js";
+// import { showRegister } from "./register.js";
+// import { hideAll, isUser, navAction } from "./util.js";
+import * as api from './api/data.js';
 
-hideAll();
-navAction(isUser());
-showHome();
+window.api = api;
 
-const route = {
-  "/movies": showHome,
-  "/login": showLogin,
-  "/logout": logout,
-  "/register": showRegister,
-  "/create": showCreate,
-};
+// hideAll();
+// navAction(isUser());
+// showHome();
 
-document.querySelector(".navbar").addEventListener("click", navigate);
-document.querySelector("#add-movie-button").addEventListener("click", navigate);
+// const route = {
+//   "/movies": showHome,
+//   "/login": showLogin,
+//   "/logout": logout,
+//   "/register": showRegister,
+//   "/create": showCreate,
+// };
 
-function navigate(e) {
-  e.preventDefault();
+// document.querySelector(".navbar").addEventListener("click", navigate);
+// document.querySelector("#add-movie-button").addEventListener("click", navigate);
 
-  if (e.target.tagName == "A" && e.target.href) {
-    let url = new URL(e.target.href);
-    let show = route[url.pathname];
-    if (typeof show == "function") {
-      hideAll();
-      show();
-    }
-  }
-}
+// function navigate(e) {
+//   e.preventDefault();
 
-function logout() {
-  sessionStorage.clear();
-  showLogin();
-  navAction();
-}
+//   if (e.target.tagName == "A" && e.target.href) {
+//     let url = new URL(e.target.href);
+//     let show = route[url.pathname];
+//     if (typeof show == "function") {
+//       hideAll();
+//       show();
+//     }
+//   }
+// }
+
+// function logout() {
+//   sessionStorage.clear();
+//   showLogin();
+//   navAction();
+// }
