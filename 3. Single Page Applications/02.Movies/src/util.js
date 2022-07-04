@@ -14,7 +14,7 @@ export const spinner = () => {
 };
 
 export const navAction = (user) => {
-  if (user) {
+  if (user !== null) {
     guestNav[0].style.display = "none";
     guestNav[1].style.display = "none";
     userNav[0].textContent = `Welcome, ${user.email}`;
@@ -31,13 +31,13 @@ export const navAction = (user) => {
 };
 
 export const isUser = () => {
-  let user = sessionStorage.getItem("user");
+  let userData = sessionStorage.getItem("userData");
 
-  return JSON.parse(user);
+  return JSON.parse(userData);
 };
 
-export const userStorage = (user) => {
-  sessionStorage.setItem("user", JSON.stringify(user));
+export const userStorage = (userData) => {
+  sessionStorage.setItem("userData", JSON.stringify(user));
 };
 
 export function createElements(element, content, attributes) {

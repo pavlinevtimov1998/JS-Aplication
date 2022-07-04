@@ -1,11 +1,12 @@
-import { addMovie } from "./api-calls.js";
-import { showHome } from "./home.js";
-import { isUser } from "./util.js";
+import { postMovie } from "../api/data.js";
 
 const createPage = document.querySelector("#add-movie");
 const form = createPage.querySelector("form");
+let ctx;
 
-export const showCreate = () => {
+export const showCreate = (ctxTarget) => {
+  ctx = ctxTarget;
+  ctx.hideAll();
   createPage.style.display = "block";
 };
 
@@ -17,15 +18,14 @@ form.addEventListener("submit", async (e) => {
   let [title, description, img] = [...formData.values()];
 
   if (title == "" || description == "" || img == "") {
-    return alert("Empty input");
+    return alert("Empty inputs");
   }
 
-  const data = await addMovie(
-    { title, description, img },
-    isUser().accessToken
-  );
+  await postMovie({ title, description, img });
 
-  [...form.querySelectorAll("input")].forEach((i) => (i.value = ""));
+  // [...form.querySelectorAll("input")].forEach((i) => (i.value = ""));
 
-  showHome();
+  form.reset();
+
+  ctx.goTo("home", ctx);
 });

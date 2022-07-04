@@ -1,5 +1,5 @@
-import { updateRequest } from "./api-calls.js";
-import { hideAll, isUser } from "./util.js";
+// import { updateRequest } from "./api-calls.js";
+// import { hideAll, isUser } from "./util.js";
 
 const editPage = document.querySelector("#edit-movie");
 const form = editPage.querySelector("form");

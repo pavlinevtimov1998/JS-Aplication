@@ -1,42 +1,75 @@
-// import { showCreate } from "./create.js";
-// import { showHome } from "./home.js";
-// import { showLogin } from "./login.js";
-// import { showRegister } from "./register.js";
-// import { hideAll, isUser, navAction } from "./util.js";
-import * as api from './api/data.js';
+import { showCreate } from "./views/create.js";
+import { showHome } from "./views/home.js";
+import { showLogin } from "./views/login.js";
+import { showRegister } from "./views/register.js";
+import {
+  hideAll,
+  isUser,
+  navAction,
+  spinner,
+  createElements,
+  userStorage,
+} from "./util.js";
+import { logout } from "./api/data.js";
 
-window.api = api;
+hideAll();
+navAction(isUser());
 
-// hideAll();
-// navAction(isUser());
-// showHome();
+const views = {
+  home: showHome,
+  login: showLogin,
+  register: showRegister,
+  create: showCreate,
+};
 
-// const route = {
-//   "/movies": showHome,
-//   "/login": showLogin,
-//   "/logout": logout,
-//   "/register": showRegister,
-//   "/create": showCreate,
-// };
+const route = {
+  "/movies": "home",
+  "/login": "login",
+  "/register": "register",
+  "/create": "create",
+};
 
-// document.querySelector(".navbar").addEventListener("click", navigate);
-// document.querySelector("#add-movie-button").addEventListener("click", navigate);
+const ctx = {
+  hideAll,
+  navAction,
+  isUser,
+  goTo,
+  spinner,
+  createElements,
+  userStorage,
+};
 
-// function navigate(e) {
-//   e.preventDefault();
+document.querySelector(".navbar").addEventListener("click", navigate);
+document.querySelector("#add-movie-button").addEventListener("click", navigate);
+document
+  .querySelector('a[href="/logout"]')
+  .addEventListener("click", async (e) => {
+    e.preventDefault();
 
-//   if (e.target.tagName == "A" && e.target.href) {
-//     let url = new URL(e.target.href);
-//     let show = route[url.pathname];
-//     if (typeof show == "function") {
-//       hideAll();
-//       show();
-//     }
-//   }
-// }
+    logout();
+    sessionStorage.removeItem("userData");
+    navAction(isUser());
+    goTo('home', ctx);
+  });
 
-// function logout() {
-//   sessionStorage.clear();
-//   showLogin();
-//   navAction();
-// }
+function navigate(e) {
+  e.preventDefault();
+
+  if (e.target.tagName == "A" && e.target.href) {
+    let url = new URL(e.target.href);
+    let view = views[route[url.pathname]];
+    if (typeof view == "function") {
+      hideAll();
+      view(ctx);
+    }
+  }
+}
+
+function goTo(name, ...params) {
+  let view = views[name];
+  if (typeof view == "function") {
+    view(...params);
+  }
+}
+
+showHome(ctx);

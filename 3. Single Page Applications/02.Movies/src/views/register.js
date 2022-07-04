@@ -1,11 +1,11 @@
-import { registerRequest } from "./api-calls.js";
-import { showHome } from "./home.js";
-import { navAction, userStorage } from "./util.js";
+import { register } from "../api/data.js";
 
 const registerPage = document.querySelector("#form-sign-up");
 const form = registerPage.querySelector("form");
+let ctx;
 
-export const showRegister = () => {
+export const showRegister = (ctxTarget) => {
+  ctx = ctxTarget;
   registerPage.style.display = "block";
 };
 
@@ -20,11 +20,10 @@ form.addEventListener("submit", async (e) => {
     return alert("Incorrect input");
   }
 
-  const user = await registerRequest({ email, password });
+  const user = await register(email, password);
 
-  [...form.querySelectorAll("input")].forEach((i) => (i.value = ""));
+  form.reset();
 
-  userStorage(user);
-  showHome();
-  navAction(user);
+  ctx.goTo("home", ctx);
+  ctx.navAction(ctx.isUser());
 });

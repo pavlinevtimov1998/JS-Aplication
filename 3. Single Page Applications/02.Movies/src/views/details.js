@@ -1,13 +1,16 @@
-import { detailsRequest, likeRequest, onLike } from "./api-calls.js";
+import { getById } from "../api/data.js";
 import { deleteMovie } from "./deleteMovie.js";
 import { showEdit } from "./updateMovie.js";
-import { createElements, hideAll, isUser, spinner } from "./util.js";
+
+// Nex step: Implement functionality for details and likes
 
 const detailsPage = document.querySelector("#movie-example");
 const detailsContainer = detailsPage.querySelector(".container");
+let ctx;
 
-export const showDetails = (id, ownerid, showHome) => {
-  hideAll();
+export const showDetails = (id, ownerid, showHome, ctxTarget) => {
+  ctx = ctxTarget;
+  ctx.hideAll();
   detailsPage.style.display = "block";
   details(id, ownerid, showHome);
 };
