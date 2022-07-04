@@ -1,31 +1,32 @@
-import { getRecipes } from "./api-calls.js";
+import { loadAllRecipes } from "./api/data.js";
 import { loadingDetails } from "./details.js";
-import { createElements } from "./dom-el.js";
-import { hideAll } from "./util.js";
 
 const catalogue = document.querySelector("#catalog");
+let ctx;
 
-export const showCatalogue = () => {
-  hideAll();
+export const showCatalogue = (ctxTarget) => {
+  ctx = ctxTarget;
+  ctx.hideAll();
   catalogue.style.display = "block";
   showRecipes();
 };
 
 const showRecipes = async () => {
-  const data = await getRecipes();
+  catalogue.replaceChildren(ctx.spinner());
 
-  catalogue.innerHTML = "";
+  const data = await loadAllRecipes();
 
+  catalogue.replaceChildren();
   data.forEach((d) => createRecipes(d));
 };
 
 function createRecipes(data) {
-  const article = createElements("article", undefined, "preview");
+  const article = ctx.createElements("article", undefined, "preview");
   article.setAttribute("data-id", data._id);
-  const divTitle = createElements("div", undefined, "title");
-  const h2Title = createElements("h2", data.name);
-  const divSmall = createElements("div", undefined, "small");
-  const img = createElements("img");
+  const divTitle = ctx.createElements("div", undefined, "title");
+  const h2Title = ctx.createElements("h2", data.name);
+  const divSmall = ctx.createElements("div", undefined, "small");
+  const img = ctx.createElements("img");
   img.setAttribute("src", data.img);
 
   divTitle.append(h2Title);
@@ -34,8 +35,8 @@ function createRecipes(data) {
   article.append(divTitle, divSmall);
 
   article.addEventListener("click", (e) => {
-    hideAll();
-    loadingDetails(e, article.dataset.id);
+    ctx.hideAll();
+    loadingDetails(e, article.dataset.id, ctx);
   });
 
   catalogue.append(article);

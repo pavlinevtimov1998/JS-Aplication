@@ -36,10 +36,6 @@ export const isUser = () => {
   return JSON.parse(userData);
 };
 
-export const userStorage = (userData) => {
-  sessionStorage.setItem("userData", JSON.stringify(user));
-};
-
 export function createElements(element, content, attributes) {
   const el = document.createElement(element);
 
