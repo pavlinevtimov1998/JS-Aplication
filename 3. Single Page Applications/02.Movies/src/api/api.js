@@ -49,7 +49,17 @@ const createOptions = (method, data) => {
 
 export const getRequest = async (url) => request(url, createOptions("GET"));
 
+export const getLikesRequest = async (url) =>
+  request(url, createOptions("GET"));
+
+export const getUserLikeRequest = async (url) =>
+  request(url, createOptions("GET"));
+
 export const postRequest = async (url, data) => {
+  return request(url, createOptions("POST", data));
+};
+
+export const postLike = async (url, data) => {
   return request(url, createOptions("POST", data));
 };
 
@@ -58,6 +68,8 @@ export const putRequest = async (url, data) => {
 };
 
 export const delRequest = async (url) => request(url, createOptions("DELETE"));
+
+export const delLike = async (url) => request(url, createOptions("DELETE"));
 
 export async function login(email, password) {
   const result = await postRequest(loginUrl, { email, password });

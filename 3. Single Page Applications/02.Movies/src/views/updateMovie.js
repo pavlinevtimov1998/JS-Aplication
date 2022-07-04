@@ -1,12 +1,13 @@
-// import { updateRequest } from "./api-calls.js";
-// import { hideAll, isUser } from "./util.js";
+import { updateById } from "../api/data.js";
 
 const editPage = document.querySelector("#edit-movie");
 const form = editPage.querySelector("form");
 
-export const showEdit = (id, showDetails) => {
-  hideAll();
+export const showEdit = (id, ownerId, ctx, showDetails) => {
+  ctx.hideAll();
   editPage.style.display = "block";
+
+  console.log('im here');
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -19,12 +20,9 @@ export const showEdit = (id, showDetails) => {
       return;
     }
 
-    const data = await updateRequest(
-      { title, description, img },
-      isUser().accessToken,
-      id
-    );
+    await updateById(id, { title, description, img });
 
-    showDetails(data._id, data._ownerId);
+    ctx.hideAll();
+    showDetails(id, ownerId, ctx);
   });
 };

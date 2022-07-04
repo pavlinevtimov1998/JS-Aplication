@@ -1,8 +1,7 @@
-// import { deleteRequest } from "./api-calls.js";
-// import { isUser } from "../util.js";
+import { deleteById } from "../api/data.js";
 
-export async function deleteMovie(id, showHome) {
-  await deleteRequest(undefined, isUser().accessToken, id);
+export async function deleteMovie(id, ctx) {
+  await deleteById(id);
 
-  showHome();
+  ctx.goTo("home", ctx);
 }

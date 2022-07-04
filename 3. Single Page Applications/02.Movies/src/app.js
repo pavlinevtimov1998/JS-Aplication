@@ -41,15 +41,16 @@ const ctx = {
 
 document.querySelector(".navbar").addEventListener("click", navigate);
 document.querySelector("#add-movie-button").addEventListener("click", navigate);
+
 document
   .querySelector('a[href="/logout"]')
   .addEventListener("click", async (e) => {
     e.preventDefault();
 
-    logout();
+    await logout();
     sessionStorage.removeItem("userData");
     navAction(isUser());
-    goTo('home', ctx);
+    views.login(ctx);
   });
 
 function navigate(e) {

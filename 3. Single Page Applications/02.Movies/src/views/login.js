@@ -6,6 +6,7 @@ let ctx;
 
 export const showLogin = (ctxTarget) => {
   ctx = ctxTarget;
+  ctx.hideAll();
   loginPage.style.display = "block";
 };
 
@@ -23,7 +24,7 @@ form.addEventListener("submit", async (e) => {
 
   await login(email, password);
 
-  ctx.goTo('home', ctx);
+  ctx.goTo("home", ctx);
   ctx.navAction(ctx.isUser());
 
   form.reset();
