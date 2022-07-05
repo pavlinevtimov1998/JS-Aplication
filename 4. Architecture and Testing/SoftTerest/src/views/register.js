@@ -10,8 +10,6 @@ export const showRegister = (ctxTarget) => {
   registerPage.style.display = 'block';
 };
 
-console.log(registerPage);
-
 registerPage.querySelector("form").addEventListener("submit", onRegister);
 
 async function onRegister(e) {

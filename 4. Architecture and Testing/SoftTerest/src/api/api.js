@@ -1,6 +1,6 @@
 const host = "http://localhost:3030";
 const registrationUrl = '/users/register';
-const loginUrl = '';
+const loginUrl = '/users/login';
 const logoutUrl = '';
 
 async function request(url, options) {
