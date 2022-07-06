@@ -15,13 +15,13 @@ async function showAllIdeas() {
 
   const data = await getAllIdeas();
 
-  // if (data.length > 0) {
-  //   catalogPage.replaceChildren(loadCatalog(data));
-  // } else {
+  if (data.length > 0) {
+    catalogPage.replaceChildren(loadCatalog(data));
+  } else {
     catalogPage.replaceChildren(
       ctx.createElements("h1", undefined, "No ideas yet! Be the first one :)")
     );
-  // }
+  }
 }
 
 function loadCatalog(data) {
@@ -31,7 +31,7 @@ function loadCatalog(data) {
     const div = ctx.createElements("div", {
       className: "card overflow-hidden current-card details",
     });
-    console.log("here");
+    
     div.style.width = "20rem";
     div.style.height = "18rem";
 
@@ -53,5 +53,3 @@ function loadCatalog(data) {
 
   return fragment;
 }
-
-/*<h1>No ideas yet! Be the first one :)</h1>*/
