@@ -1,4 +1,4 @@
-import { getWithId } from "../api/data.js";
+import { deleteById, getWithId } from "../api/data.js";
 
 const detailsPage = document.querySelector("#details");
 let ctx;
@@ -36,11 +36,11 @@ async function details(id) {
   divDesc.append(h2, p, pDescr);
   fragment.append(img, divDesc);
 
-  console.log(userData.id, data._ownerId);
-
   if (userData.id == data._ownerId) {
     const divBtn = ctx.createElements("div", { className: "text-center" });
     const a = ctx.createElements("a", { className: "btn detb" }, "Delete");
+    a.setAttribute("data-id", id);
+    a.addEventListener("click", onDelete);
     divBtn.appendChild(a);
     fragment.appendChild(divBtn);
   }
@@ -48,18 +48,10 @@ async function details(id) {
   detailsPage.replaceChildren(fragment);
 }
 
-/*        <img class="det-img" src="./images/dinner.jpg" />
-    <div class="desc">
-          <h2 class="display-5">Dinner Recipe</h2>
-          <p class="infoType">Description:</p>
-          <p class="idea-description">
-            There are few things as comforting as heaping bowl of pasta at the
-            end of a long day. With so many easy pasta recipes out there,
-            there's something for every palate to love. That's why pasta makes
-            such a quick, easy dinner for your family—it's likely to satisfy
-            everyone's cravings, due to its versatility.
-          </p>
-    </div>
-<div class="text-center">
-      <a class="btn detb" href="">Delete</a>
-</div> */
+async function onDelete(e) {
+  e.preventDefault();
+
+  await deleteById(e.target.dataset.id);
+
+  ctx.goTo("catalog", ctx);
+}

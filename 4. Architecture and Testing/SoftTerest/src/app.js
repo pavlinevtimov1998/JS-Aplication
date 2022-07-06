@@ -5,6 +5,7 @@ import { showRegister } from "./views/register.js";
 import { showHome } from "./views/home.js";
 import { createElements, spinner } from "./util.js";
 import { showDetails } from "./views/details.js";
+import { logout } from "./api/data.js";
 
 const navBar = document.querySelector(".navbar-nav");
 const allViews = [...document.querySelector(".views").children];
@@ -31,7 +32,11 @@ const ctx = {
 navBar.addEventListener("click", (e) => {
   if (e.target.tagName == "A") {
     e.preventDefault();
-    goTo(e.target.id, ctx);
+    if (e.target.textContent == "Logout") {
+      logetOut();
+    } else {
+      goTo(e.target.id, ctx);
+    }
   }
 });
 
@@ -60,6 +65,13 @@ function navAction() {
     guestNav[0].style.display = "block";
     guestNav[1].style.display = "block";
   }
+}
+
+async function logetOut() {
+  await logout();
+  hideAll();
+  navAction();
+  goTo("home", ctx);
 }
 
 hideAll();

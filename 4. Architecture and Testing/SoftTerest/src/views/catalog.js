@@ -47,7 +47,7 @@ function loadCatalog(data) {
 
     const a = ctx.createElements("a", { className: "btn" }, "Details");
     a.setAttribute("data-id", d._id);
-    console.log(a);
+
     a.addEventListener("click", (e) => {
       e.preventDefault();
 
