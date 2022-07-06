@@ -31,7 +31,7 @@ function loadCatalog(data) {
     const div = ctx.createElements("div", {
       className: "card overflow-hidden current-card details",
     });
-    
+
     div.style.width = "20rem";
     div.style.height = "18rem";
 
@@ -46,6 +46,13 @@ function loadCatalog(data) {
     });
 
     const a = ctx.createElements("a", { className: "btn" }, "Details");
+    a.setAttribute("data-id", d._id);
+    console.log(a);
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      ctx.goTo("details", e.target.dataset.id, ctx);
+    });
 
     div.append(cardDiv, img, a);
     fragment.appendChild(div);

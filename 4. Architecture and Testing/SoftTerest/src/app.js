@@ -4,6 +4,7 @@ import { showLogin } from "./views/login.js";
 import { showRegister } from "./views/register.js";
 import { showHome } from "./views/home.js";
 import { createElements, spinner } from "./util.js";
+import { showDetails } from "./views/details.js";
 
 const navBar = document.querySelector(".navbar-nav");
 const allViews = [...document.querySelector(".views").children];
@@ -16,6 +17,7 @@ const views = {
   create: showCreate,
   login: showLogin,
   register: showRegister,
+  details: showDetails,
 };
 
 const ctx = {
