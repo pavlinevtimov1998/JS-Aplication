@@ -50,7 +50,7 @@ function loadCatalog(data) {
 
     a.addEventListener("click", (e) => {
       e.preventDefault();
-
+      ctx.hideAll();
       ctx.goTo("details", e.target.dataset.id, ctx);
     });
 
