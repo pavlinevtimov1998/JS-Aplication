@@ -3,6 +3,7 @@ import { showCreate } from "./views/create.js";
 import { showLogin } from "./views/login.js";
 import { showRegister } from "./views/register.js";
 import { showHome } from "./views/home.js";
+import { createElements, spinner } from "./util.js";
 
 const navBar = document.querySelector(".navbar-nav");
 const allViews = [...document.querySelector(".views").children];
@@ -21,6 +22,8 @@ const ctx = {
   hideAll,
   navAction,
   goTo,
+  createElements,
+  spinner,
 };
 
 navBar.addEventListener("click", (e) => {

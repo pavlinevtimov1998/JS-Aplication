@@ -29,7 +29,6 @@ async function onLogin(e) {
 
   form.reset();
 
-  ctx.hideAll();
   ctx.navAction();
   ctx.goTo("home", ctx);
 }
