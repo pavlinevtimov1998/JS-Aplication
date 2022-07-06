@@ -3,15 +3,13 @@ import { deleteById, getWithId } from "../api/data.js";
 const detailsPage = document.querySelector("#details");
 let ctx;
 
-export const showDetails = async (id, ctxTarget) => {
-  console.log(id);
+export const showDetails = (id, ctxTarget) => {
   ctx = ctxTarget;
-  ctx.hideAll();
   detailsPage.style.display = "block";
-  details(id);
+  loadDetails(id);
 };
 
-async function details(id) {
+async function loadDetails(id) {
   detailsPage.replaceChildren(ctx.spinner());
 
   const data = await getWithId(id);
@@ -36,7 +34,7 @@ async function details(id) {
   divDesc.append(h2, p, pDescr);
   fragment.append(img, divDesc);
 
-  if (userData.id == data._ownerId) {
+  if (userData && userData.id == data._ownerId) {
     const divBtn = ctx.createElements("div", { className: "text-center" });
     const a = ctx.createElements("a", { className: "btn detb" }, "Delete");
     a.setAttribute("data-id", id);
