@@ -1,11 +1,12 @@
 import { deleteById, getWithId } from "../api/data.js";
 
 const detailsPage = document.querySelector("#details");
+detailsPage.remove();
 let ctx;
 
 export const showDetails = (id, ctxTarget) => {
   ctx = ctxTarget;
-  detailsPage.style.display = "block";
+  ctx.showSection(detailsPage);
   loadDetails(id);
 };
 

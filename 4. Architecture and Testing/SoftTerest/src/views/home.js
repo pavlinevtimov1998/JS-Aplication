@@ -1,11 +1,11 @@
 const homePage = document.querySelector("#home-page");
+homePage.remove();
 const getStartedBtn = homePage.querySelector("#get-started");
 let ctx;
 
 export const showHome = (ctxTarget) => {
   ctx = ctxTarget;
-  ctx.hideAll();
-  homePage.style.display = "block";
+  ctx.showSection(homePage);
 };
 
 getStartedBtn.addEventListener("click", onGetStarted);

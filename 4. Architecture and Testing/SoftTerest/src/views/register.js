@@ -1,13 +1,12 @@
 import { register } from "../api/data.js";
 
 const registerPage = document.querySelector("#register-page");
-
+registerPage.remove();
 let ctx;
 
 export const showRegister = (ctxTarget) => {
   ctx = ctxTarget;
-  ctx.hideAll();
-  registerPage.style.display = 'block';
+  ctx.showSection(registerPage);
 };
 
 registerPage.querySelector("form").addEventListener("submit", onRegister);
@@ -37,7 +36,6 @@ async function onRegister(e) {
 
   form.reset();
 
-  ctx.hideAll();
   ctx.navAction();
-  ctx.goTo('home', ctx);
+  ctx.goTo("home", ctx);
 }

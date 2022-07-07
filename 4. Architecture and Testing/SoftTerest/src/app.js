@@ -6,9 +6,9 @@ import { showHome } from "./views/home.js";
 import { createElements, spinner } from "./util.js";
 import { showDetails } from "./views/details.js";
 import { logout } from "./api/data.js";
+import { showSection } from "./util.js";
 
 const navBar = document.querySelector(".navbar-nav");
-const allViews = [...document.querySelector(".views").children];
 const userNav = navBar.querySelectorAll(".user");
 const guestNav = navBar.querySelectorAll(".guest");
 
@@ -22,7 +22,7 @@ const views = {
 };
 
 const ctx = {
-  hideAll,
+  showSection,
   navAction,
   goTo,
   createElements,
@@ -47,10 +47,6 @@ function goTo(name, ...params) {
   }
 }
 
-function hideAll() {
-  allViews.forEach((v) => (v.style.display = "none"));
-}
-
 function navAction() {
   let user = sessionStorage.getItem("userData");
 
@@ -69,11 +65,9 @@ function navAction() {
 
 async function logetOut() {
   await logout();
-  hideAll();
   navAction();
   goTo("home", ctx);
 }
 
-hideAll();
 navAction();
-showHome(ctx);
+goTo("home", ctx);

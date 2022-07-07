@@ -1,13 +1,12 @@
 import { login } from "../api/data.js";
 
 const loginPage = document.querySelector("#login-page");
-
+loginPage.remove();
 let ctx;
 
 export const showLogin = (ctxTarget) => {
   ctx = ctxTarget;
-  ctx.hideAll();
-  loginPage.style.display = "block";
+  ctx.showSection(loginPage);
 };
 
 loginPage.querySelector("form").addEventListener("submit", onLogin);
@@ -19,7 +18,7 @@ async function onLogin(e) {
 
   const dataForm = new FormData(form);
 
-  const [email, password, rePass] = [...dataForm.values()];
+  const [email, password] = [...dataForm.values()];
 
   if (email.length == 0 || password.length == 0) {
     return alert("All fields required!");

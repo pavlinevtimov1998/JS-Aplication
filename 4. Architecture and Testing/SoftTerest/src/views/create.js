@@ -1,14 +1,14 @@
 import { createIdea } from "../api/data.js";
 
 const createPage = document.querySelector("#create-page");
+createPage.remove();
 const form = createPage.querySelector("form");
 
 let ctx;
 
 export const showCreate = (ctxTarget) => {
   ctx = ctxTarget;
-  ctx.hideAll();
-  createPage.style.display = "block";
+  ctx.showSection(createPage);
 };
 
 form.addEventListener("submit", onCreate);

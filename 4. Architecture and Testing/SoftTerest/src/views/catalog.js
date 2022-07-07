@@ -1,12 +1,12 @@
 import { getAllIdeas } from "../api/data.js";
 
 const catalogPage = document.querySelector("#dashboard-holder");
+catalogPage.remove();
 let ctx;
 
 export const showCatalog = (ctxTarget) => {
   ctx = ctxTarget;
-  ctx.hideAll();
-  catalogPage.style.display = "flex";
+  ctx.showSection(catalogPage);
   showAllIdeas();
 };
 
@@ -50,7 +50,7 @@ function loadCatalog(data) {
 
     a.addEventListener("click", (e) => {
       e.preventDefault();
-      ctx.hideAll();
+      
       ctx.goTo("details", e.target.dataset.id, ctx);
     });
 

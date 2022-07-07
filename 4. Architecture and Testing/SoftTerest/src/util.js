@@ -1,7 +1,13 @@
+const viewSection = document.querySelector(".views");
+
 export const spinner = () => {
   let p = document.createElement("p");
   p.textContent = "Loading ...";
   return p;
+};
+
+export const showSection = (section) => {
+  viewSection.replaceChildren(section);
 };
 
 export function createElements(type, attributes, content) {
@@ -12,7 +18,7 @@ export function createElements(type, attributes, content) {
       element[t] = v;
     });
   }
-  
+
   if (content) {
     element.textContent = content;
   }
