@@ -1,0 +1,17 @@
+{
+  "name": "06.book-library",
+  "version": "1.0.0",
+  "description": "",
+  "main": "api.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "html": "^1.0.0",
+    "lit": "^2.2.7",
+    "lit-html": "^2.2.6"
+  }
+}
