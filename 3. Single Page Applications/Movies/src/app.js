@@ -8,7 +8,6 @@ import {
   navAction,
   spinner,
   createElements,
-  userStorage,
 } from "./util.js";
 import { logout } from "./api/data.js";
 
@@ -36,7 +35,7 @@ const ctx = {
   goTo,
   spinner,
   createElements,
-  userStorage,
+  
 };
 
 document.querySelector(".navbar").addEventListener("click", navigate);
