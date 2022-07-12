@@ -1,30 +1,34 @@
 import * as api from "./api.js";
 
-const moviesUrl = "/data/movies/";
-const likeUrl = "/data/likes/";
+const endpoints = {
+  getAllMovies: "/data/movies",
+  getMovieById: "/data/movies/",
+  createMovie: "/data/movies",
+  getLikes: "/data/likes/",
+};
 
 export const login = api.login;
 export const register = api.register;
 export const logout = api.logout;
 
 export async function getAllMovies() {
-  return api.getRequest(moviesUrl);
+  return api.getRequest(endpoints.getAllMovies);
 }
 
 export async function postMovie(data) {
-  return api.postRequest(moviesUrl, data);
+  return api.postRequest(endpoints.createMovie, data);
 }
 
 export async function getById(id) {
-  return api.getRequest(moviesUrl + id);
+  return api.getRequest(endpoints.getMovieById + id);
 }
 
 export async function updateById(id, data) {
-  return api.putRequest(moviesUrl + id, data);
+  return api.putRequest(endpoints.getMovieById + id, data);
 }
 
 export async function deleteById(id) {
-  return api.delRequest(moviesUrl + id);
+  return api.delRequest(endpoints.getMovieById + id);
 }
 
 export async function getLikes(id) {
@@ -44,5 +48,5 @@ export async function onLike(data) {
 }
 
 export async function deleteLike(id) {
-    return api.delLike(likeUrl + id);
+  return api.delLike(likeUrl + id);
 }

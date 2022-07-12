@@ -1,75 +1,29 @@
-import { showCreate } from "./views/create.js";
-import { showHome } from "./views/home.js";
-import { showLogin } from "./views/login.js";
-import { showRegister } from "./views/register.js";
-import {
-  hideAll,
-  isUser,
-  navAction,
-  spinner,
-  createElements,
-} from "./util.js";
-import { logout } from "./api/data.js";
+import { render, page } from "./lib.js";
+import { navAction, userData } from "./util.js";
+import { createPage } from "./views/create.js";
+import { detailsPage } from "./views/details.js";
+import { homePage } from "./views/home.js";
+import { loginPage } from "./views/login.js";
+import { registerPage } from "./views/register.js";
 
-hideAll();
-navAction(isUser());
+const root = document.querySelector("main");
 
-const views = {
-  home: showHome,
-  login: showLogin,
-  register: showRegister,
-  create: showCreate,
-};
+page(decorateContext);
+page("/home", homePage);
+page("/create", createPage);
+page("/details", detailsPage);
+page("/login", loginPage);
+page("/register", registerPage);
 
-const route = {
-  "/movies": "home",
-  "/login": "login",
-  "/register": "register",
-  "/create": "create",
-};
+page("", "/home");
 
-const ctx = {
-  hideAll,
-  navAction,
-  isUser,
-  goTo,
-  spinner,
-  createElements,
-  
-};
+page.start();
 
-document.querySelector(".navbar").addEventListener("click", navigate);
-document.querySelector("#add-movie-button").addEventListener("click", navigate);
-
-document
-  .querySelector('a[href="/logout"]')
-  .addEventListener("click", async (e) => {
-    e.preventDefault();
-
-    await logout();
-    sessionStorage.removeItem("userData");
-    navAction(isUser());
-    views.login(ctx);
-  });
-
-function navigate(e) {
-  e.preventDefault();
-
-  if (e.target.tagName == "A" && e.target.href) {
-    let url = new URL(e.target.href);
-    let view = views[route[url.pathname]];
-    if (typeof view == "function") {
-      hideAll();
-      view(ctx);
-    }
-  }
+async function decorateContext(ctx, next) {
+  ctx.render = (template) => render(template, root);
+  ctx.navAction = navAction;
+  ctx.userData = userData;
+  next();
 }
 
-function goTo(name, ...params) {
-  let view = views[name];
-  if (typeof view == "function") {
-    view(...params);
-  }
-}
-
-showHome(ctx);
+navAction(userData());

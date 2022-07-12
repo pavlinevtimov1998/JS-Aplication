@@ -1,3 +1,5 @@
+import { removeUser, setUserData, userData } from "../util.js";
+
 const host = "http://localhost:3030";
 const loginUrl = "/users/login";
 const logoutUrl = "/users/logout";
@@ -38,9 +40,7 @@ const createOptions = (method, data) => {
     options["body"] = JSON.stringify(data);
   }
 
-  const userData = JSON.parse(sessionStorage.getItem("userData"));
-
-  if (userData != null) {
+  if (userData() != null) {
     options.headers["X-Authorization"] = userData.token;
   }
 
@@ -80,7 +80,7 @@ export async function login(email, password) {
     token: result.accessToken,
   };
 
-  sessionStorage.setItem("userData", JSON.stringify(userData));
+  setUserData(userData);
 }
 
 export async function register(email, password) {
@@ -92,10 +92,10 @@ export async function register(email, password) {
     token: result.accessToken,
   };
 
-  sessionStorage.setItem("userData", JSON.stringify(userData));
+  setUserData(userData);
 }
 
 export async function logout() {
   await getRequest(logoutUrl);
-  sessionStorage.removeItem("userData");
+  removeUser();
 }

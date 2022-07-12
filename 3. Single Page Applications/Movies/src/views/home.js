@@ -1,59 +1,68 @@
+import { html, until } from "../lib.js";
 import { getAllMovies } from "../api/data.js";
-import { showDetails } from "./details.js";
 
-const homePage = document.querySelector("#home-page");
-const moviesList = document.querySelector(".card-deck");
+const homeTemplate = (movies) => html`
+  <section id="home-page" class="section">
+    <div
+      class="jumbotron jumbotron-fluid text-light"
+      style="background-color: #343a40;"
+    >
+      <img
+        src="https://slicksmovieblog.files.wordpress.com/2014/08/cropped-movie-banner-e1408372575210.jpg"
+        class="img-fluid"
+        alt="Responsive image"
+        style="width: 150%; height: 200px"
+      />
+      <h1 class="display-4">Movies</h1>
+      <p class="lead">
+        Unlimited movies, TV shows, and more. Watch anywhere. Cancel anytime.
+      </p>
+    </div>
+    <div class="movies">
+      <h1 class="text-center">Movies</h1>
 
-let ctx;
+      <section id="add-movie-button">
+        <a href="/create" class="btn btn-warning ">Add Movie</a>
+      </section>
 
-export const showHome = (ctxTarget) => {
-  ctx = ctxTarget;
-  ctx.hideAll();
-  homePage.style.display = "block";
-  moviesList.replaceChildren(ctx.spinner());
-  allMovies();
-};
+      <section id="movie">
+        <div class=" mt-3 ">
+          <div class="row d-flex d-wrap">
+            <div class="card-deck d-flex justify-content-center">
+              ${until(movies, html`<p>Loading &hellip;</p>`)}
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+`;
 
-const allMovies = async () => {
+const moviesTemplate = (movie) => html`
+  <div class="card mb-4">
+    <img
+      class="card-img-top"
+      src="${movie.img}"
+      alt="Card image cap"
+      width="400"
+    />
+    <div class="card-body">
+      <h4 class="card-title">${movie.title}</h4>
+    </div>
+    <div class="card-footer">
+      <a href="/details/${movie._id}">
+        <button type="button" class="btn btn-info">Details</button>
+      </a>
+    </div>
+  </div>
+`;
+
+export function homePage(ctx) {
+  ctx.render(homeTemplate(getMovies()));
+}
+
+async function getMovies() {
   const data = await getAllMovies();
 
-  const fragment = document.createDocumentFragment();
-  data.forEach((d) => loadingMovies(d, fragment));
-  moviesList.replaceChildren(fragment);
-};
-
-function loadingMovies(data, fragment) {
-  const div = ctx.createElements("div", undefined, { class: "card mb-4" });
-  const img = ctx.createElements("img", undefined, {
-    class: "card-img-top",
-    src: data.img,
-    alt: "Card image cap",
-    width: "400",
-  });
-  const divTitle = ctx.createElements("div", undefined, { class: "card-body" });
-  const title = ctx.createElements("h4", data.title, { class: "card-title" });
-  divTitle.append(title);
-
-  div.append(img, divTitle);
-
-  if (ctx.isUser()) {
-    const divFooter = ctx.createElements("div", undefined, {
-      class: "card-footer",
-    });
-    const a = ctx.createElements("a");
-    const btnDetails = ctx.createElements("button", "Details", {
-      type: "button",
-      class: "btn btn-info",
-      "data-id": data._id,
-      "data-ownerid": data._ownerId,
-    });
-    btnDetails.addEventListener("click", (e) =>
-      showDetails(data._id, data._ownerId, ctx)
-    );
-    a.append(btnDetails);
-    divFooter.append(a);
-    div.append(divFooter);
-  }
-
-  fragment.append(div);
+  return data.map((movie) => moviesTemplate(movie));
 }

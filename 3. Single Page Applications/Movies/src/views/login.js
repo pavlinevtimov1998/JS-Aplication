@@ -1,31 +1,44 @@
 import { login } from "../api/data.js";
+import { html } from "../lib.js";
 
-const loginPage = document.querySelector("#form-login");
-const form = loginPage.querySelector("form");
-let ctx;
 
-export const showLogin = (ctxTarget) => {
-  ctx = ctxTarget;
-  ctx.hideAll();
-  loginPage.style.display = "block";
-};
+const loginTemplate = () => html`
+<section id="form-login" class="section">
+    <form class="text-center border border-light p-5" action="" method="">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" type="email" class="form-control" placeholder="Email" name="email" value="">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" type="password" class="form-control" placeholder="Password" name="password" value="">
+        </div>
 
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+    </section>
+`;
 
-  let formData = new FormData(form);
+export function loginPage(ctx) {
+  ctx.render(loginTemplate());
+}
 
-  let email = formData.get("email").trim();
-  let password = formData.get("password").trim();
+// form.addEventListener("submit", async (e) => {
+//   e.preventDefault();
 
-  if (email == "" || password == "") {
-    return alert("Empty inputs");
-  }
+//   let formData = new FormData(form);
 
-  await login(email, password);
+//   let email = formData.get("email").trim();
+//   let password = formData.get("password").trim();
 
-  ctx.goTo("home", ctx);
-  ctx.navAction(ctx.isUser());
+//   if (email == "" || password == "") {
+//     return alert("Empty inputs");
+//   }
 
-  form.reset();
-});
+//   await login(email, password);
+
+//   ctx.goTo("home", ctx);
+//   ctx.navAction(ctx.isUser());
+
+//   form.reset();
+// });

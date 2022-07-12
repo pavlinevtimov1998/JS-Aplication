@@ -1,29 +1,68 @@
 import { register } from "../api/data.js";
+import { html } from "../lib.js";
 
-const registerPage = document.querySelector("#form-sign-up");
-const form = registerPage.querySelector("form");
-let ctx;
 
-export const showRegister = (ctxTarget) => {
-  ctx = ctxTarget;
-  registerPage.style.display = "block";
-};
+const registerTemplate = () => html`
+  <section id="form-sign-up" class="section">
+    <form class="text-center border border-light p-5" action="#" method="post">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          class="form-control"
+          placeholder="Email"
+          name="email"
+          value=""
+        />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          class="form-control"
+          placeholder="Password"
+          name="password"
+          value=""
+        />
+      </div>
 
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
+      <div class="form-group">
+        <label for="repeatPassword">Repeat Password</label>
+        <input
+          id="repeatPassword"
+          type="password"
+          class="form-control"
+          placeholder="Repeat-Password"
+          name="repeatPassword"
+          value=""
+        />
+      </div>
 
-  let formData = new FormData(e.currentTarget);
+      <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+  </section>
+`;
 
-  let [email, password, rePass] = [...formData.values()];
+export function registerPage(ctx) {
+  ctx.render(registerTemplate());
+}
+// form.addEventListener("submit", async (e) => {
+//   e.preventDefault();
 
-  if (email == "" || password.length < 6 || password !== rePass) {
-    return alert("Incorrect input");
-  }
+//   let formData = new FormData(e.currentTarget);
 
-  const user = await register(email, password);
+//   let [email, password, rePass] = [...formData.values()];
 
-  form.reset();
+//   if (email == "" || password.length < 6 || password !== rePass) {
+//     return alert("Incorrect input");
+//   }
 
-  ctx.goTo("home", ctx);
-  ctx.navAction(ctx.isUser());
-});
+//   const user = await register(email, password);
+
+//   form.reset();
+
+//   ctx.goTo("home", ctx);
+//   ctx.navAction(ctx.isUser());
+// });
