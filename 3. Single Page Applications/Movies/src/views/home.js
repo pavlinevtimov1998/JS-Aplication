@@ -1,5 +1,6 @@
 import { html, until } from "../lib.js";
 import { getAllMovies } from "../api/data.js";
+import { userData } from "../util.js";
 
 const homeTemplate = (movies) => html`
   <section id="home-page" class="section">
@@ -21,9 +22,11 @@ const homeTemplate = (movies) => html`
     <div class="movies">
       <h1 class="text-center">Movies</h1>
 
-      <section id="add-movie-button">
-        <a href="/create" class="btn btn-warning ">Add Movie</a>
-      </section>
+      ${userData() !== null
+        ? html`<section id="add-movie-button">
+            <a href="/create" class="btn btn-warning ">Add Movie</a>
+          </section>`
+        : ""}
 
       <section id="movie">
         <div class=" mt-3 ">
@@ -50,9 +53,13 @@ const moviesTemplate = (movie) => html`
       <h4 class="card-title">${movie.title}</h4>
     </div>
     <div class="card-footer">
-      <a href="/details/${movie._id}">
-        <button type="button" class="btn btn-info">Details</button>
-      </a>
+      ${userData() !== null
+        ? html`<a href="/details/${movie._id}">
+            <button type="button" class="btn btn-info">Details</button>
+          </a>`
+        : html`<a href="/details/${movie._id}">
+            <button type="button" class="btn btn-info" disabled>Details</button>
+          </a>`}
     </div>
   </div>
 `;

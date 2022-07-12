@@ -39,3 +39,11 @@
     text-decoration: underline;
     box-shadow: 0 5px 10px #cccccc;
 }
+
+.user:hover {
+    cursor: pointer;
+}
+
+#img {
+    max-width: 600px;
+}

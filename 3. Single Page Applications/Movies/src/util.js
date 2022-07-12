@@ -16,15 +16,15 @@ export const navAction = (user) => {
 };
 
 export const userData = () => {
-  let userData = JSON.parse(sessionStorage.getItem("userData"));
+  let userData = sessionStorage.getItem("userData");
 
-  return userData;
+  return JSON.parse(userData);
 };
 
-export const setUserData = (user) => {
-  sessionStorage.setItem("userData", user);
+export const setUserData = (userData) => {
+  sessionStorage.setItem("userData", JSON.stringify(userData));
 };
 
-export const removeUser = (user) => {
+export const removeUser = () => {
   sessionStorage.removeItem("userData");
 };

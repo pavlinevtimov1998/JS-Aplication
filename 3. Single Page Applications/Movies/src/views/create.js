@@ -1,8 +1,8 @@
 import { postMovie } from "../api/data.js";
 import { html } from "../lib.js";
 
-const createTemplate = () => html`
-  <section id="add-movie" class="section">
+const createTemplate = (onSubmit) => html`
+  <section @submit=${(e) => onSubmit(e)} id="add-movie" class="section">
     <form class="text-center border border-light p-5" action="#" method="">
       <h1>Add Movie</h1>
       <div class="form-group">
@@ -41,25 +41,23 @@ const createTemplate = () => html`
 `;
 
 export function createPage(ctx) {
-  ctx.render(createTemplate());
+  ctx.render(createTemplate(onSubmit));
+
+  async function onSubmit(e) {
+    e.preventDefault();
+
+    let formData = new FormData(e.target);
+
+    let [title, description, img] = [...formData.values()];
+
+    if (title == "" || description == "" || img == "") {
+      return alert("Empty inputs");
+    }
+
+    await postMovie({ title, description, img });
+
+    e.target.reset();
+
+    ctx.page.redirect("/home");
+  }
 }
-
-// form.addEventListener("submit", async (e) => {
-//   e.preventDefault();
-
-//   let formData = new FormData(e.currentTarget);
-
-//   let [title, description, img] = [...formData.values()];
-
-//   if (title == "" || description == "" || img == "") {
-//     return alert("Empty inputs");
-//   }
-
-//   await postMovie({ title, description, img });
-
-//   // [...form.querySelectorAll("input")].forEach((i) => (i.value = ""));
-
-//   form.reset();
-
-//   ctx.goTo("home", ctx);
-// });

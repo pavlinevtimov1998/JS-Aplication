@@ -1,10 +1,14 @@
 import { register } from "../api/data.js";
 import { html } from "../lib.js";
 
-
-const registerTemplate = () => html`
+const registerTemplate = (onSubmit) => html`
   <section id="form-sign-up" class="section">
-    <form class="text-center border border-light p-5" action="#" method="post">
+    <form
+      @submit=${(e) => onSubmit(e)}
+      class="text-center border border-light p-5"
+      action="#"
+      method="post"
+    >
       <div class="form-group">
         <label for="email">Email</label>
         <input
@@ -46,23 +50,24 @@ const registerTemplate = () => html`
 `;
 
 export function registerPage(ctx) {
-  ctx.render(registerTemplate());
+  ctx.render(registerTemplate(onSubmit));
+
+  async function onSubmit(e) {
+    e.preventDefault();
+
+    let formData = new FormData(e.target);
+
+    let [email, password, rePass] = [...formData.values()].trim();
+
+    if (email == "" || password.length < 6 || password !== rePass) {
+      return alert("Incorrect input");
+    }
+
+    await register(email, password);
+
+    e.target.reset();
+
+    ctx.navAction(ctx.userData());
+    ctx.page.redirect("/home");
+  }
 }
-// form.addEventListener("submit", async (e) => {
-//   e.preventDefault();
-
-//   let formData = new FormData(e.currentTarget);
-
-//   let [email, password, rePass] = [...formData.values()];
-
-//   if (email == "" || password.length < 6 || password !== rePass) {
-//     return alert("Incorrect input");
-//   }
-
-//   const user = await register(email, password);
-
-//   form.reset();
-
-//   ctx.goTo("home", ctx);
-//   ctx.navAction(ctx.isUser());
-// });

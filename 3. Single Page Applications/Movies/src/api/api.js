@@ -11,7 +11,7 @@ async function request(url, options) {
 
     if (response.ok !== true) {
       if (response.status == 403) {
-        sessionStorage.removeItem("userData");
+        removeUser();
       }
 
       const error = await response.json();
@@ -41,7 +41,7 @@ const createOptions = (method, data) => {
   }
 
   if (userData() != null) {
-    options.headers["X-Authorization"] = userData.token;
+    options.headers["X-Authorization"] = userData().token;
   }
 
   return options;
