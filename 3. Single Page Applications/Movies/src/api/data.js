@@ -5,6 +5,7 @@ const endpoints = {
   getMovieById: "/data/movies/",
   createMovie: "/data/movies",
   getLikes: "/data/likes/",
+  revokeLike: '/data/likes/'
 };
 
 export const login = api.login;
@@ -37,16 +38,16 @@ export async function getLikes(id) {
   );
 }
 
-export async function getUserLike(id, ownerid) {
+export async function getUserLike(movieId, userId) {
   return api.getUserLikeRequest(
-    `/data/likes?where=movieId%3D%22${id}%22%20and%20_ownerId%3D%22${ownerid}%22`
+    `/data/likes?where=movieId%3D%22${movieId}%22%20and%20_ownerId%3D%22${userId}%22`
   );
 }
 
-export async function onLike(data) {
-  return api.postLike(likeUrl, data);
+export async function like(data) {
+  return api.postLike(endpoints.getLikes, data);
 }
 
 export async function deleteLike(id) {
-  return api.delLike(likeUrl + id);
+  return api.delLike(endpoints.revokeLike + id);
 }

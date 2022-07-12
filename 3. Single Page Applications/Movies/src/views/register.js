@@ -57,7 +57,7 @@ export function registerPage(ctx) {
 
     let formData = new FormData(e.target);
 
-    let [email, password, rePass] = [...formData.values()].trim();
+    let [email, password, rePass] = [...formData.values()];
 
     if (email == "" || password.length < 6 || password !== rePass) {
       return alert("Incorrect input");
