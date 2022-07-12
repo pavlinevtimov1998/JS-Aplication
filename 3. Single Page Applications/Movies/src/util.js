@@ -1,3 +1,5 @@
+import { getById } from "./api/data.js";
+
 const userNav = document.querySelectorAll(".user");
 const guestNav = document.querySelectorAll(".guest");
 
@@ -28,3 +30,10 @@ export const setUserData = (userData) => {
 export const removeUser = () => {
   sessionStorage.removeItem("userData");
 };
+
+export async function loadMovie(ctx, next) {
+  const movie = await getById(ctx.params.id);
+  ctx.movie = movie;
+
+  next();
+}

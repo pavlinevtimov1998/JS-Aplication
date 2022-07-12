@@ -1,8 +1,9 @@
 import { logout } from "./api/data.js";
 import { render, page } from "./lib.js";
-import { navAction, userData } from "./util.js";
+import { loadMovie, navAction, userData } from "./util.js";
 import { createPage } from "./views/create.js";
 import { detailsPage } from "./views/details.js";
+import { editPage } from "./views/edit.js";
 import { homePage } from "./views/home.js";
 import { loginPage } from "./views/login.js";
 import { registerPage } from "./views/register.js";
@@ -13,9 +14,10 @@ document.querySelector("#logout").addEventListener("click", onLogout);
 page(decorateContext);
 page("/home", homePage);
 page("/create", createPage);
-page("/details/:id", detailsPage);
+page("/details/:id", loadMovie, detailsPage);
 page("/login", loginPage);
 page("/register", registerPage);
+page("/edit/:id", loadMovie, editPage);
 
 page("", "/home");
 
