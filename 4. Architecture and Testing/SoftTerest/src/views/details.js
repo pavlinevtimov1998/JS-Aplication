@@ -11,13 +11,15 @@ const detailsTemplate = (idea, onDelete) => html`
       <p class="idea-description">${idea.description}</p>
     </div>
     <div class="text-center">
-      ${userData().id == idea._ownerId
-        ? html`<a
-            @click=${() => onDelete(idea._id)}
-            class="btn detb"
-            href="javascript:void(0)"
-            >Delete</a
-          >`
+      ${userData()
+        ? userData().id == idea._ownerId
+          ? html`<a
+              @click=${() => onDelete(idea._id)}
+              class="btn detb"
+              href="javascript:void(0)"
+              >Delete</a
+            >`
+          : ""
         : ""}
     </div>
   </div>
