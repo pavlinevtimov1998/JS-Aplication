@@ -3,71 +3,34 @@ import { showCreate } from "./views/create.js";
 import { showLogin } from "./views/login.js";
 import { showRegister } from "./views/register.js";
 import { showHome } from "./views/home.js";
-import { createElements, spinner } from "./util.js";
 import { showDetails } from "./views/details.js";
 import { logout } from "./api/data.js";
-import { showSection } from "./util.js";
+import { navAction, userData } from "./util.js";
+import { page, render } from "./lib.js";
 
-const navBar = document.querySelector(".navbar-nav");
-const userNav = navBar.querySelectorAll(".user");
-const guestNav = navBar.querySelectorAll(".guest");
+const root = document.querySelector(".views");
 
-const views = {
-  home: showHome,
-  catalog: showCatalog,
-  create: showCreate,
-  login: showLogin,
-  register: showRegister,
-  details: showDetails,
-};
+page(decorateContext);
+page("/home", showHome);
+page("/catalog", showCatalog);
+page("/create", showCreate);
+page("/login", showLogin);
+page("/register", showRegister);
+page("/details", showDetails);
 
-const ctx = {
-  showSection,
-  navAction,
-  goTo,
-  createElements,
-  spinner,
-};
+page("/index.html", "/home");
+page.start();
 
-navBar.addEventListener("click", (e) => {
-  if (e.target.tagName == "A") {
-    e.preventDefault();
-    if (e.target.textContent == "Logout") {
-      logetOut();
-    } else {
-      goTo(e.target.id, ctx);
-    }
-  }
+async function decorateContext(ctx, next) {
+  ctx.render = (template) => render(template, root);
+  ctx.navAction = navAction;
+  next();
+}
+
+document.querySelector(".logout").addEventListener("click", async (e) => {
+  await logout();
+  navAction(userData());
+  page.redirect('/home');
 });
 
-function goTo(name, ...params) {
-  let view = views[name];
-  if (typeof view == "function") {
-    view(...params);
-  }
-}
-
-function navAction() {
-  let user = sessionStorage.getItem("userData");
-
-  if (user) {
-    userNav[0].style.display = "block";
-    userNav[1].style.display = "block";
-    guestNav[0].style.display = "none";
-    guestNav[1].style.display = "none";
-  } else {
-    userNav[0].style.display = "none";
-    userNav[1].style.display = "none";
-    guestNav[0].style.display = "block";
-    guestNav[1].style.display = "block";
-  }
-}
-
-async function logetOut() {
-  await logout();
-  navAction();
-  goTo("home", ctx);
-}
-
-navAction();
-goTo("home", ctx);
+navAction(userData());

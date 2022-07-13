@@ -1,62 +1,31 @@
+import { html, until } from "../lib.js";
 import { getAllIdeas } from "../api/data.js";
 
-const catalogPage = document.querySelector("#dashboard-holder");
-catalogPage.remove();
-let ctx;
+const catalogTemplate = (data) => html`
+  <div id="dashboard-holder">${until(data, html`<p>Loading &hellip;</p>`)}</div>
+`;
 
-export const showCatalog = (ctxTarget) => {
-  ctx = ctxTarget;
-  ctx.showSection(catalogPage);
-  showAllIdeas();
+const ideaTemplate = (idea) => html`
+  <div
+    class="card overflow-hidden current-card details"
+    style="width: 20rem; height: 18rem;"
+  >
+    <div class="card-body">
+      <p class="card-text">${idea.title}</p>
+    </div>
+    <img class="card-image" src=${idea.img} alt="Card image cap" />
+    <a class="btn" href="">Details</a>
+  </div>
+`;
+
+const noIdeasTemplate = () => html`<h1>No ideas yet! Be the first one :)</h1>`;
+
+export const showCatalog = (ctx) => {
+  ctx.render(catalogTemplate(showAllIdeas()));
 };
 
 async function showAllIdeas() {
-  catalogPage.replaceChildren(ctx.spinner());
-
   const data = await getAllIdeas();
 
-  if (data.length > 0) {
-    catalogPage.replaceChildren(loadCatalog(data));
-  } else {
-    catalogPage.replaceChildren(
-      ctx.createElements("h1", undefined, "No ideas yet! Be the first one :)")
-    );
-  }
-}
-
-function loadCatalog(data) {
-  const fragment = document.createDocumentFragment();
-
-  data.forEach((d) => {
-    const div = ctx.createElements("div", {
-      className: "card overflow-hidden current-card details",
-    });
-
-    div.style.width = "20rem";
-    div.style.height = "18rem";
-
-    const cardDiv = ctx.createElements("div", { className: "card-body" });
-    const p = ctx.createElements("p", { className: "card-text" }, d.title);
-    cardDiv.appendChild(p);
-
-    const img = ctx.createElements("img", {
-      className: "card-image",
-      src: d.img,
-      alt: "Card image cap",
-    });
-
-    const a = ctx.createElements("a", { className: "btn" }, "Details");
-    a.setAttribute("data-id", d._id);
-
-    a.addEventListener("click", (e) => {
-      e.preventDefault();
-      
-      ctx.goTo("details", e.target.dataset.id, ctx);
-    });
-
-    div.append(cardDiv, img, a);
-    fragment.appendChild(div);
-  });
-
-  return fragment;
+  return data.length > 0 ? data.map((i) => ideaTemplate(i)) : noIdeasTemplate();
 }

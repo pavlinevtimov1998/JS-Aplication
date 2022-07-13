@@ -1,27 +1,30 @@
-const viewSection = document.querySelector(".views");
+const userNav = document.querySelectorAll('.user');
+const guestNav = document.querySelectorAll('.guest')
 
-export const spinner = () => {
-  let p = document.createElement("p");
-  p.textContent = "Loading ...";
-  return p;
+export const userData = () => {
+  let user = JSON.parse(sessionStorage.getItem("userData"));
+
+  return user;
 };
 
-export const showSection = (section) => {
-  viewSection.replaceChildren(section);
+export const setUserData = (user) => {
+  sessionStorage.setItem("userData", JSON.stringify(user));
 };
 
-export function createElements(type, attributes, content) {
-  const element = document.createElement(type);
+export const removeUserData = () => {
+  sessionStorage.removeItem("userData");
+};
 
-  if (attributes) {
-    Object.entries(attributes).forEach(([t, v]) => {
-      element[t] = v;
-    });
+export function navAction(user) {
+  if (user) {
+    userNav[0].style.display = "block";
+    userNav[1].style.display = "block";
+    guestNav[0].style.display = "none";
+    guestNav[1].style.display = "none";
+  } else {
+    userNav[0].style.display = "none";
+    userNav[1].style.display = "none";
+    guestNav[0].style.display = "block";
+    guestNav[1].style.display = "block";
   }
-
-  if (content) {
-    element.textContent = content;
-  }
-
-  return element;
 }
