@@ -5,7 +5,7 @@ import { showRegister } from "./views/register.js";
 import { showHome } from "./views/home.js";
 import { showDetails } from "./views/details.js";
 import { logout } from "./api/data.js";
-import { navAction, userData } from "./util.js";
+import { detailsContext, navAction, userData } from "./util.js";
 import { page, render } from "./lib.js";
 
 const root = document.querySelector(".views");
@@ -16,7 +16,7 @@ page("/catalog", showCatalog);
 page("/create", showCreate);
 page("/login", showLogin);
 page("/register", showRegister);
-page("/details", showDetails);
+page("/details/:id", detailsContext, showDetails);
 
 page("/index.html", "/home");
 page.start();
@@ -30,7 +30,7 @@ async function decorateContext(ctx, next) {
 document.querySelector(".logout").addEventListener("click", async (e) => {
   await logout();
   navAction(userData());
-  page.redirect('/home');
+  page.redirect("/home");
 });
 
 navAction(userData());

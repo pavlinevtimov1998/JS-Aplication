@@ -14,7 +14,7 @@ const ideaTemplate = (idea) => html`
       <p class="card-text">${idea.title}</p>
     </div>
     <img class="card-image" src=${idea.img} alt="Card image cap" />
-    <a class="btn" href="">Details</a>
+    <a class="btn" href="/details/${idea._id}">Details</a>
   </div>
 `;
 

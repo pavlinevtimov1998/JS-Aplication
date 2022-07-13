@@ -1,5 +1,7 @@
-const userNav = document.querySelectorAll('.user');
-const guestNav = document.querySelectorAll('.guest')
+import { getWithId } from "./api/data.js";
+
+const userNav = document.querySelectorAll(".user");
+const guestNav = document.querySelectorAll(".guest");
 
 export const userData = () => {
   let user = JSON.parse(sessionStorage.getItem("userData"));
@@ -28,3 +30,11 @@ export function navAction(user) {
     guestNav[1].style.display = "block";
   }
 }
+
+export const detailsContext = async (ctx, next) => {
+  const idea = await getWithId(ctx.params.id);
+
+  ctx.idea = idea;
+
+  next();
+};

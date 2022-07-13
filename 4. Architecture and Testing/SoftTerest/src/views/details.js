@@ -1,56 +1,34 @@
 import { deleteById, getWithId } from "../api/data.js";
+import { html, until } from "../lib.js";
+import { userData } from "../util.js";
 
-const detailsPage = document.querySelector("#details");
-detailsPage.remove();
-let ctx;
+const detailsTemplate = (idea, onDelete) => html`
+  <div class="container home some">
+    <img class="det-img" src="${idea.img}" />
+    <div class="desc">
+      <h2 class="display-5">${idea.title}</h2>
+      <p class="infoType">Description:</p>
+      <p class="idea-description">${idea.description}</p>
+    </div>
+    <div class="text-center">
+      ${userData().id == idea._ownerId
+        ? html`<a
+            @click=${() => onDelete(idea._id)}
+            class="btn detb"
+            href="javascript:void(0)"
+            >Delete</a
+          >`
+        : ""}
+    </div>
+  </div>
+`;
 
-export const showDetails = (id, ctxTarget) => {
-  ctx = ctxTarget;
-  ctx.showSection(detailsPage);
-  loadDetails(id);
+export const showDetails = (ctx) => {
+  ctx.render(detailsTemplate(ctx.idea, onDelete.bind(null, ctx)));
 };
 
-async function loadDetails(id) {
-  detailsPage.replaceChildren(ctx.spinner());
+async function onDelete(ctx, id) {
+  await deleteById(id);
 
-  const data = await getWithId(id);
-
-  const userData = JSON.parse(sessionStorage.getItem("userData"));
-
-  const fragment = document.createDocumentFragment();
-
-  const img = ctx.createElements("img", {
-    className: "det-img",
-    src: data.img,
-  });
-
-  const divDesc = ctx.createElements("div", { className: "desc" });
-  const h2 = ctx.createElements("h2", { className: "display-5" }, data.title);
-  const p = ctx.createElements("p", { className: "infoType" }, "Description:");
-  const pDescr = ctx.createElements(
-    "p",
-    { className: "idea-description" },
-    data.description
-  );
-  divDesc.append(h2, p, pDescr);
-  fragment.append(img, divDesc);
-
-  if (userData && userData.id == data._ownerId) {
-    const divBtn = ctx.createElements("div", { className: "text-center" });
-    const a = ctx.createElements("a", { className: "btn detb" }, "Delete");
-    a.setAttribute("data-id", id);
-    a.addEventListener("click", onDelete);
-    divBtn.appendChild(a);
-    fragment.appendChild(divBtn);
-  }
-
-  detailsPage.replaceChildren(fragment);
-}
-
-async function onDelete(e) {
-  e.preventDefault();
-
-  await deleteById(e.target.dataset.id);
-
-  ctx.goTo("catalog", ctx);
+  ctx.page.redirect("/catalog");
 }
