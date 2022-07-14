@@ -20,7 +20,7 @@ const furnitureTemplate = (furniture) => html`
   <div class="col-md-4">
     <div class="card text-white bg-primary">
       <div class="card-body">
-        <img src="./images/table.png" />
+        <img src=${furniture.img} />
         <p>${furniture.description}</p>
         <footer>
           <p>Price: <span>${furniture.price} $</span></p>
