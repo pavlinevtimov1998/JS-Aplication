@@ -2,19 +2,23 @@ import { logout } from "./api/data.js";
 import { page, render } from "./lib.js";
 import { navAction, userData } from "./util.js";
 import { catalogPage } from "./views/catalog.js";
+import { createPage } from "./views/create.js";
+import { detailsPage } from "./views/details.js";
 import { loginPage } from "./views/login.js";
 import { registerPage } from "./views/register.js";
+import { updatePage } from "./views/update.js";
+import { userFurniturePage } from "./views/user-furniture.js";
 
 const root = document.querySelector(".root");
 
 page(decorateContext);
 page("/catalog", catalogPage);
-// page("/create", );
+page("/create", createPage);
 page("/login", loginPage);
 page("/register", registerPage);
-// page("/details/:id",);
-// page('/edit',);
-// page('/my-furniture')
+page("/details/:id", detailsPage);
+page("/edit/:id", updatePage);
+page('/my-furniture', userFurniturePage);
 
 page("**", "/catalog");
 page.start();

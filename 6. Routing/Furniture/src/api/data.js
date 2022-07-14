@@ -30,7 +30,5 @@ export const deleteById = async (id) => {
 };
 
 export const getUserFurniture = async (userId) => {
-  return api.getRequest(
-    `http://localhost:3030/data/catalog?where=_ownerId%3D%22${userId}%22`
-  );
+  return api.getRequest(`/data/catalog?where=_ownerId%3D%22${userId}%22`);
 };

@@ -1,7 +1,7 @@
 import { login } from "../api/data.js";
 import { html } from "../lib.js";
 
-const loginTemlate = (onSubmit) => html`
+const loginTemlate = (onSubmit, errMessage) => html`
   <div class="container">
     <div class="row space-top">
       <div class="col-md-12">
@@ -9,17 +9,25 @@ const loginTemlate = (onSubmit) => html`
         <p>Please fill all fields.</p>
       </div>
     </div>
+    ${errMessage
+      ? html`<div class="form-group error">${errMessage}</div>`
+      : null}
     <form @submit=${(e) => onSubmit(e)}>
       <div class="row space-top">
         <div class="col-md-4">
           <div class="form-group">
             <label class="form-control-label" for="email">Email</label>
-            <input class="form-control" id="email" type="text" name="email" />
+            <input
+              class=${"form-control" + (errMessage ? " is-invalid" : "")}
+              id="email"
+              type="text"
+              name="email"
+            />
           </div>
           <div class="form-group">
             <label class="form-control-label" for="password">Password</label>
             <input
-              class="form-control"
+              class=${"form-control" + (errMessage ? " is-invalid" : "")}
               id="password"
               type="password"
               name="password"
@@ -33,23 +41,26 @@ const loginTemlate = (onSubmit) => html`
 `;
 
 export const loginPage = (ctx) => {
-  ctx.render(loginTemlate(onSubmit));
+  update();
+
+  function update(errMessage) {
+    ctx.render(loginTemlate(onSubmit, errMessage));
+  }
 
   async function onSubmit(e) {
     e.preventDefault();
 
     const formData = new FormData(e.target);
 
-    const email = formData.get("email");
-    const password = formData.get("password");
+    const email = formData.get("email").trim();
+    const password = formData.get("password").trim();
 
-    if (email == "" || password == "") {
-      return alert("Empty input");
+    try {
+      await login(email, password);
+      ctx.navAction(ctx.userData());
+      ctx.page.redirect("/catalog");
+    } catch (err) {
+      update(err.message);
     }
-
-    await login(email, password);
-
-    ctx.navAction(ctx.userData());
-    ctx.page.redirect("/catalog");
   }
 };

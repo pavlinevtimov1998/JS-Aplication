@@ -213,3 +213,9 @@ img {
 .is-invalid {
   border-left: 2px solid red;
 }
+
+.error {
+  color: red;
+  font-size: 125%;
+  margin-left: 45px;
+}
