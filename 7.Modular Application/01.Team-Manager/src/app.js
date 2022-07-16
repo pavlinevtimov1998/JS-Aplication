@@ -1,4 +1,4 @@
-import { logout } from "./api/data.js";
+import { logout } from "./api/user.js";
 import { page, render } from "./lib.js";
 import { navAction, userData } from "./util.js";
 import { catalogPage } from "./views/catalog.js";
@@ -18,7 +18,7 @@ page("/catalog", catalogPage);
 page("/create", createPage);
 page("/login", loginPage);
 page("/register", registerPage);
-page("/details", detailsPage);
+page("/details/:id", detailsPage);
 page("/edit/:id", updatePage);
 page("/myteams", userTeamsPage);
 
@@ -36,6 +36,5 @@ navAction(userData());
 
 document.querySelector(".logout").addEventListener("click", async () => {
   await logout();
-  navAction(userData());
   page.redirect("/");
 });

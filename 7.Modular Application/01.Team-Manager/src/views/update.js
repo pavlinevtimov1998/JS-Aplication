@@ -1,4 +1,3 @@
-import { getById, updateById } from "../api/data.js";
 import { html, until } from "../lib.js";
 
 const updateTemplate = () => html`

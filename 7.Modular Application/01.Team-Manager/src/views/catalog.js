@@ -1,5 +1,8 @@
-import { getAllMembers, getAllTeams } from "../api/data.js";
+import { getAllTeams } from "../api/teams.js";
+import { getAllMembers } from "../api/members.js";
 import { html, until, nothing } from "../lib.js";
+
+// FINISH
 
 const catalogTemplate = (ctx, teams) => html`
   <section id="browse">

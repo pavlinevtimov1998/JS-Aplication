@@ -13,6 +13,7 @@ export const setUserData = (user) => {
 
 export const removeUserData = () => {
   sessionStorage.removeItem("userData");
+  navAction();
 };
 
 export function navAction(user) {

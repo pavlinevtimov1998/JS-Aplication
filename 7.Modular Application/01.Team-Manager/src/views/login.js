@@ -1,7 +1,7 @@
-import { login } from "../api/data.js";
-import { html } from "../lib.js";
+import { login } from "../api/user.js";
+import { html, nothing } from "../lib.js";
 
-const loginTemlate = (onSubmit) => html`
+const loginTemlate = (onSubmit, message) => html`
   <section id="login">
     <article class="narrow">
       <header class="pad-med">
@@ -12,7 +12,7 @@ const loginTemlate = (onSubmit) => html`
         id="login-form"
         class="main-form pad-large"
       >
-        <div class="error">Error message.</div>
+        ${message ? html`${message}` : nothing}
         <label>E-mail: <input type="text" name="email" /></label>
         <label>Password: <input type="password" name="password" /></label>
         <input class="action cta" type="submit" value="Sign In" />
@@ -25,6 +25,8 @@ const loginTemlate = (onSubmit) => html`
   </section>
 `;
 
+const errorTemplate = (message) => html`<div class="error">${message}</div>`;
+
 export const loginPage = (ctx) => {
   ctx.render(loginTemlate(onSubmit));
 
@@ -36,13 +38,19 @@ export const loginPage = (ctx) => {
     const email = formData.get("email").trim();
     const password = formData.get("password").trim();
 
-    if (email == "" || password == "") {
-      return alert("All fields required!");
+    try {
+      if (email == "" || password == "") {
+        throw new Error("All fields required!");
+      }
+
+      await login(email, password);
+
+      e.target.reset();
+
+      ctx.navAction(ctx.userData());
+      ctx.page.redirect("/myteams");
+    } catch (err) {
+      ctx.render(loginTemlate(onSubmit, errorTemplate(err.message)));
     }
-
-    await login(email, password);
-
-    ctx.navAction(ctx.userData());
-    ctx.page.redirect("/myteams");
   }
 };

@@ -10,11 +10,11 @@ const userTeamsTemplate = () => html`
       <div class="pad-med">
         <p>You are not a member of any team yet.</p>
         <p>
-          <a href="/catalog">Browse all teams</a> to join one, or use the button bellow
-          to cerate your own team.
+          <a href="/catalog">Browse all teams</a> to join one, or use the button
+          bellow to cerate your own team.
         </p>
       </div>
-      <div class=""><a href="#" class="action cta">Create Team</a></div>
+      <div class=""><a href="/create" class="action cta">Create Team</a></div>
     </article>
 
     <article class="layout">
