@@ -1,12 +1,28 @@
-import { approveMember, createMember } from "../../api/members.js";
+import {
+  approveMember,
+  createMember,
+  deleteMemberById,
+} from "../../api/members.js";
 
-export async function onApprove(person, ctx) {
+export async function onApprove(person) {
   person.status = "member";
   await approveMember(person._id, person);
-
-  ctx.page.redirect(`/details/${ctx.params.id}`);
 }
 
-export async function join(e, teamId) {
+export async function join(teamId) {
   await createMember({ teamId });
 }
+
+export async function cancelMemberRequest(id) {
+  await deleteMemberById(id);
+}
+
+export async function declineMemberRequest(id) {
+  await deleteMemberById(id);
+}
+
+export async function removeMember(id) {
+  await deleteMemberById(id);
+}
+
+// NEXT => REMOVE

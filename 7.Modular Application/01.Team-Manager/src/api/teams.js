@@ -4,6 +4,8 @@ const teamEndpoints = {
   createTeam: "/data/teams",
   getAllTeams: "/data/teams",
   getTeamById: "/data/teams/",
+  getUserTeams: (userId) =>
+    `/data/members?where=_ownerId%3D%22${userId}%22%20AND%20status%3D%22member%22&load=team%3DteamId%3Ateams`,
 };
 
 // GET REQUESTS
@@ -14,6 +16,10 @@ export const getAllTeams = async () => {
 
 export const getTeamById = async (id) => {
   return api.getRequest(teamEndpoints.getTeamById + id);
+};
+
+export const getTeamsByUserId = async (id) => {
+  return api.getRequest(teamEndpoints.getUserTeams(id));
 };
 
 // POST REQUESTS

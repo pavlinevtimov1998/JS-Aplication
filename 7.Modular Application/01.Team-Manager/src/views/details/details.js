@@ -1,84 +1,123 @@
 import { getTeamMembers } from "../../api/members.js";
 import { getTeamById } from "../../api/teams.js";
 import { html, until, nothing } from "../../lib.js";
-import { onApprove, join } from "./membersAction.js";
+import {
+  onApprove,
+  join,
+  cancelMemberRequest,
+  declineMemberRequest,
+  removeMember,
+} from "./membersAction.js";
 
 const detailsTemplate = (team) => html`
   <section id="team-home">
-    ${until(team, html`<p>Loading &hellip;</p>`)}
+    ${until(
+      team,
+      html`
+        <article class="pad-med">
+          <h1 style="font-size: 1.3rem">
+            Loading &hellip;
+          </h1>
+        </article>
+      `
+    )}
   </section>
 `;
 
-const teamTemplate = (team, members, pendings, user, steatments) => html`
+const teamTemplate = (team, members, pendings, user, statements, ctx) => html`
   <article class="layout">
     <img src=${team.logoUrl} class="team-logo left-col" />
     <div class="tm-preview">
       <h2>${team.name}</h2>
       <p>${team.description}</p>
-      <span class="details">${steatments.count}</span>
+      <span class="details">${statements.membersCount}</span>
       <div>
-        ${user && !steatments.isOwner && !steatments.isPending
+        ${user &&
+        !statements.isOwner &&
+        !statements.isPending &&
+        !statements.isMember
           ? html`<a
-              @click=${(e) => join(e, team._id)}
+              @click=${() => join(team._id)}
               href="/details/${team._id}"
               class="action"
               >Join team</a
             >`
           : nothing}
-        ${user && steatments.isOwner
-          ? html`<a href="#" class="action">Edit team</a>`
+        ${user && statements.isOwner
+          ? html`<a href="/edit/${ctx.params.id}" class="action">Edit team</a>`
           : nothing}
-        ${user && steatments.isMember && !steatments.isOwner
-          ? html`<a href="#" class="action invert">Leave team</a>`
+        ${user && statements.isMember && !statements.isOwner
+          ? html`<a
+              @click=${() => removeMember(statements.leaveTeam._id)}
+              href="/details/${ctx.params.id}"
+              class="action invert"
+              >Leave team</a
+            >`
           : nothing}
-        ${user && steatments.isPending
+        ${user && statements.isPending
           ? html`Membership pending.
-              <a href="javascript:void(0)">Cancel request</a>`
+              <a
+                @click=${() => cancelMemberRequest(statements.leaveTeam._id)}
+                href="/details/${team._id}"
+                >Cancel request</a
+              >`
           : nothing}
       </div>
     </div>
     ${members ? html`${members}` : nothing}
-    ${pendings && steatments.isOwner ? html`${pendings}` : nothing}
+    ${pendings && statements.statusPending.length > 0 && statements.isOwner
+      ? html`${pendings}`
+      : nothing}
   </article>
 `;
 
-const membersTemplate = (people, owner, user) => html` <div class="pad-large">
+const membersTemplate = (people, owner, user, ctx) => html` <div
+  class="pad-large"
+>
   <h3>Members</h3>
   <ul class="tm-members">
     <li>${owner.user.username}</li>
-    ${people.map((p) => listMembersTemplate(p, owner, user))}
+    ${people.map((p) => listMembersTemplate(p, owner, user, ctx))}
   </ul>
 </div>`;
 
-const listMembersTemplate = (person, owner, user) => html`
+const listMembersTemplate = (person, owner, user, ctx) => html`
   <li>
     ${person.user.username}
     ${owner._ownerId == user.id
-      ? html`<a href="javascript:void(0)" class="tm-control action"
+      ? html`<a
+          @click=${() => removeMember(person._id)}
+          href="/details/${ctx.params.id}"
+          class="tm-control action"
           >Remove from team</a
         >`
       : nothing}
   </li>
 `;
 
-const approveTemplate = (people, steatment, ctx) => html`
+const approveTemplate = (people, statement, ctx) => html`
   <div class="pad-large">
     <h3>Membership Requests</h3>
     <ul class="tm-members">
-      ${people.map((p) => approvePeopleTemplate(p, steatment, ctx))}
+      ${people.map((p) => approvePeopleTemplate(p, statement, ctx))}
     </ul>
   </div>
 `;
 
-const approvePeopleTemplate = (person, steatment, ctx) => html` <li>
+const approvePeopleTemplate = (person, statement, ctx) => html` <li>
   ${person.user.username}
-  ${steatment
+  ${statement
     ? html`<a
-          @click=${(e) => onApprove(person, ctx)}
-          href="javascript:void(0)"
+          @click=${(e) => onApprove(person)}
+          href="/details/${ctx.params.id}"
           class="tm-control action"
           >Approve</a
-        ><a href="javascript:void(0)" class="tm-control action">Decline</a>`
+        ><a
+          @click=${() => declineMemberRequest(person._id)}
+          href="/details/${ctx.params.id}"
+          class="tm-control action"
+          >Decline</a
+        >`
     : nothing}
 </li>`;
 
@@ -93,7 +132,7 @@ export const detailsPage = (ctx) => {
       getTeamMembers(ctx.params.id),
     ]);
 
-    const members = {
+    const statements = {
       statusMember: people.filter(
         (p) => p.status == "member" && team._ownerId !== p._ownerId
       ),
@@ -105,21 +144,27 @@ export const detailsPage = (ctx) => {
         (p) => user && p._ownerId == user.id && p.status == "member"
       ),
       owner: people.find((p) => p._ownerId == team._ownerId),
+      leaveTeam: user ? people.find((p) => p.user._id == user.id) : false,
     };
 
-    members.isOwner = user && team._ownerId == user.id;
-    members.count = members.statusMember.length + 1;
+    statements.isOwner = user && team._ownerId == user.id;
+    statements.membersCount = statements.statusMember.length + 1; // + 1 because the owner is not in the list.
 
     return teamTemplate(
       team,
-      membersTemplate(members.statusMember, members.owner, user || false),
+      membersTemplate(
+        statements.statusMember,
+        statements.owner,
+        user || false,
+        ctx
+      ),
       approveTemplate(
-        members.statusPending,
-        user && user.id == members.owner._ownerId,
+        statements.statusPending,
+        user && user.id == statements.owner._ownerId,
         ctx
       ),
       user,
-      members,
+      statements,
       ctx
     );
   }

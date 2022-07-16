@@ -7,6 +7,10 @@ export const membersEndpoints = {
   removeMember: "/data/members/",
   getAllTeamMembers: (teamId) =>
     `/data/members?where=teamId%3D%22${teamId}%22&load=user%3D_ownerId%3Ausers`,
+  getUserTeamMembers: (data) =>
+    `/data/members?where=${encodeURIComponent(
+      `teamId IN ("${data.join('","')}") AND status="member"`
+    )}`,
 };
 
 // GET REQUESTS
@@ -16,6 +20,11 @@ export const getAllMembers = async () => {
 
 export const getTeamMembers = async (id) => {
   return api.getRequest(membersEndpoints.getAllTeamMembers(id));
+};
+
+export const getUserTeamMembers = async (data) => {
+  // console.log(membersEndpoints.getUserTeamMembers(data));
+  return api.getRequest(membersEndpoints.getUserTeamMembers(data));
 };
 
 // POST REQUESTS

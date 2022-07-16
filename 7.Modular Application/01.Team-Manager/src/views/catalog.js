@@ -17,7 +17,12 @@ const catalogTemplate = (ctx, teams) => html`
           </div>
         </article>`
       : nothing}
-    ${until(teams, html`<p>Loading &hellip;</p>`)}
+    ${until(
+      teams,
+      html` <article class="pad-med">
+        <h1>Loading &hellip;</h1>
+      </article>`
+    )}
   </section>
 `;
 
