@@ -73,11 +73,16 @@ export async function login(email, password) {
   setUserData(userData);
 }
 
-export async function register(email, password) {
-  const result = await postRequest(endpoints.register, { email, password });
+export async function register(email, username, password) {
+  const result = await postRequest(endpoints.register, {
+    email,
+    username,
+    password,
+  });
 
   const userData = {
     email: result.email,
+    username: result.username,
     id: result._id,
     token: result.accessToken,
   };

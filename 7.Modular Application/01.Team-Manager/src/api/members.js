@@ -24,7 +24,7 @@ export const createMember = async (data) => {
 };
 
 // PUT REQUESTS
-export const modificateMember = async (id, data) => {
+export const approveMember = async (id, data) => {
   return api.putRequest(membersEndpoints.approvingMembership + id, data);
 };
 

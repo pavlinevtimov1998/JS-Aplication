@@ -1,7 +1,8 @@
+import { approveMember, createMember } from "../api/members.js";
 import { createTeam } from "../api/teams.js";
-import { html } from "../lib.js";
+import { html, nothing } from "../lib.js";
 
-const createTemplate = (onSubmit) => html`
+const createTemplate = (onSubmit, message) => html`
   <section id="create">
     <article class="narrow">
       <header class="pad-med">
@@ -12,7 +13,7 @@ const createTemplate = (onSubmit) => html`
         id="create-form"
         class="main-form pad-large"
       >
-        <div class="error">Error message.</div>
+        ${message ? html`${message}` : nothing}
         <label>Team name: <input type="text" name="name" /></label>
         <label>Logo URL: <input type="text" name="logoUrl" /></label>
         <label>Description: <textarea name="description"></textarea></label>
@@ -22,6 +23,8 @@ const createTemplate = (onSubmit) => html`
   </section>
 `;
 
+const errTemplate = (message) => html`<div class="error">${message}</div>`;
+
 export const createPage = (ctx) => {
   ctx.render(createTemplate(onSubmit));
 
@@ -30,24 +33,32 @@ export const createPage = (ctx) => {
 
     const formData = new FormData(e.target);
 
-    const name = formData.get("name");
-    const logoUrl = formData.get("logoUrl");
-    const description = formData.get("description");
+    const name = formData.get("name").trim();
+    const logoUrl = formData.get("logoUrl").trim();
+    const description = formData.get("description").trim();
 
-    if (name.length < 4) {
-      return alert("Team name should be at least 4 characters!");
+    try {
+      if (name.length < 4) {
+        throw new Error("Team name should be at least 4 characters long!");
+      }
+
+      if (logoUrl == "") {
+        throw new Error("Logo URL is required!");
+      }
+
+      if (description.length < 10) {
+        throw new Error("Description should be at least 10 characters long!");
+      }
+
+      const data = await createTeam({ name, logoUrl, description });
+      const owner = await createMember({ teamId: data._id });
+      owner.status = "member";
+      await approveMember(owner._id, owner);
+
+      e.target.reset();
+      ctx.page.redirect(`/details/${data._id}`);
+    } catch (err) {
+      ctx.render(createTemplate(onSubmit, errTemplate(err.message)));
     }
-
-    if (logoUrl == "") {
-      return alert("All fields required!");
-    }
-
-    if (description.length < 10) {
-      return alert("Description should be at least 10 characters!");
-    }
-
-    const data = await createTeam({ name, logoUrl, description });
-
-    ctx.page.redirect(`/details/${data._id}`);
   }
 };

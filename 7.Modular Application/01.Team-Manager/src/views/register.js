@@ -27,8 +27,7 @@ const registerTemplate = (onSubmit, message) => html`
   </section>
 `;
 
-const errorTemplate = (message) =>
-  html`<div class="error">${message}</div>`;
+const errorTemplate = (message) => html`<div class="error">${message}</div>`;
 
 export const registerPage = (ctx) => {
   ctx.render(registerTemplate(onSubmit));
@@ -57,7 +56,9 @@ export const registerPage = (ctx) => {
         throw new Error("Passwords don't match!");
       }
 
-      await register(email, password);
+      await register(email, username, password);
+
+      e.target.reset();
 
       ctx.navAction(ctx.userData());
       ctx.page.redirect("/myteams");
