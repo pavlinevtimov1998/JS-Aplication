@@ -1,8 +1,9 @@
+import { register } from "../api/data.js";
 import { html } from "../lib.js";
 
-const registerTemplate = () => html`
+const registerTemplate = (onSubmit) => html`
   <section id="registerPage">
-    <form class="registerForm">
+    <form @submit=${onSubmit} class="registerForm">
       <h2>Register</h2>
       <div class="on-dark">
         <label for="email">Email:</label>
@@ -47,15 +48,26 @@ const registerTemplate = () => html`
 `;
 
 export const registerPage = (ctx) => {
-  ctx.render(registerTemplate());
+  ctx.render(registerTemplate(onSubmit));
 
-  // async function onSubmit(e) {
-  //   e.preventDefault();
+  async function onSubmit(e) {
+    e.preventDefault();
 
-  //   const formData = new FormData(e.target);
+    const formData = new FormData(e.target);
 
-  //   const email = formData.get("email").trim();
-  //   const password = formData.get("password").trim();
-  //   const rePass = formData.get("rePass").trim();
-  // }
+    const email = formData.get("email").trim();
+    const password = formData.get("password").trim();
+    const rePass = formData.get("repeatPassword").trim();
+
+    if (email == "" || password == "" || rePass !== password) {
+      return alert("Try again!");
+    }
+
+    await register(email, password);
+
+    e.target.reset();
+
+    ctx.navAction(ctx.userData());
+    ctx.page.redirect("/home");
+  }
 };
