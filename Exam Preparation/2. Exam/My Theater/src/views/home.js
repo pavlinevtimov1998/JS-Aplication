@@ -1,7 +1,7 @@
 import { allTheaters } from "../api/data.js";
 import { html, until } from "../lib.js";
 
-const homeTemplate = (events) => html`
+const homeTemplate = (templateF) => html`
   <section class="welcomePage">
     <div id="welcomeMessage">
       <h1>My Theater</h1>
@@ -19,23 +19,23 @@ const homeTemplate = (events) => html`
     <div id="events">
       <h1>Future Events</h1>
       <div class="theaters-container">
-        ${until(events, html`<h1>Loading &hellip;</h1>`)}
+        ${until(templateF, html`<h1>Loading &hellip;</h1>`)}
       </div>
     </div>
   </section>
 `;
 
-const eventsTemplate = (event) => html`
+const eventsTemplate = (theater) => html`
   <div class="eventsInfo">
     <div class="home-image">
-      <img src="${event.imageUrl}" />
+      <img src="${theater.imageUrl}" />
     </div>
     <div class="info">
-      <h4 class="title">${event.title}</h4>
-      <h6 class="date">${event.date}</h6>
-      <h6 class="author">${event.author}</h6>
+      <h4 class="title">${theater.title}</h4>
+      <h6 class="date">${theater.date}</h6>
+      <h6 class="author">${theater.author}</h6>
       <div class="info-buttons">
-        <a class="btn-details" href="/details/${event._id}">Details</a>
+        <a class="btn-details" href="/details/${theater._id}">Details</a>
       </div>
     </div>
   </div>

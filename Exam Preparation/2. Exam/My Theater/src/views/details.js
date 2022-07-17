@@ -1,40 +1,50 @@
-import { html, until } from "../lib.js";
+import { getTheaterById } from "../api/data.js";
+import { html, until, nothing } from "../lib.js";
 
-const detailsTemplate = () => html`
+const detailsTemplate = (template) => html`
   <section id="detailsPage">
-    <div id="detailsBox">
-      <div class="detailsInfo">
-        <h1>Title: Moulin Rouge! - The Musical</h1>
-        <div>
-          <img src="./images/Moulin-Rouge!-The-Musical.jpg" />
-        </div>
-      </div>
-
-      <div class="details">
-        <h3>Theater Description</h3>
-        <p>
-          The Musical is a jukebox musical with a book by John Logan. The
-          musical is based on the 2001 film Moulin Rouge! directed by Baz
-          Luhrmann and written by Luhrmann and Craig Pearce. The musical
-          premiered on July 10, 2018, at the Emerson Colonial Theatre in Boston.
-        </p>
-        <h4>Date: July 10, 2018</h4>
-        <h4>Author: Baz Luhrmann, Craig Pearce</h4>
-        <div class="buttons">
-          <a class="btn-delete" href="#">Delete</a>
-          <a class="btn-edit" href="#">Edit</a>
-          <a class="btn-like" href="#">Like</a>
-        </div>
-        <p class="likes">Likes: 0</p>
-      </div>
-    </div>
+    ${until(template, html`<h1>Loading &hellip;</h1>`)}
   </section>
 `;
 
-// const itemTemplate = () => html`
+const eventTemplate = (theater, user, isOwner) => html`
+  <div id="detailsBox">
+    <div class="detailsInfo">
+      <h1>${theater.title}</h1>
+      <div>
+        <img src="${theater.imageUrl}" />
+      </div>
+    </div>
 
-// `;
+    <div class="details">
+      <h3>Theater Description</h3>
+      <p>${theater.description}</p>
+      <h4>Date: ${theater.date}</h4>
+      <h4>Author: ${theater.author}</h4>
+      <div class="buttons">
+        ${isOwner
+          ? html`<a class="btn-delete" href="/home">Delete</a>
+              <a class="btn-edit" href="/edit/${theater._id}}">Edit</a>`
+          : nothing}
+        ${user && !isOwner
+          ? html`<a class="btn-like" href="#">Like</a>`
+          : nothing}
+      </div>
+      <p class="likes">Likes: 0</p>
+    </div>
+  </div>
+`;
 
 export const detailsPage = (ctx) => {
-  ctx.render(detailsTemplate());
+  const user = ctx.userData();
+
+  ctx.render(detailsTemplate(getTheater()));
+
+  async function getTheater() {
+    const data = await getTheaterById(ctx.params.id);
+
+    const isOwner = user && data._ownerId == user.id;
+
+    return eventTemplate(data, user || false, isOwner);
+  }
 };
