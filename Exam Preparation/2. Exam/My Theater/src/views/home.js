@@ -1,6 +1,7 @@
-import { html } from "../lib.js";
+import { allTheaters } from "../api/data.js";
+import { html, until } from "../lib.js";
 
-const homeTemplate = () => html`
+const homeTemplate = (events) => html`
   <section class="welcomePage">
     <div id="welcomeMessage">
       <h1>My Theater</h1>
@@ -18,56 +19,43 @@ const homeTemplate = () => html`
     <div id="events">
       <h1>Future Events</h1>
       <div class="theaters-container">
-        <!--Created Events-->
-        <div class="eventsInfo">
-          <div class="home-image">
-            <img src="./images/Pretty-Woman.jpg" />
-          </div>
-          <div class="info">
-            <h4 class="title">Pretty Woman - The Musical</h4>
-            <h6 class="date">March 13, 2018</h6>
-            <h6 class="author">J. F. Lawton, Garry Marshall</h6>
-            <div class="info-buttons">
-              <a class="btn-details" href="#">Details</a>
-            </div>
-          </div>
-        </div>
+        ${until(events, html`<h1>Loading &hellip;</h1>`)}
+      </div>
+    </div>
+  </section>
+`;
 
-        <div class="eventsInfo">
-          <div class="home-image">
-            <img src="./images/Moulin-Rouge!-The-Musical.jpg" />
-          </div>
-          <div class="info">
-            <h4 class="title">Moulin Rouge! - The Musical</h4>
-            <h6 class="date">July 10, 2018</h6>
-            <h6 class="author">Baz Luhrmann, Craig Pearce</h6>
-            <div class="info-buttons">
-              <a class="btn-details" href="#">Details</a>
-            </div>
-          </div>
-        </div>
+const eventsTemplate = (event) => html`
+  <div class="eventsInfo">
+    <div class="home-image">
+      <img src="${event.imageUrl}" />
+    </div>
+    <div class="info">
+      <h4 class="title">${event.title}</h4>
+      <h6 class="date">${event.date}</h6>
+      <h6 class="author">${event.author}</h6>
+      <div class="info-buttons">
+        <a class="btn-details" href="/details/${event._id}">Details</a>
+      </div>
+    </div>
+  </div>
+`;
 
-        <div class="eventsInfo">
-          <div class="home-image">
-            <img src="./images/To-kill-a-mockingbird.jpg" />
-          </div>
-          <div class="info">
-            <h4 class="title">To Kill A Mockingbird</h4>
-            <h6 class="date">December 13, 2018</h6>
-            <h6 class="author">Aaron Sorkin, Fred Fordham</h6>
-            <div class="info-buttons">
-              <a class="btn-details" href="#">Details</a>
-            </div>
-          </div>
-        </div>
-
-        <!--No Theaters-->
-        <h4 class="no-event">No Events Yet...</h4>
+const noEventsTemplate = () => html`
+<h4 class="no-event">No Events Yet...</h4>
       </div>
     </div>
   </section>
 `;
 
 export const homePage = (ctx) => {
-  ctx.render(homeTemplate());
+  ctx.render(homeTemplate(allEvents()));
+
+  async function allEvents() {
+    const data = await allTheaters();
+
+    return data.length > 0
+      ? data.map((d) => eventsTemplate(d))
+      : noEventsTemplate();
+  }
 };
