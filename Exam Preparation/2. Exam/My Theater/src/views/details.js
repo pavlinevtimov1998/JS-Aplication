@@ -46,14 +46,14 @@ const eventTemplate = (
           : nothing}
         ${user && !isOwner && userLike == 0
           ? html`<a
-              @click=${() => onLike(theater._id)}
+              @click=${(e) => onLike(e, theater._id)}
               class="btn-like"
               href="javascript:void(0)"
               >Like</a
             >`
           : nothing}
+        <p class="likes">Likes: ${theaterLikes}</p>
       </div>
-      <p class="likes">Likes: ${theaterLikes}</p>
     </div>
   </div>
 `;
@@ -63,13 +63,17 @@ export const detailsPage = (ctx) => {
 
   ctx.render(detailsTemplate(getTheater()));
 
-  async function getTheater() {
-    let userLike = null;
+  async function getTheater(userLike, theaterLikes) {
+    userLike = userLike == undefined ? null : userLike;
+
     const data = await getTheaterById(ctx.params.id);
-    if (user) {
+    if (user && userLike == undefined) {
       userLike = await getSpecificUserLike(ctx.params.id, user.id);
     }
-    const theaterLikes = await getCountLikes(ctx.params.id);
+    theaterLikes =
+      theaterLikes == undefined
+        ? await getCountLikes(ctx.params.id)
+        : theaterLikes;
 
     const isOwner = user && data._ownerId == user.id;
 
@@ -96,9 +100,10 @@ export const detailsPage = (ctx) => {
     }
   }
 
-  async function onLike(theaterId) {
+  async function onLike(e, theaterId) {
     await createLike({ theaterId });
-
-    ctx.page.redirect(`/details/${theaterId}`);
+    const userLike = await getSpecificUserLike(ctx.params.id, user.id);
+    const theaterLikes = await getCountLikes(ctx.params.id);
+    ctx.render(detailsTemplate(getTheater(userLike, theaterLikes)));
   }
 };
