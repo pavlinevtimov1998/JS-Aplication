@@ -61,6 +61,8 @@ const eventTemplate = (
 export const detailsPage = (ctx) => {
   const user = ctx.userData();
 
+  let likesCount;
+
   ctx.render(detailsTemplate(getTheater()));
 
   async function getTheater(userLike, theaterLikes) {
@@ -69,11 +71,14 @@ export const detailsPage = (ctx) => {
     const data = await getTheaterById(ctx.params.id);
     if (user && userLike == undefined) {
       userLike = await getSpecificUserLike(ctx.params.id, user.id);
+      console.log(userLike);
     }
     theaterLikes =
       theaterLikes == undefined
         ? await getCountLikes(ctx.params.id)
         : theaterLikes;
+
+    likesCount = theaterLikes;
 
     const isOwner = user && data._ownerId == user.id;
 
@@ -84,7 +89,7 @@ export const detailsPage = (ctx) => {
       onDelete,
       onLike,
       userLike,
-      theaterLikes
+      likesCount
     );
   }
 
@@ -100,10 +105,19 @@ export const detailsPage = (ctx) => {
     }
   }
 
-  async function onLike(e, theaterId) {
-    await createLike({ theaterId });
-    const userLike = await getSpecificUserLike(ctx.params.id, user.id);
-    const theaterLikes = await getCountLikes(ctx.params.id);
-    ctx.render(detailsTemplate(getTheater(userLike, theaterLikes)));
+  async function makeLike() {
+    await createLike({ theaterId: ctx.params.id });
+  }
+
+  function onLike(e) {
+    likesCount++;
+
+    makeLike();
+
+    e.target.parentNode.parentNode.querySelector(
+      ".likes"
+    ).textContent = `Likes: ${likesCount}`;
+
+    e.target.remove();
   }
 };
