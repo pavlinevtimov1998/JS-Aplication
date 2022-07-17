@@ -326,7 +326,7 @@ describe('E2E tests', function () {
 
         });
 
-        it('Check details information [ 5 Points ]', async () => {
+        it.only('Check details information [ 5 Points ]', async () => {
             const data = mockData.catalog[1];
             const user = mockData.users[0];
             const { get } = await handle(endpoints.details(data._id));
