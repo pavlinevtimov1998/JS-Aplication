@@ -1,4 +1,4 @@
-import { html, until } from "../lib.js";
+import { html } from "../lib.js";
 
 const welcomeTemplate = () => html`
   <section id="welcome">

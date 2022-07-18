@@ -1,5 +1,6 @@
 import { register } from "../api/data.js";
 import { html } from "../lib.js";
+import { notify } from "../util.js";
 
 const registerTemplate = (onSubmit) => html`
   <section id="register">
@@ -65,7 +66,7 @@ export const registerPage = (ctx) => {
       username == "" ||
       password !== rePass
     ) {
-      return alert("All fields required!");
+      return notify("All fields required!");
     }
 
     await register(username, email, password, gender);

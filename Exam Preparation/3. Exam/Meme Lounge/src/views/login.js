@@ -1,5 +1,6 @@
 import { login } from "../api/data.js";
 import { html } from "../lib.js";
+import { notify } from "../util.js";
 
 const loginTemlate = (onSubmit) => html`
   <section id="login">
@@ -36,7 +37,7 @@ export const loginPage = (ctx) => {
     const password = formData.get("password").trim();
 
     if (email == "" || password == "") {
-      return alert("All fields required!");
+      return notify("All fields required!");
     }
 
     await login(email, password);

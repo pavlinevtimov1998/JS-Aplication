@@ -14,7 +14,9 @@ export async function login(email, password) {
   });
 
   const userData = {
+    username: result.username,
     email: result.email,
+    gender: result.gender,
     id: result._id,
     token: result.accessToken,
   };
