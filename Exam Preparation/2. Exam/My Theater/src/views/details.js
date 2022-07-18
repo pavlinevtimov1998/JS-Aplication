@@ -65,18 +65,14 @@ export const detailsPage = (ctx) => {
 
   ctx.render(detailsTemplate(getTheater()));
 
-  async function getTheater(userLike, theaterLikes) {
-    userLike = userLike == undefined ? null : userLike;
+  async function getTheater() {
+    let userLike = null;
 
     const data = await getTheaterById(ctx.params.id);
-    if (user && userLike == undefined) {
+    if (user) {
       userLike = await getSpecificUserLike(ctx.params.id, user.id);
-      console.log(userLike);
     }
-    theaterLikes =
-      theaterLikes == undefined
-        ? await getCountLikes(ctx.params.id)
-        : theaterLikes;
+    const theaterLikes = await getCountLikes(ctx.params.id);
 
     likesCount = theaterLikes;
 
@@ -105,14 +101,10 @@ export const detailsPage = (ctx) => {
     }
   }
 
-  async function makeLike() {
-    await createLike({ theaterId: ctx.params.id });
-  }
-
   function onLike(e) {
     likesCount++;
 
-    makeLike();
+    createLike({ theaterId: ctx.params.id });
 
     e.target.parentNode.parentNode.querySelector(
       ".likes"
