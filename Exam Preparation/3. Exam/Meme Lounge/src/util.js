@@ -1,3 +1,6 @@
+import { html } from "./lib.js";
+import { getMemeById } from "./api/data.js";
+
 const userNav = [...document.querySelector(".user").children];
 const guestNav = [...document.querySelector(".guest").children];
 
@@ -25,10 +28,11 @@ export function navAction(user) {
   }
 }
 
-// export const detailsContext = async (ctx, next) => {
-//   const idea = await getWithId(ctx.params.id);
+export const detailsContext = async (ctx, next) => {
+  ctx.render(html`<h1 style="text-align: center">Loading &hellip;</h1>`);
+  const meme = await getMemeById(ctx.params.id);
 
-//   ctx.idea = idea;
+  ctx.meme = meme;
 
-//   next();
-// };
+  next();
+};

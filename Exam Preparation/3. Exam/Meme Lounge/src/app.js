@@ -1,6 +1,6 @@
 import { logout } from "./api/data.js";
 import { page, render } from "./lib.js";
-import { navAction, userData } from "./util.js";
+import { detailsContext, navAction, userData } from "./util.js";
 import { catalogPage } from "./views/catalog.js";
 import { loginPage } from "./views/login.js";
 import { registerPage } from "./views/register.js";
@@ -17,9 +17,9 @@ page("/login", loginPage);
 page("/register", registerPage);
 page("/home", welcomePage);
 page("/catalog", catalogPage);
-page("/edit/:id", editPage);
+page("/edit/:id", detailsContext, editPage);
 page("/create", createPage);
-page("/details/:id", detailsPage);
+page("/details/:id", detailsContext, detailsPage);
 page("/profile", profilePage);
 
 userData() ? page("/", "/catalog") : page("/", "/home");
@@ -36,7 +36,7 @@ async function decorateContext(ctx, next) {
 navAction(userData());
 
 document.querySelector(".logout").addEventListener("click", async () => {
-  await logout('logout');
+  await logout("logout");
   navAction(userData());
   page.redirect("/home");
 });

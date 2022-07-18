@@ -1,32 +1,34 @@
+import { editMeme } from "../api/data.js";
 import { html, until } from "../lib.js";
 
-const editTemplate = () => html`
+const editTemplate = (onSubmit, meme) => html`
   <section id="edit-meme">
-    <form id="edit-form">
+    <form @submit=${onSubmit} id="edit-form">
       <h1>Edit Meme</h1>
       <div class="container">
         <label for="title">Title</label>
-        <input id="title" type="text" placeholder="Enter Title" name="title" />
+        <input
+          id="title"
+          type="text"
+          placeholder="Enter Title"
+          name="title"
+          .value=${meme.title}
+        />
         <label for="description">Description</label>
         <textarea
           id="description"
           placeholder="Enter Description"
           name="description"
+          .value=${meme.description}
         >
-                            Programming is often touted as a smart and lucrative career path.
-                            It's a job that (sometimes) offers flexibility and great benefits.
-                            But it's far from sunshine and Nyan Cat rainbows. The hours are long.
-                            The mistakes are frustrating. And your eyesight is almost guaranteed to suffer.
-                            These memes cover most of the frustration (and funny moments) of programming.
-                            At least we can laugh through the pain. 
-                        </textarea
-        >
+        </textarea>
         <label for="imageUrl">Image Url</label>
         <input
           id="imageUrl"
           type="text"
           placeholder="Enter Meme ImageUrl"
           name="imageUrl"
+          .value=${meme.imageUrl}
         />
         <input type="submit" class="registerbtn button" value="Edit Meme" />
       </div>
@@ -35,7 +37,7 @@ const editTemplate = () => html`
 `;
 
 export const editPage = (ctx) => {
-  ctx.render(editTemplate());
+  ctx.render(editTemplate(onSubmit, ctx.meme));
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -50,8 +52,8 @@ export const editPage = (ctx) => {
       return alert("All fields required!");
     }
 
-    await createMeme({ title, description, imageUrl });
+    await editMeme(ctx.params.id, { title, description, imageUrl });
 
-    ctx.page.redirect("/catalog");
+    ctx.page.redirect(`/details/${ctx.params.id}`);
   }
 };

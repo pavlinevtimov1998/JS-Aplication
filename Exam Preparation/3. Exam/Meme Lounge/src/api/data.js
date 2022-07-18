@@ -22,3 +22,7 @@ export const getMemeById = async (id) => {
 export const createMeme = async (data) => {
   return await api.postRequest(endpoints.createMeme, data);
 };
+
+export const editMeme = async (id, data) => {
+  return api.putRequest(endpoints.getById + id, data);
+};
