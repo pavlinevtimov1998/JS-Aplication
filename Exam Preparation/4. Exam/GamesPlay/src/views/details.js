@@ -52,8 +52,8 @@ export const detailsPage = (ctx) => {
 
     const comment = data.get("comment");
 
-    if(comment == '') {
-      return
+    if (comment == "") {
+      return;
     }
 
     await postComment({ gameId: ctx.params.id, comment });
@@ -77,7 +77,6 @@ const commentsTemplate = (isOwner, isUser, data, form) => html`
     <ul>
       ${data.length > 0
         ? html`
-            <!-- list all comments for current game (If any) -->
             ${data.map(
               (c) => html` <li class="comment">
                 <p>${c.comment}</p>
