@@ -15,7 +15,7 @@ page(decorateContext);
 page("/login", loginPage);
 page("/register", registerPage);
 page("/catalog", catalogPage);
-page("/create/:id", createPage);
+page("/create", createPage);
 page("/details/:id", detailsPage);
 page("edit/:id", editPage);
 page("/home", homePage);

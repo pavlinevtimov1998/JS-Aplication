@@ -4,6 +4,7 @@ import * as users from "./users.js";
 const endpoints = {
   allGames: "/data/games?sortBy=_createdOn%20desc",
   recentGames: "/data/games?sortBy=_createdOn%20desc&distinct=category",
+  create: '/data/games',
 };
 
 export const login = users.login;
@@ -17,3 +18,7 @@ export const getAllGames = async () => {
 export const getLastAddedGames = async () => {
   return api.getRequest(endpoints.recentGames);
 };
+
+export const createGame = async (data) => {
+  return api.postRequest(endpoints.create, data)
+}
