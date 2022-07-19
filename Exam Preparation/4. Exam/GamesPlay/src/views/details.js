@@ -1,44 +1,34 @@
-import { deleteGame, getGameDetails } from "../api/data.js";
-import { html, until, nothing } from "../lib.js";
-import { spinner } from "../util.js";
+import { deleteGame } from "../api/data.js";
+import { html, nothing } from "../lib.js";
 
-const detailsTemplate = (template) => html`
+const detailsTemplate = (game, isOwner, onDelete) => html`
   <section id="game-details">
     <h1>Game Details</h1>
-    <div class="info-section">${until(template, spinner())}</div>
+    <div class="info-section">
+      <div class="game-header">
+        <img class="game-img" src=${game.imageUrl} />
+        <h1>${game.title}</h1>
+        <span class="levels">MaxLevel: ${game.maxLevel}</span>
+        <p class="type">${game.category}</p>
+      </div>
+      <p class="text">${game.summary}</p>
+      ${isOwner
+        ? html`<div class="buttons">
+            <a href="/edit/${game._id}" class="button">Edit</a>
+            <a @click=${onDelete} href="javascript:void(0)" class="button"
+              >Delete</a
+            >
+          </div>`
+        : nothing}
+    </div>
   </section>
-`;
-
-const gameTemplate = (game, isOwner, onDelete) => html`
-  <div class="game-header">
-    <img class="game-img" src=${game.imageUrl} />
-    <h1>${game.title}</h1>
-    <span class="levels">MaxLevel: ${game.maxLevel}</span>
-    <p class="type">${game.category}</p>
-  </div>
-  <p class="text">${game.summary}</p>
-  ${isOwner
-    ? html`<div class="buttons">
-        <a href="/edit/${game._id}" class="button">Edit</a>
-        <a @click=${onDelete} href="javascript:void(0)" class="button"
-          >Delete</a
-        >
-      </div>`
-    : nothing}
 `;
 
 export const detailsPage = (ctx) => {
   const user = ctx.userData();
+  const isOwner = user.id == ctx.game._ownerId;
 
-  ctx.render(detailsTemplate(gameDetails()));
-
-  async function gameDetails() {
-    const game = await getGameDetails(ctx.params.id);
-
-    const isOwner = user.id == game._ownerId;
-
-    return gameTemplate(game, isOwner, onDelete);
-  }
+  ctx.render(detailsTemplate(ctx.game, isOwner, onDelete));
 
   async function onDelete(e) {
     e.preventDefault();

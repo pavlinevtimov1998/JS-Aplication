@@ -1,3 +1,4 @@
+import { getGameDetails } from "./api/data.js";
 import { html } from "./lib.js";
 
 const userNav = document.querySelector("#user");
@@ -27,12 +28,15 @@ export function navAction(user) {
   }
 }
 
-export const spinner = () => html`<h1>Loading &hellip;</h1>`;
+export const spinner = () =>
+  html`<article class="spinner"><h1>Loading &hellip;</h1></article>`;
 
-// export const detailsContext = async (ctx, next) => {
-//   const idea = await getWithId(ctx.params.id);
+export const detailsContext = async (ctx, next) => {
+  ctx.render(spinner());
 
-//   ctx.idea = idea;
+  const game = await getGameDetails(ctx.params.id);
 
-//   next();
-// };
+  ctx.game = game;
+
+  next();
+};

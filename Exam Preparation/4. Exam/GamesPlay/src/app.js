@@ -1,6 +1,6 @@
 import { logout } from "./api/data.js";
 import { page, render } from "./lib.js";
-import { navAction, userData } from "./util.js";
+import { detailsContext, navAction, userData } from "./util.js";
 import { catalogPage } from "./views/catalog.js";
 import { createPage } from "./views/create.js";
 import { detailsPage } from "./views/details.js";
@@ -16,8 +16,8 @@ page("/login", loginPage);
 page("/register", registerPage);
 page("/catalog", catalogPage);
 page("/create", createPage);
-page("/details/:id", detailsPage);
-page("edit/:id", editPage);
+page("/details/:id", detailsContext, detailsPage);
+page("/edit/:id", detailsContext, editPage);
 page("/home", homePage);
 
 page("/", "/home");
