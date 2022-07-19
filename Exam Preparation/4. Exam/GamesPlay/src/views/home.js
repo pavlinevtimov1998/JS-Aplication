@@ -9,7 +9,6 @@ const homeTemplate = (template) => html`
       <h3>Only in GamesPlay</h3>
     </div>
     <img src="./images/four_slider_img01.png" alt="hero" />
-
     <div id="home-page">
       <h1>Latest Games</h1>
       ${until(template, spinner())}

@@ -1,3 +1,4 @@
+import { getAllComments } from "./api/comments.js";
 import { getGameDetails } from "./api/data.js";
 import { html } from "./lib.js";
 
@@ -36,6 +37,18 @@ export const detailsContext = async (ctx, next) => {
 
   const game = await getGameDetails(ctx.params.id);
 
+  ctx.game = game;
+
+  next();
+};
+
+export const commentsContext = async (ctx, next) => {
+  const [comments, game] = await Promise.all([
+    getAllComments(ctx.params.id),
+    getGameDetails(ctx.params.id),
+  ]);
+
+  ctx.comments = comments;
   ctx.game = game;
 
   next();

@@ -1,7 +1,8 @@
+import { getAllComments, postComment } from "../api/comments.js";
 import { deleteGame } from "../api/data.js";
 import { html, nothing } from "../lib.js";
 
-const detailsTemplate = (game, isOwner, onDelete) => html`
+const detailsTemplate = (game, isOwner, onDelete, template) => html`
   <section id="game-details">
     <h1>Game Details</h1>
     <div class="info-section">
@@ -20,15 +21,46 @@ const detailsTemplate = (game, isOwner, onDelete) => html`
             >
           </div>`
         : nothing}
+      ${template}
     </div>
   </section>
 `;
 
 export const detailsPage = (ctx) => {
   const user = ctx.userData();
-  const isOwner = user.id == ctx.game._ownerId;
+  const isUser = user ? true : false;
+  const isOwner = isUser && user.id == ctx.game._ownerId;
 
-  ctx.render(detailsTemplate(ctx.game, isOwner, onDelete));
+  ctx.render(
+    detailsTemplate(
+      ctx.game,
+      isOwner,
+      onDelete,
+      commentsTemplate(
+        isOwner,
+        isUser,
+        ctx.comments,
+        commentFormTemplate(onSubmit)
+      )
+    )
+  );
+
+  async function onSubmit(e) {
+    e.preventDefault();
+
+    const data = new FormData(e.target);
+
+    const comment = data.get("comment");
+
+    if(comment == '') {
+      return
+    }
+
+    await postComment({ gameId: ctx.params.id, comment });
+
+    document.querySelector(".create-comment textarea").value = "";
+    ctx.page.redirect(`/details/${ctx.params.id}`);
+  }
 
   async function onDelete(e) {
     e.preventDefault();
@@ -39,27 +71,29 @@ export const detailsPage = (ctx) => {
   }
 };
 
-const commentsTemplate = () => html`
-  <!-- Bonus ( for Guests and Users ) -->
+const commentsTemplate = (isOwner, isUser, data, form) => html`
   <div class="details-comments">
     <h2>Comments:</h2>
     <ul>
-      <!-- list all comments for current game (If any) -->
-      <li class="comment">
-        <p>Content: I rate this one quite highly.</p>
-      </li>
-      <li class="comment">
-        <p>Content: The best game.</p>
-      </li>
+      ${data.length > 0
+        ? html`
+            <!-- list all comments for current game (If any) -->
+            ${data.map(
+              (c) => html` <li class="comment">
+                <p>${c.comment}</p>
+              </li>`
+            )}
+          `
+        : html` <p class="no-comment">No comments.</p> `}
     </ul>
-    <!-- Display paragraph: If there are no games in the database -->
-    <p class="no-comment">No comments.</p>
   </div>
-  <!-- Bonus -->
-  <!-- Add Comment ( Only for logged-in users, which is not creators of the current game ) -->
+  ${!isOwner && isUser ? form : nothing}
+`;
+
+const commentFormTemplate = (onSubmit) => html`
   <article class="create-comment">
     <label>Add new comment:</label>
-    <form class="form">
+    <form @submit=${onSubmit} class="form">
       <textarea name="comment" placeholder="Comment......"></textarea>
       <input class="btn submit" type="submit" value="Add Comment" />
     </form>
