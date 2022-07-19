@@ -27,3 +27,7 @@ export const getGameDetails = async (id) => {
 export const createGame = async (data) => {
   return api.postRequest(endpoints.create, data);
 };
+
+export const deleteGame = async (id) => {
+  return api.delRequest(endpoints.getById + id)
+}

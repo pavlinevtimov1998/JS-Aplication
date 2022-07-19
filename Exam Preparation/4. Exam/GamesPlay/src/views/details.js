@@ -1,21 +1,15 @@
-import { getGameDetails } from "../api/data.js";
-import { html, until } from "../lib.js";
+import { deleteGame, getGameDetails } from "../api/data.js";
+import { html, until, nothing } from "../lib.js";
 import { spinner } from "../util.js";
 
 const detailsTemplate = (template) => html`
   <section id="game-details">
     <h1>Game Details</h1>
-    <div class="info-section">
-      ${until(template, spinner())}
-      <div class="buttons">
-        <a href="#" class="button">Edit</a>
-        <a href="#" class="button">Delete</a>
-      </div>
-    </div>
+    <div class="info-section">${until(template, spinner())}</div>
   </section>
 `;
 
-const gameTemplate = (game) => html`
+const gameTemplate = (game, isOwner, onDelete) => html`
   <div class="game-header">
     <img class="game-img" src=${game.imageUrl} />
     <h1>${game.title}</h1>
@@ -23,15 +17,35 @@ const gameTemplate = (game) => html`
     <p class="type">${game.category}</p>
   </div>
   <p class="text">${game.summary}</p>
+  ${isOwner
+    ? html`<div class="buttons">
+        <a href="/edit/${game._id}" class="button">Edit</a>
+        <a @click=${onDelete} href="javascript:void(0)" class="button"
+          >Delete</a
+        >
+      </div>`
+    : nothing}
 `;
 
 export const detailsPage = (ctx) => {
+  const user = ctx.userData();
+
   ctx.render(detailsTemplate(gameDetails()));
 
   async function gameDetails() {
     const game = await getGameDetails(ctx.params.id);
 
-    return gameTemplate(game);
+    const isOwner = user.id == game._ownerId;
+
+    return gameTemplate(game, isOwner, onDelete);
+  }
+
+  async function onDelete(e) {
+    e.preventDefault();
+
+    await deleteGame(ctx.params.id);
+
+    ctx.page.redirect("/home");
   }
 };
 
