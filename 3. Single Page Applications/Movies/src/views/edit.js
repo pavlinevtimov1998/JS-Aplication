@@ -1,5 +1,5 @@
 import { html } from "../lib.js";
-import { updateById } from "../api/data.js";
+import { editMovie } from "../api/data.js";
 
 const editTemplate = (movie, onSubmit) => html`
   <section id="edit-movie">

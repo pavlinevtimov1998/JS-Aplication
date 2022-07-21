@@ -1,5 +1,5 @@
 import { html, until } from "../lib.js";
-import { getAllMovies } from "../api/data.js";
+import { getMovies } from "../api/data.js";
 import { userData } from "../util.js";
 
 const homeTemplate = (movies) => html`
@@ -65,11 +65,11 @@ const moviesTemplate = (movie) => html`
 `;
 
 export function homePage(ctx) {
-  ctx.render(homeTemplate(getMovies()));
+  ctx.render(homeTemplate(movies()));
 }
 
-async function getMovies() {
-  const data = await getAllMovies();
+async function movies() {
+  const data = await getMovies();
 
   return data.map((movie) => moviesTemplate(movie));
 }

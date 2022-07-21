@@ -3,7 +3,7 @@ import * as api from "./api.js";
 const endpoints = {
   like: "/data/likes/",
   countLikes: (id) =>
-    `/data/likes?where=movieId%3D%22${id}%22&distinct=_ownerId&count`,
+    `/data/likes?where=movieId%3D%22${id}%22&distinct=_ownerId`,
   specifikLike: (movieId, userId) =>
     `/data/likes?where=movieId%3D%22${movieId}%22%20and%20_ownerId%3D%22${userId}%22`,
 };
@@ -17,7 +17,7 @@ export async function getSpecificUserLike(movieId, userId) {
 }
 
 export async function createLike(data) {
-  return api.postLike(endpoints.like, data);
+  return api.postRequest(endpoints.like, data);
 }
 
 export async function deleteLike(id) {

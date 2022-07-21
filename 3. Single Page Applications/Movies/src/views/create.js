@@ -1,4 +1,4 @@
-import { postMovie } from "../api/data.js";
+import { createMovie } from "../api/data.js";
 import { html } from "../lib.js";
 
 const createTemplate = (onSubmit) => html`
@@ -54,7 +54,7 @@ export function createPage(ctx) {
       return alert("Empty inputs");
     }
 
-    await postMovie({ title, description, img });
+    await createMovie({ title, description, img });
 
     e.target.reset();
 
