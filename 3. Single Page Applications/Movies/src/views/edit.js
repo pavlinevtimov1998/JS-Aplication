@@ -1,7 +1,8 @@
 import { html, styleMap } from "../lib.js";
 import { editMovie } from "../api/data.js";
+import { showNotify } from "./notify.js";
 
-const editTemplate = (movie, onSubmit, message, errors) => html`
+const editTemplate = (movie, onSubmit, errors) => html`
   <section id="edit-movie">
     <form
       @submit=${(e) => onSubmit(e)}
@@ -10,12 +11,6 @@ const editTemplate = (movie, onSubmit, message, errors) => html`
       method=""
     >
       <h1>Edit Movie</h1>
-      <p
-        class="error"
-        style=${styleMap(message ? { display: "block" } : { display: "none" })}
-      >
-        ${message}
-      </p>
       <div class="form-group">
         <label for="title">Movie Title</label>
         <input
@@ -64,8 +59,8 @@ const editTemplate = (movie, onSubmit, message, errors) => html`
 export const editPage = (ctx) => {
   update(false, {});
 
-  function update(message, errors) {
-    ctx.render(editTemplate(ctx.movie, onSubmit, message, errors));
+  function update(errors) {
+    ctx.render(editTemplate(ctx.movie, onSubmit, errors));
   }
 
   async function onSubmit(e) {
@@ -91,7 +86,8 @@ export const editPage = (ctx) => {
 
       ctx.page.redirect(`/details/${ctx.movie._id}`);
     } catch (err) {
-      update(err.error.message, err.errors);
+      showNotify(err.error.message);
+      update(err.errors);
     }
   }
 };
