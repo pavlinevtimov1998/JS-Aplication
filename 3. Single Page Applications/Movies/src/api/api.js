@@ -1,9 +1,6 @@
 import { removeUser, setUserData, userData } from "../util.js";
 
 const host = "http://localhost:3030";
-const loginUrl = "/users/login";
-const logoutUrl = "/users/logout";
-const registerUrl = "/users/register";
 
 async function request(url, options) {
   try {
@@ -49,17 +46,7 @@ const createOptions = (method, data) => {
 
 export const getRequest = async (url) => request(url, createOptions("GET"));
 
-export const getLikesRequest = async (url) =>
-  request(url, createOptions("GET"));
-
-export const getUserLikeRequest = async (url) =>
-  request(url, createOptions("GET"));
-
 export const postRequest = async (url, data) => {
-  return request(url, createOptions("POST", data));
-};
-
-export const postLike = async (url, data) => {
   return request(url, createOptions("POST", data));
 };
 
@@ -68,34 +55,3 @@ export const putRequest = async (url, data) => {
 };
 
 export const delRequest = async (url) => request(url, createOptions("DELETE"));
-
-export const delLike = async (url) => request(url, createOptions("DELETE"));
-
-export async function login(email, password) {
-  const result = await postRequest(loginUrl, { email, password });
-
-  const userData = {
-    email: result.email,
-    id: result._id,
-    token: result.accessToken,
-  };
-
-  setUserData(userData);
-}
-
-export async function register(email, password) {
-  const result = await postRequest(registerUrl, { email, password });
-
-  const userData = {
-    email: result.email,
-    id: result._id,
-    token: result.accessToken,
-  };
-
-  setUserData(userData);
-}
-
-export async function logout() {
-  await getRequest(logoutUrl);
-  removeUser();
-}
