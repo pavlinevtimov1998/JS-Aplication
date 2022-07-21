@@ -22,7 +22,6 @@ async function request(url, options) {
       return response.json();
     }
   } catch (err) {
-    alert(err.message);
     throw err;
   }
 }

@@ -1,5 +1,5 @@
-import { deleteById, getWithId } from "../api/data.js";
-import { html, until } from "../lib.js";
+import { deleteById } from "../api/data.js";
+import { html } from "../lib.js";
 import { userData } from "../util.js";
 
 const detailsTemplate = (idea, onDelete) => html`

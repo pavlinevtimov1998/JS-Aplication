@@ -2,7 +2,7 @@ import { html } from "../lib.js";
 import { register } from "../api/data.js";
 import { userData } from "../util.js";
 
-const registerTemplate = (onSubmit) => html`
+const registerTemplate = (onSubmit, message) => html`
   <div id="register-page" class="container home wrapper my-md-5 pl-md-5">
     <div class="row-form d-md-flex flex-mb-equal">
       <div class="col-md-4">
@@ -17,6 +17,7 @@ const registerTemplate = (onSubmit) => html`
         <div class="text-center mb-4">
           <h1 class="h3 mb-3 font-weight-normal">Register</h1>
         </div>
+        ${message ? html`<p class="error">${message}</p>` : null}
         <div class="form-label-group">
           <label for="email">Email</label>
           <input
@@ -66,7 +67,11 @@ const registerTemplate = (onSubmit) => html`
 `;
 
 export const showRegister = (ctx) => {
-  ctx.render(registerTemplate(onSubmit));
+  update();
+
+  function update(message) {
+    ctx.render(registerTemplate(onSubmit, message));
+  }
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -77,23 +82,27 @@ export const showRegister = (ctx) => {
     const password = dataForm.get("password").trim();
     const rePass = dataForm.get("repeatPassword").trim();
 
-    if (email.length < 3) {
-      return alert("Email should be at least 3 characters!");
+    try {
+      if (email.length < 3) {
+        throw new Error("Email should be at least 3 characters!");
+      }
+
+      if (password.length < 3) {
+        throw new Error("Password should be at least 3 characters!");
+      }
+
+      if (password !== rePass) {
+        throw new Error("Passwords don't match!");
+      }
+
+      await register(email, password);
+
+      e.target.reset();
+
+      ctx.navAction(userData());
+      ctx.page.redirect("/home");
+    } catch (err) {
+      update(err.message);
     }
-
-    if (password.length < 3) {
-      return alert("Password should be at least 3 characters!");
-    }
-
-    if (password !== rePass) {
-      return alert("Passwords don't match!");
-    }
-
-    await register(email, password);
-
-    e.target.reset();
-
-    ctx.navAction(userData());
-    ctx.page.redirect("/home");
   }
 };

@@ -18,7 +18,7 @@ page("/login", showLogin);
 page("/register", showRegister);
 page("/details/:id", detailsContext, showDetails);
 
-page("**", "/home");
+page("/", "/home");
 page.start();
 
 async function decorateContext(ctx, next) {

@@ -1,4 +1,4 @@
-import { html, styleMap } from "../lib.js";
+import { html } from "../lib.js";
 import { createIdea } from "../api/data.js";
 
 const createTemplate = (onSubmit, message) => html`
