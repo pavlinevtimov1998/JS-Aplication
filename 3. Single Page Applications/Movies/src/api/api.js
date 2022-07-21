@@ -1,4 +1,5 @@
-import { removeUser, setUserData, userData } from "../util.js";
+import { showNotify } from "../notify.js";
+import { removeUser, userData } from "../util.js";
 
 const host = "http://localhost:3030";
 
@@ -21,12 +22,13 @@ async function request(url, options) {
       return response.json();
     }
   } catch (err) {
-    alert(err.message);
+    showNotify(err.message);
     throw err;
   }
 }
 
 const createOptions = (method, data) => {
+  
   let options = {
     method,
     headers: {},

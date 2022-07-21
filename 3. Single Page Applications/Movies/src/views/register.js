@@ -1,7 +1,8 @@
 import { register } from "../api/data.js";
-import { html } from "../lib.js";
+import { html, styleMap } from "../lib.js";
+import { showNotify } from "../notify.js";
 
-const registerTemplate = (onSubmit) => html`
+const registerTemplate = (onSubmit, errors) => html`
   <section id="form-sign-up" class="section">
     <form
       @submit=${(e) => onSubmit(e)}
@@ -15,6 +16,9 @@ const registerTemplate = (onSubmit) => html`
           id="email"
           type="email"
           class="form-control"
+          style=${styleMap(
+            errors.email ? { backgroundColor: "rgb(255, 236, 236)" } : ""
+          )}
           placeholder="Email"
           name="email"
           value=""
@@ -26,6 +30,9 @@ const registerTemplate = (onSubmit) => html`
           id="password"
           type="password"
           class="form-control"
+          style=${styleMap(
+            errors.password ? { backgroundColor: "rgb(255, 236, 236)" } : ""
+          )}
           placeholder="Password"
           name="password"
           value=""
@@ -38,6 +45,9 @@ const registerTemplate = (onSubmit) => html`
           id="repeatPassword"
           type="password"
           class="form-control"
+          style=${styleMap(
+            errors.rePass ? { backgroundColor: "rgb(255, 236, 236)" } : ""
+          )}
           placeholder="Repeat-Password"
           name="repeatPassword"
           value=""
@@ -50,7 +60,11 @@ const registerTemplate = (onSubmit) => html`
 `;
 
 export function registerPage(ctx) {
-  ctx.render(registerTemplate(onSubmit));
+  update({});
+
+  function update(errors) {
+    ctx.render(registerTemplate(onSubmit, errors));
+  }
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -59,15 +73,37 @@ export function registerPage(ctx) {
 
     let [email, password, rePass] = [...formData.values()];
 
-    if (email == "" || password.length < 6 || password !== rePass) {
-      return alert("Incorrect input");
+    try {
+      if (email == "" || password.length == "") {
+        throw {
+          error: new Error("All fields are required!"),
+          errors: {
+            email: email == "",
+            password: password == "",
+            rePass: rePass == "",
+          },
+        };
+      }
+      if (password !== rePass) {
+        throw {
+          error: new Error("Passwords don't match!"),
+          errors: {
+            email: false,
+            password: true,
+            rePass: true,
+          },
+        };
+      }
+
+      await register(email, password);
+
+      e.target.reset();
+
+      ctx.navAction(ctx.userData());
+      ctx.page.redirect("/home");
+    } catch (err) {
+      showNotify(err.error || err);
+      update(err.errors || {});
     }
-
-    await register(email, password);
-
-    e.target.reset();
-
-    ctx.navAction(ctx.userData());
-    ctx.page.redirect("/home");
   }
 }

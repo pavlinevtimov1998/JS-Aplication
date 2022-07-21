@@ -1,6 +1,6 @@
 import { html, styleMap } from "../lib.js";
 import { editMovie } from "../api/data.js";
-import { showNotify } from "./notify.js";
+import { showNotify } from "../notify.js";
 
 const editTemplate = (movie, onSubmit, errors) => html`
   <section id="edit-movie">
@@ -57,7 +57,7 @@ const editTemplate = (movie, onSubmit, errors) => html`
 `;
 
 export const editPage = (ctx) => {
-  update(false, {});
+  update({});
 
   function update(errors) {
     ctx.render(editTemplate(ctx.movie, onSubmit, errors));
@@ -86,8 +86,8 @@ export const editPage = (ctx) => {
 
       ctx.page.redirect(`/details/${ctx.movie._id}`);
     } catch (err) {
-      showNotify(err.error.message);
-      update(err.errors);
+      showNotify(err.error || err);
+      update(err.errors || {});
     }
   }
 };
