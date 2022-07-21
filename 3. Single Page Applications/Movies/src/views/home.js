@@ -19,25 +19,23 @@ const homeTemplate = (movies) => html`
         Unlimited movies, TV shows, and more. Watch anywhere. Cancel anytime.
       </p>
     </div>
-    <div class="movies">
-      <h1 class="text-center">Movies</h1>
+    <h1 class="text-center">Movies</h1>
 
-      ${userData() !== null
-        ? html`<section id="add-movie-button">
-            <a href="/create" class="btn btn-warning ">Add Movie</a>
-          </section>`
-        : ""}
+    ${userData() !== null
+      ? html`<section id="add-movie-button">
+          <a href="/create" class="btn btn-warning ">Add Movie</a>
+        </section>`
+      : ""}
 
-      <section id="movie">
-        <div class=" mt-3 ">
-          <div class="row d-flex d-wrap">
-            <div class="card-deck d-flex justify-content-center">
-              ${until(movies, html`<p>Loading &hellip;</p>`)}
-            </div>
+    <section id="movie">
+      <div class=" mt-3 ">
+        <div class="row d-flex d-wrap">
+          <div class="card-deck d-flex justify-content-center">
+            ${until(movies, html`<p>Loading &hellip;</p>`)}
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   </section>
 `;
 

@@ -19,7 +19,7 @@ page("/login", loginPage);
 page("/register", registerPage);
 page("/edit/:id", middleware.editContext, editPage);
 
-page("**", "/home");
+page("/", "/home");
 
 page.start();
 

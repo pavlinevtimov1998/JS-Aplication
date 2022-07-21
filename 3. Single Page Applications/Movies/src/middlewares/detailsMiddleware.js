@@ -1,4 +1,4 @@
-import { render } from "../../node_modules/lit-html/lit-html.js";
+import { html, render } from "../lib.js";
 import { getById } from "../api/data.js";
 import { navAction, userData } from "../util.js";
 import { getLikes, getSpecificUserLike } from "../api/likesApi.js";
