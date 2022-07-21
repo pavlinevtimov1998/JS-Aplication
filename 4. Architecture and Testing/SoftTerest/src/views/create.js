@@ -1,7 +1,7 @@
-import { html } from "../lib.js";
+import { html, styleMap } from "../lib.js";
 import { createIdea } from "../api/data.js";
 
-const createTemplate = (onSubmit) => html`
+const createTemplate = (onSubmit, message) => html`
   <div id="create-page" class="container home wrapper my-md-5 pl-md-5">
     <div class="d-md-flex flex-mb-equal">
       <div class="col-md-6">
@@ -15,6 +15,7 @@ const createTemplate = (onSubmit) => html`
         <div class="text-center mb-4">
           <h1 class="h3 mb-3 font-weight-normal">Share Your Idea</h1>
         </div>
+        ${message ? html`<p class="error">${message}</p>` : null}
         <div class="form-label-group">
           <label for="ideaTitle">Title</label>
           <input
@@ -56,7 +57,11 @@ const createTemplate = (onSubmit) => html`
 `;
 
 export const showCreate = (ctx) => {
-  ctx.render(createTemplate(onSubmit));
+  update();
+
+  function update(message) {
+    ctx.render(createTemplate(onSubmit, message));
+  }
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -67,20 +72,24 @@ export const showCreate = (ctx) => {
     const description = formData.get("description").trim();
     const img = formData.get("imageURL").trim();
 
-    if (title.length < 6) {
-      return alert("Title should be at least 6 characters!");
-    }
-    if (description.length < 10) {
-      return alert("Description should be at least 10 characters!");
-    }
-    if (img.length < 5) {
-      return alert("Image should be at least 5 characters!");
-    }
+    try {
+      if (title.length < 6) {
+        throw new Error("Title should be at least 6 characters long!");
+      }
+      if (description.length < 10) {
+        throw new Error("Description should be at least 6 characters long!");
+      }
+      if (img.length < 5) {
+        throw new Error("Image URL should be at least 6 characters long!");
+      }
 
-    await createIdea({ title, description, img });
+      await createIdea({ title, description, img });
 
-    e.target.reset();
+      e.target.reset();
 
-    ctx.page.redirect("/catalog");
+      ctx.page.redirect("/catalog");
+    } catch (err) {
+      update(err.message);
+    }
   }
 };

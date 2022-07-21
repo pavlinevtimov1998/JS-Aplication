@@ -15,3 +15,10 @@
   border: none;
   margin-top: 1em;
 }
+
+.error {
+  /* display: none; */
+  text-align: center;
+  color: red;
+  font-size: 1.1rem;
+}
