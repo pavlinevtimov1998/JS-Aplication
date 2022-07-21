@@ -1,4 +1,4 @@
-import { html, until } from "../../lib.js";
+import { html } from "../../lib.js";
 import { delMovie } from "./deleteMovie.js";
 import { onLike, revokeLike } from "./likes.js";
 

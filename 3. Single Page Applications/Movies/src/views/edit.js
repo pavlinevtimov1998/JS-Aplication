@@ -1,7 +1,7 @@
-import { html } from "../lib.js";
+import { html, styleMap } from "../lib.js";
 import { editMovie } from "../api/data.js";
 
-const editTemplate = (movie, onSubmit) => html`
+const editTemplate = (movie, onSubmit, message, errors) => html`
   <section id="edit-movie">
     <form
       @submit=${(e) => onSubmit(e)}
@@ -10,12 +10,21 @@ const editTemplate = (movie, onSubmit) => html`
       method=""
     >
       <h1>Edit Movie</h1>
+      <p
+        class="error"
+        style=${styleMap(message ? { display: "block" } : { display: "none" })}
+      >
+        ${message}
+      </p>
       <div class="form-group">
         <label for="title">Movie Title</label>
         <input
           id="title"
           type="text"
           class="form-control"
+          style=${styleMap(
+            errors.title ? { backgroundColor: "rgb(255, 236, 236)" } : ""
+          )}
           placeholder="Movie Title"
           .value=${movie.title}
           name="title"
@@ -25,6 +34,9 @@ const editTemplate = (movie, onSubmit) => html`
         <label for="description">Movie Description</label>
         <textarea
           class="form-control"
+          style=${styleMap(
+            errors.description ? { backgroundColor: "rgb(255, 236, 236)" } : ""
+          )}
           placeholder="Movie Description..."
           name="description"
           .value=${movie.description}
@@ -36,6 +48,9 @@ const editTemplate = (movie, onSubmit) => html`
           id="imageUrl"
           type="text"
           class="form-control"
+          style=${styleMap(
+            errors.img ? { backgroundColor: "rgb(255, 236, 236)" } : ""
+          )}
           placeholder="Image Url"
           value=${movie.img}
           name="imageUrl"
@@ -47,7 +62,11 @@ const editTemplate = (movie, onSubmit) => html`
 `;
 
 export const editPage = (ctx) => {
-  ctx.render(editTemplate(ctx.movie, onSubmit));
+  update(false, {});
+
+  function update(message, errors) {
+    ctx.render(editTemplate(ctx.movie, onSubmit, message, errors));
+  }
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -56,12 +75,23 @@ export const editPage = (ctx) => {
 
     const [title, description, img] = [...formData.values()];
 
-    if (title == "" || description == "" || img == "") {
-      return;
+    try {
+      if (title == "" || description == "" || img == "") {
+        throw {
+          error: new Error("All fields required!"),
+          errors: {
+            title: title == "",
+            description: description == "",
+            img: img == "",
+          },
+        };
+      }
+
+      await editMovie(ctx.movie._id, { title, description, img });
+
+      ctx.page.redirect(`/details/${ctx.movie._id}`);
+    } catch (err) {
+      update(err.error.message, err.errors);
     }
-
-    await updateById(ctx.movie._id, { title, description, img });
-
-    ctx.page.redirect(`/details/${ctx.movie._id}`);
   }
 };

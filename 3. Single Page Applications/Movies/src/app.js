@@ -1,5 +1,5 @@
 import { logout } from "./api/data.js";
-import { render, page } from "./lib.js";
+import { page } from "./lib.js";
 import { navAction, userData } from "./util.js";
 import * as middleware from "./middlewares/detailsMiddleware.js";
 import { createPage } from "./views/create.js";
@@ -14,10 +14,10 @@ document.querySelector("#logout").addEventListener("click", onLogout);
 page(middleware.decorateContext);
 page("/home", homePage);
 page("/create", createPage);
-page("/details/:id", middleware.loadMovie, detailsPage);
+page("/details/:id", middleware.detailsContext, detailsPage);
 page("/login", loginPage);
 page("/register", registerPage);
-page("/edit/:id", middleware.loadMovie, editPage);
+page("/edit/:id", middleware.editContext, editPage);
 
 page("**", "/home");
 

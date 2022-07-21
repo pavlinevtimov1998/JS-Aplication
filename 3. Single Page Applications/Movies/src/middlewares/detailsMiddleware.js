@@ -12,7 +12,7 @@ export async function decorateContext(ctx, next) {
   next();
 }
 
-export async function loadMovie(ctx, next) {
+export async function detailsContext(ctx, next) {
   const userId = userData() ? userData().id : false;
 
   const [movie, numbOfLikes, specificLike] = await Promise.all([
@@ -28,6 +28,14 @@ export async function loadMovie(ctx, next) {
     specificLike.length > 0
       ? numbOfLikes.find((l) => l._ownerId == userId)._id
       : null;
+
+  next();
+}
+
+export async function editContext(ctx, next) {
+  const movie = await getById(ctx.params.id);
+
+  ctx.movie = movie;
 
   next();
 }
