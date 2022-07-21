@@ -1,9 +1,7 @@
-import { removeUserData, setUserData, userData } from "../util.js";
+import { removeUserData, userData } from "../util.js";
 
 const host = "http://localhost:3030";
-const registrationUrl = "/users/register";
-const loginUrl = "/users/login";
-const logoutUrl = "/users/logout";
+
 
 async function request(url, options) {
   try {
@@ -59,31 +57,4 @@ export const putRequest = async (url, data) => {
 
 export const delRequest = async (url) => request(url, createOptions("DELETE"));
 
-export async function login(email, password) {
-  const result = await postRequest(loginUrl, { email, password });
 
-  const userData = {
-    email: result.email,
-    id: result._id,
-    token: result.accessToken,
-  };
-
-  setUserData(userData);
-}
-
-export async function register(email, password) {
-  const result = await postRequest(registrationUrl, { email, password });
-
-  const userData = {
-    email: result.email,
-    id: result._id,
-    token: result.accessToken,
-  };
-
-  setUserData(userData);
-}
-
-export async function logout() {
-  await getRequest(logoutUrl);
-  removeUserData();
-}

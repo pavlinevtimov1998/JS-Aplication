@@ -1,26 +1,27 @@
 import * as api from "./api.js";
+import * as users from "./users.js";
+const endpoints = {
+  ideas: "/data/ideas?select=_id%2Ctitle%2Cimg&sortBy=_createdOn%20desc",
+  create: "/data/ideas",
+  getById: "/data/ideas/",
+};
 
-const dashboardUrl =
-  "/data/ideas?select=_id%2Ctitle%2Cimg&sortBy=_createdOn%20desc";
-const ideaUrl = "/data/ideas";
-const createOrDelUrl = "/data/ideas/"
-
-export const login = api.login;
-export const register = api.register;
-export const logout = api.logout;
+export const login = users.login;
+export const register = users.register;
+export const logout = users.logout;
 
 export const getAllIdeas = async () => {
-  return api.getRequest(dashboardUrl);
+  return api.getRequest(endpoints.ideas);
 };
 
 export const createIdea = async (data) => {
-  return api.postRequest(ideaUrl, data);
+  return api.postRequest(endpoints.create, data);
 };
 
 export const getWithId = async (id) => {
-  return api.getRequest(createOrDelUrl + id);
+  return api.getRequest(endpoints.getById + id);
 };
 
 export const deleteById = async (id) => {
-  return api.delRequest(createOrDelUrl + id);
+  return api.delRequest(endpoints.getById + id);
 };
