@@ -24,5 +24,3 @@ export async function declineMemberRequest(id) {
 export async function removeMember(id) {
   await deleteMemberById(id);
 }
-
-// NEXT => REMOVE

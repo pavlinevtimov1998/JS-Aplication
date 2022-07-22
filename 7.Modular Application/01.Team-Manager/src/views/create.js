@@ -1,6 +1,7 @@
 import { approveMember, createMember } from "../api/members.js";
 import { createTeam } from "../api/teams.js";
 import { html, nothing } from "../lib.js";
+import { notify } from "../notify.js";
 
 const createTemplate = (onSubmit, message) => html`
   <section id="create">
@@ -8,11 +9,7 @@ const createTemplate = (onSubmit, message) => html`
       <header class="pad-med">
         <h1>New Team</h1>
       </header>
-      <form
-        @submit=${(e) => onSubmit(e)}
-        id="create-form"
-        class="main-form pad-large"
-      >
+      <form @submit=${onSubmit} id="create-form" class="main-form pad-large">
         ${message ? html`${message}` : nothing}
         <label>Team name: <input type="text" name="name" /></label>
         <label>Logo URL: <input type="text" name="logoUrl" /></label>
@@ -58,6 +55,7 @@ export const createPage = (ctx) => {
       e.target.reset();
       ctx.page.redirect(`/details/${data._id}`);
     } catch (err) {
+      notify(err.message);
       ctx.render(createTemplate(onSubmit, errTemplate(err.message)));
     }
   }

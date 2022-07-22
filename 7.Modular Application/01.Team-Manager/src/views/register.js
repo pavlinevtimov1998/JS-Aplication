@@ -1,5 +1,6 @@
 import { register } from "../api/user.js";
 import { html, nothing } from "../lib.js";
+import { notify } from "../notify.js";
 
 const registerTemplate = (onSubmit, message) => html`
   <section id="register">
@@ -7,11 +8,7 @@ const registerTemplate = (onSubmit, message) => html`
       <header class="pad-med">
         <h1>Register</h1>
       </header>
-      <form
-        @submit=${(e) => onSubmit(e)}
-        id="register-form"
-        class="main-form pad-large"
-      >
+      <form @submit=${onSubmit} id="register-form" class="main-form pad-large">
         ${message ? html`${message}` : nothing}
         <label>E-mail: <input type="text" name="email" /></label>
         <label>Username: <input type="text" name="username" /></label>
@@ -63,6 +60,7 @@ export const registerPage = (ctx) => {
       ctx.navAction(ctx.userData());
       ctx.page.redirect("/myteams");
     } catch (err) {
+      notify(err.message);
       ctx.render(registerTemplate(onSubmit, errorTemplate(err.message)));
     }
   }

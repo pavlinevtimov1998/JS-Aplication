@@ -1,5 +1,6 @@
 import { getTeamById, updateTeamById } from "../api/teams.js";
 import { html, until, nothing } from "../lib.js";
+import { notify } from "../notify.js";
 
 const updateTemplate = (template) =>
   html`
@@ -20,11 +21,7 @@ const formTemplate = (onSubmit, team, errTemplate) => html`
     <header class="pad-med">
       <h1>Edit Team</h1>
     </header>
-    <form
-      @submit=${(e) => onSubmit(e)}
-      id="edit-form"
-      class="main-form pad-large"
-    >
+    <form @submit=${onSubmit} id="edit-form" class="main-form pad-large">
       ${errTemplate ? html`${errTemplate}` : nothing}
       <label
         >Team name: <input type="text" name="name" .value=${team.name}
@@ -75,6 +72,7 @@ export const updatePage = (ctx) => {
       e.target.reset();
       ctx.page.redirect(`/details/${ctx.params.id}`);
     } catch (err) {
+      notify(err.message);
       ctx.render(
         updateTemplate(formTemplate(onSubmit, team, errorTemplate(err.message)))
       );

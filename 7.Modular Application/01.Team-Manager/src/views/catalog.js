@@ -8,7 +8,7 @@ const catalogTemplate = (ctx, teams) => html`
       <h1>Team Browser</h1>
     </article>
 
-    ${ctx.userData() != null
+    ${ctx.userData()
       ? html`<article class="layout narrow">
           <div class="pad-small">
             <a href="/create" class="action cta">Create Team</a>

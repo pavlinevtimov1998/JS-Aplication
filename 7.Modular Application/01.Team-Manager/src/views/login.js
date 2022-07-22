@@ -1,5 +1,6 @@
 import { login } from "../api/user.js";
 import { html, nothing } from "../lib.js";
+import { notify } from "../notify.js";
 
 const loginTemlate = (onSubmit, message) => html`
   <section id="login">
@@ -7,11 +8,7 @@ const loginTemlate = (onSubmit, message) => html`
       <header class="pad-med">
         <h1>Login</h1>
       </header>
-      <form
-        @submit=${(e) => onSubmit(e)}
-        id="login-form"
-        class="main-form pad-large"
-      >
+      <form @submit=${onSubmit} id="login-form" class="main-form pad-large">
         ${message ? html`${message}` : nothing}
         <label>E-mail: <input type="text" name="email" /></label>
         <label>Password: <input type="password" name="password" /></label>
@@ -50,6 +47,7 @@ export const loginPage = (ctx) => {
       ctx.navAction(ctx.userData());
       ctx.page.redirect("/myteams");
     } catch (err) {
+      notify(err.message);
       ctx.render(loginTemlate(onSubmit, errorTemplate(err.message)));
     }
   }

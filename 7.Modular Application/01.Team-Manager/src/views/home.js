@@ -12,9 +12,9 @@ const homeTemplate = (ctx) => html`
           like-minded people!
         </p>
 
-        ${ctx.userData() == null
-          ? html` <a href="/register" class="action cta">Sign Up Now</a> `
-          : html` <a href="/catalog" class="action cta">Browse Teams</a> `}
+        ${ctx.userData()
+          ? html` <a href="/catalog" class="action cta">Browse Teams</a> `
+          : html` <a href="/register" class="action cta">Sign Up Now</a> `}
       </div>
     </article>
   </section>

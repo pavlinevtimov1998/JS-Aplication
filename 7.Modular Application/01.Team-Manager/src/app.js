@@ -8,12 +8,12 @@ import { homePage } from "./views/home.js";
 import { loginPage } from "./views/login.js";
 import { registerPage } from "./views/register.js";
 import { updatePage } from "./views/update.js";
-import { userTeamsPage } from "./views/urerTeams.js";
+import { userTeamsPage } from "./views/userTeams.js";
 
 const root = document.querySelector(".root");
 
 page(decorateContext);
-page("/", homePage);
+page("/home", homePage);
 page("/catalog", catalogPage);
 page("/create", createPage);
 page("/login", loginPage);
@@ -22,7 +22,7 @@ page("/details/:id", detailsPage);
 page("/edit/:id", updatePage);
 page("/myteams", userTeamsPage);
 
-page("**", "/");
+page("/", "/home");
 page.start();
 
 async function decorateContext(ctx, next) {
@@ -36,5 +36,5 @@ navAction(userData());
 
 document.querySelector(".logout").addEventListener("click", async () => {
   await logout();
-  page.redirect("/");
+  page.redirect("/home");
 });
