@@ -34,5 +34,5 @@ navAction(userData());
 document.querySelector(".logout").addEventListener("click", async () => {
   await logout();
   navAction(userData());
-  page.redirect("/home");
+  page.redirect("/");
 });
