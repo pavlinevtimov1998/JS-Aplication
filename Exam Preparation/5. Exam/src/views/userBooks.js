@@ -1,30 +1,38 @@
+import { getUserBooks } from "../api/data.js";
 import { html, until } from "../lib.js";
 
-const catalogTemplate = () => html`
-  <!-- My Books Page ( Only for logged-in users ) -->
+const catalogTemplate = (tempalte) => html`
   <section id="my-books-page" class="my-books">
     <h1>My Books</h1>
-    <!-- Display ul: with list-items for every user's books (if any) -->
     <ul class="my-books-list">
-      <li class="otherBooks">
-        <h3>Outlander</h3>
-        <p>Type: Other</p>
-        <p class="img"><img src="/images/book2.png" /></p>
-        <a class="button" href="#">Details</a>
-      </li>
-      <li class="otherBooks">
-        <h3>A Court of Thorns and Roses</h3>
-        <p>Type: Fiction</p>
-        <p class="img"><img src="/images/book1.png" /></p>
-        <a class="button" href="#">Details</a>
-      </li>
+      ${until(tempalte, html`Loading &hellip;`)}
     </ul>
-
-    <!-- Display paragraph: If the user doesn't have his own books  -->
-    <p class="no-books">No books in database!</p>
   </section>
 `;
 
-export const catalogPage = (ctx) => {
-  ctx.render(catalogTemplate());
+const bookTemplate = (book) => html`
+  <li class="otherBooks">
+    <h3>${book.title}</h3>
+    <p>Type: ${book.type}</p>
+    <p class="img"><img src=${book.imageUrl} /></p>
+    <a class="button" href="/details/${book._id}">Details</a>
+  </li>
+`;
+
+const noBooksTemplate = () => html`
+  <p class="no-books">No books in database!</p>
+`;
+
+export const profilePage = (ctx) => {
+  const userId = ctx.userData().id;
+
+  ctx.render(catalogTemplate(getBooks()));
+
+  async function getBooks() {
+    const books = await getUserBooks(userId);
+
+    return books.length > 0
+      ? books.map((b) => bookTemplate(b))
+      : noBooksTemplate();
+  }
 };

@@ -5,6 +5,8 @@ const endpoints = {
   getAll: "/data/books?sortBy=_createdOn%20desc",
   getOne: "/data/books/",
   create: "/data/books",
+  getUserBooks: (userId) =>
+    `/data/books?where=_ownerId%3D%22${userId}%22&sortBy=_createdOn%20desc`,
   like: "/data/likes",
   countLikes: (bookId) =>
     `/data/likes?where=bookId%3D%22${bookId}%22&distinct=_ownerId&count`,
@@ -22,6 +24,10 @@ export const getAll = async () => {
 
 export const getOne = async (id) => {
   return api.getRequest(endpoints.getOne + id);
+};
+
+export const getUserBooks = async (userId) => {
+  return api.getRequest(endpoints.getUserBooks(userId));
 };
 
 export const createBook = (book) => {

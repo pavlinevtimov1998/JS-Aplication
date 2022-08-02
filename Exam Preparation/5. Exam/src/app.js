@@ -3,7 +3,7 @@ import { page, render } from "./lib.js";
 import { detailsContext, navAction, userData } from "./util.js";
 import { loginPage } from "./views/login.js";
 import { registerPage } from "./views/register.js";
-import { catalogPage } from "./views/userBooks.js";
+import { profilePage } from "./views/userBooks.js";
 import { homePage } from "./views/home.js";
 import { detailsPage } from "./views/details.js";
 import { editPage } from "./views/edit.js";
@@ -13,7 +13,7 @@ const root = document.querySelector("#site-content");
 
 page(decorateContext);
 page("/", homePage);
-page("/", catalogPage);
+page("/my-books", profilePage);
 page("/details/:id", detailsPage);
 page("/edit/:id", detailsContext, editPage);
 page("/create", createPage);

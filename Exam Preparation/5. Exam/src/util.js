@@ -19,6 +19,7 @@ export const removeUserData = () => {
 
 export function navAction(user) {
   if (user) {
+    userNav.children[0].textContent = `Welcome, ${userData().email}`;
     userNav.style.display = "inline";
     guestNav.style.display = "none";
   } else {
