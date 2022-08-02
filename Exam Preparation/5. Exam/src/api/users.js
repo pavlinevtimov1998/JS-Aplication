@@ -2,9 +2,9 @@ import { removeUserData, setUserData } from "../util.js";
 import * as api from "./api.js";
 
 const userEndpoints = {
-  login: "users/login",
-  register: "users/register",
-  logout: "users/logout",
+  login: "/users/login",
+  register: "/users/register",
+  logout: "/users/logout",
 };
 
 export async function login(email, password) {
