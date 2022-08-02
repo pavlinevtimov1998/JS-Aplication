@@ -1,5 +1,5 @@
-const userNav = [...document.querySelectorAll(".user")];
-const guestNav = [...document.querySelectorAll(".guest")];
+const userNav = document.querySelector("#user");
+const guestNav = document.querySelector("#guest");
 
 export const userData = () => {
   let user = JSON.parse(sessionStorage.getItem("userData"));
@@ -17,11 +17,11 @@ export const removeUserData = () => {
 
 export function navAction(user) {
   if (user) {
-    userNav.forEach((e) => (e.style.display = "inline"));
-    guestNav.forEach((e) => (e.style.display = "none"));
+    userNav.style.display = "inline";
+    guestNav.style.display = "none";
   } else {
-    userNav.forEach((e) => (e.style.display = "none"));
-    guestNav.forEach((e) => (e.style.display = "inline"));
+    userNav.style.display = "none";
+    guestNav.style.display = "inline";
   }
 }
 
