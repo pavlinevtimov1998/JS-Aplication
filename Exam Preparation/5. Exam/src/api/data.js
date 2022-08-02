@@ -3,6 +3,7 @@ import * as users from "./users.js";
 
 const endpoints = {
   getAll: "/data/books?sortBy=_createdOn%20desc",
+  getOne: "/data/books/",
 };
 
 export const login = users.login;
@@ -11,4 +12,8 @@ export const logout = users.logout;
 
 export const getAll = async () => {
   return api.getRequest(endpoints.getAll);
+};
+
+export const getOne = async (id) => {
+  return api.getRequest(endpoints.getOne + id);
 };

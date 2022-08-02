@@ -14,7 +14,7 @@ const root = document.querySelector("#site-content");
 page(decorateContext);
 page("/", homePage);
 page("/", catalogPage);
-page("/", detailsPage);
+page("/details/:id", detailsPage);
 page("/", editPage);
 page("/", createPage);
 page("/login", loginPage);
