@@ -22,3 +22,7 @@ export const getOne = async (id) => {
 export const createBook = (book) => {
   return api.postRequest(endpoints.create, book);
 };
+
+export const editBook = (id, book) => {
+  return api.putRequest(endpoints.getOne + id, book);
+};

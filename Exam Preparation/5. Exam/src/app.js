@@ -1,6 +1,6 @@
 import { logout } from "./api/data.js";
 import { page, render } from "./lib.js";
-import { navAction, userData } from "./util.js";
+import { detailsContext, navAction, userData } from "./util.js";
 import { loginPage } from "./views/login.js";
 import { registerPage } from "./views/register.js";
 import { catalogPage } from "./views/userBooks.js";
@@ -15,7 +15,7 @@ page(decorateContext);
 page("/", homePage);
 page("/", catalogPage);
 page("/details/:id", detailsPage);
-page("/", editPage);
+page("/edit/:id", detailsContext, editPage);
 page("/create", createPage);
 page("/login", loginPage);
 page("/register", registerPage);

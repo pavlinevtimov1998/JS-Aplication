@@ -14,7 +14,7 @@ const bookTemplate = (book) => html`
     <p class="img"><img src=${book.imageUrl} /></p>
     <div class="actions">
       <!-- Edit/Delete buttons ( Only for creator of this book )  -->
-      <a class="button" href="#">Edit</a>
+      <a class="button" href="/edit/${book._id}">Edit</a>
       <a class="button" href="#">Delete</a>
 
       <!-- Bonus -->

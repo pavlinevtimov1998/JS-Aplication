@@ -1,3 +1,5 @@
+import { getOne } from "./api/data.js";
+
 const userNav = document.querySelector("#user");
 const guestNav = document.querySelector("#guest");
 
@@ -25,10 +27,10 @@ export function navAction(user) {
   }
 }
 
-// export const detailsContext = async (ctx, next) => {
-//   const idea = await getWithId(ctx.params.id);
+export const detailsContext = async (ctx, next) => {
+  const book = await getOne(ctx.params.id);
 
-//   ctx.idea = idea;
+  ctx.book = book;
 
-//   next();
-// };
+  next();
+};
