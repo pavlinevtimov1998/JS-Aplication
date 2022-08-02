@@ -16,7 +16,7 @@ page("/", homePage);
 page("/", catalogPage);
 page("/details/:id", detailsPage);
 page("/", editPage);
-page("/", createPage);
+page("/create", createPage);
 page("/login", loginPage);
 page("/register", registerPage);
 
