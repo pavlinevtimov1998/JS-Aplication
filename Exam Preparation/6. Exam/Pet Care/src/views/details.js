@@ -1,4 +1,10 @@
-import { getOne } from "../api/data.js";
+import {
+  delAnimal,
+  getDonations,
+  getOne,
+  getSpecificDonation,
+  makeDonation,
+} from "../api/data.js";
 import { html, until, nothing } from "../lib.js";
 
 const detailsTemplate = (template) => html`
@@ -7,7 +13,14 @@ const detailsTemplate = (template) => html`
   </section>
 `;
 
-const animalTemplate = (animal, userId) => html`
+const animalTemplate = (
+  animal,
+  userId,
+  totalDonation,
+  donate,
+  specificDonate,
+  deleteAnimal
+) => html`
   <div class="details">
     <div class="animalPic">
       <img src="${animal.image}" />
@@ -18,14 +31,28 @@ const animalTemplate = (animal, userId) => html`
         <h3>Breed: ${animal.breed}</h3>
         <h4>Age: ${animal.age}</h4>
         <h4>Weight: ${animal.weight}</h4>
-        <h4 class="donation">Donation: 0$</h4>
+        <h4 class="donation">Donation: ${totalDonation * 100}$</h4>
       </div>
       ${userId
         ? html`<div class="actionBtn">
             ${userId == animal._ownerId
               ? html`<a href="/edit/${animal._id}" class="edit">Edit</a>
-                  <a href="#" class="remove">Delete</a>`
-              : html`<a href="#" class="donate">Donate</a>`}
+                  <a
+                    @click=${deleteAnimal}
+                    href="javascript:void(0)"
+                    class="remove"
+                    >Delete</a
+                  >`
+              : html`
+                  ${specificDonate == 0
+                    ? html`<a
+                        @click=${donate}
+                        href="javascript:void(0)"
+                        class="donate"
+                        >Donate</a
+                      >`
+                    : nothing}
+                `}
           </div>`
         : nothing}
     </div>
@@ -39,8 +66,36 @@ export const detailsPage = (ctx) => {
   ctx.render(detailsTemplate(getAnimal()));
 
   async function getAnimal() {
-    const animal = await getOne(animalId);
+    let specificDonate = null;
 
-    return animalTemplate(animal, userId);
+    const [animal, totalDonation] = await Promise.all([
+      getOne(animalId),
+      getDonations(animalId),
+    ]);
+
+    if (userId) {
+      specificDonate = await getSpecificDonation(animalId, userId);
+    }
+
+    return animalTemplate(
+      animal,
+      userId,
+      totalDonation,
+      donate,
+      specificDonate,
+      deleteAnimal
+    );
+  }
+
+  async function donate() {
+    const data = await makeDonation({ petId: animalId });
+
+    ctx.page.redirect("/details/" + animalId);
+  }
+
+  async function deleteAnimal() {
+    await delAnimal(animalId);
+
+    ctx.page.redirect("/catalog");
   }
 };
