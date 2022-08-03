@@ -23,7 +23,7 @@ const animalTemplate = (animal, userId) => html`
       ${userId
         ? html`<div class="actionBtn">
             ${userId == animal._ownerId
-              ? html`<a href="#" class="edit">Edit</a>
+              ? html`<a href="/edit/${animal._id}" class="edit">Edit</a>
                   <a href="#" class="remove">Delete</a>`
               : html`<a href="#" class="donate">Donate</a>`}
           </div>`

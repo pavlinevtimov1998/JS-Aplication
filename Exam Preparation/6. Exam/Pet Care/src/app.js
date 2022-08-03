@@ -8,6 +8,7 @@ import { homePage } from "./views/home.js";
 import { detailsPage } from "./views/details.js";
 import { editPage } from "./views/edit.js";
 import { createPage } from "./views/create.js";
+import { detailsContext } from "./middlewares.js";
 
 const root = document.querySelector("#content");
 
@@ -15,7 +16,7 @@ page(decorateContext);
 page("/", homePage);
 page("/catalog", catalogPage);
 page("/details/:id", detailsPage);
-page("/edit/:id", editPage);
+page("/edit/:id", detailsContext, editPage);
 page("/create", createPage);
 page("/login", loginPage);
 page("/register", registerPage);

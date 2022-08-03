@@ -17,3 +17,7 @@ export const getAll = async () => {
 export const getOne = async (id) => {
   return api.getRequest(endpoints.getOne + id);
 };
+
+export const editAnimal = async (id, data) => {
+  return api.putRequest(endpoints.getOne + id, data);
+};

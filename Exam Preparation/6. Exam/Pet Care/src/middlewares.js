@@ -1,7 +1,9 @@
-// export const detailsContext = async (ctx, next) => {
-//   const idea = await getWithId(ctx.params.id);
+import { getOne } from "./api/data.js";
 
-//   ctx.idea = idea;
+export const detailsContext = async (ctx, next) => {
+  const animal = await getOne(ctx.params.id);
 
-//   next();
-// };
+  ctx.animal = animal;
+
+  next();
+};
