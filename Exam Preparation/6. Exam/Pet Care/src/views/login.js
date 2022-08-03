@@ -4,7 +4,7 @@ import { html } from "../lib.js";
 const loginTemlate = (onSubmit) => html`
   <section id="loginPage">
     <form @submit=${onSubmit} class="loginForm">
-      <img src="./images/logo.png" alt="logo" />
+      <img src="/images/logo.png" alt="logo" />
       <h2>Login</h2>
 
       <div>
@@ -32,7 +32,7 @@ const loginTemlate = (onSubmit) => html`
       <button class="btn" type="submit">Login</button>
 
       <p class="field">
-        <span>If you don't have profile click <a href="#">here</a></span>
+        <span>If you don't have profile click <a href="/register">here</a></span>
       </p>
     </form>
   </section>
