@@ -7,14 +7,14 @@ const userEndpoints = {
   logout: "/users/logout",
 };
 
-export async function login(email, password) {
+export async function login(username, password) {
   const result = await api.postRequest(userEndpoints.login, {
-    email,
+    username,
     password,
   });
 
   const userData = {
-    email: result.email,
+    username: result.username,
     id: result._id,
     token: result.accessToken,
   };
@@ -22,14 +22,14 @@ export async function login(email, password) {
   setUserData(userData);
 }
 
-export async function register(email, password) {
+export async function register(username, password) {
   const result = await api.postRequest(userEndpoints.register, {
-    email,
+    username,
     password,
   });
 
   const userData = {
-    email: result.email,
+    username: result.username,
     id: result._id,
     token: result.accessToken,
   };
