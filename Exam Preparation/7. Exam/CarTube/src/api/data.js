@@ -4,6 +4,7 @@ import * as users from "./users.js";
 const endpoints = {
   getAll: "/data/cars?sortBy=_createdOn%20desc",
   getOne: "/data/cars/",
+  create: '/data/cars',
 };
 
 export const login = users.login;
@@ -16,4 +17,8 @@ export const getAll = () => {
 
 export const getOne = (id) => {
     return api.getRequest(endpoints.getOne + id)
+}
+
+export const createCar = (data) => {
+    return api.postRequest(endpoints.create, data)
 }
