@@ -10,6 +10,7 @@ import { editPage } from "./views/edit.js";
 import { createPage } from "./views/create.js";
 import { profilePage } from "./views/profileListing.js";
 import { searchPage } from "./views/search.js";
+import { editContext } from "./middlewares.js";
 
 const root = document.querySelector("#site-content");
 
@@ -17,7 +18,7 @@ page(decorateContext);
 page("/", homePage);
 page("/catalog", catalogPage);
 page("/details/:id", detailsPage);
-page("/edit/:id", editPage);
+page("/edit/:id", editContext, editPage);
 page("/create", createPage);
 page("/my-listing", profilePage);
 page("/year-listing", searchPage);

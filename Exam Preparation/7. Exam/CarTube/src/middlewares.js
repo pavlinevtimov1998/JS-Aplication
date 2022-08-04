@@ -1,7 +1,12 @@
-// export const detailsContext = async (ctx, next) => {
-//   const idea = await getWithId(ctx.params.id);
+import { html } from "./lib.js";
+import { getOne } from "./api/data.js";
 
-//   ctx.idea = idea;
+export const editContext = async (ctx, next) => {
+  ctx.render(html`<p>Loading &hellip;</p>`);
 
-//   next();
-// };
+  const car = await getOne(ctx.params.id);
+
+  ctx.car = car;
+
+  next();
+};
