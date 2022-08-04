@@ -8,15 +8,19 @@ import { homePage } from "./views/home.js";
 import { detailsPage } from "./views/details.js";
 import { editPage } from "./views/edit.js";
 import { createPage } from "./views/create.js";
+import { profilePage } from "./views/profileListing.js";
+import { searchPage } from "./views/search.js";
 
-const root = document.querySelector("");
+const root = document.querySelector("#site-content");
 
 page(decorateContext);
 page("/", homePage);
-page("/", catalogPage);
-page("/", detailsPage);
-page("/", editPage);
-page("/", createPage);
+page("/catalog", catalogPage);
+page("/details/:id", detailsPage);
+page("/edit/:id", editPage);
+page("/create", createPage);
+page("/my-listing", profilePage);
+page("/year-listing", searchPage);
 page("/login", loginPage);
 page("/register", registerPage);
 

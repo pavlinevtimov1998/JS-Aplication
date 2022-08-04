@@ -1,6 +1,6 @@
 import { html, until } from "../lib.js";
 
-const homeTemplate = () => html`
+const searchTemplate = () => html`
   <!-- Search Page -->
   <section id="search-cars">
     <h1>Filter by year</h1>
@@ -40,6 +40,6 @@ const homeTemplate = () => html`
   </section>
 `;
 
-export const homePage = (ctx) => {
-  ctx.render(homeTemplate());
+export const searchPage = (ctx) => {
+  ctx.render(searchTemplate());
 };
