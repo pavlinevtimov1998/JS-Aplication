@@ -17,6 +17,9 @@ export const removeUserData = () => {
 
 export function navAction(user) {
   if (user) {
+    document.querySelector(".username").textContent = `Welcome ${
+      userData().username
+    }`;
     userNav.style.display = "inline";
     guestNav.style.display = "none";
   } else {
