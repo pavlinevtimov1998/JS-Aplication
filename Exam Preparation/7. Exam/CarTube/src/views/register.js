@@ -44,8 +44,6 @@ export const registerPage = (ctx) => {
     const password = formData.get("password").trim();
     const rePass = formData.get("repeatPass").trim();
 
-    console.log(username, password, rePass);
-
     if (username == "" || password == "" || password !== rePass) {
       return alert("All fields required!");
     }
