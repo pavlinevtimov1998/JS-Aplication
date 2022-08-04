@@ -1,7 +1,7 @@
-import { html, until } from "../lib.js";
+import { getSearchedCars } from "../api/data.js";
+import { html, until, nothing } from "../lib.js";
 
-const searchTemplate = () => html`
-  <!-- Search Page -->
+const searchTemplate = (search, template) => html`
   <section id="search-cars">
     <h1>Filter by year</h1>
 
@@ -12,34 +12,49 @@ const searchTemplate = () => html`
         name="search"
         placeholder="Enter desired production year"
       />
-      <button class="button-list">Search</button>
+      <button @click=${search} class="button-list">Search</button>
     </div>
 
     <h2>Results:</h2>
-    <div class="listings">
-      <!-- Display all records -->
-      <div class="listing">
-        <div class="preview">
-          <img src="/images/audia3.jpg" />
-        </div>
-        <h2>Audi A3</h2>
-        <div class="info">
-          <div class="data-info">
-            <h3>Year: 2018</h3>
-            <h3>Price: 25000 $</h3>
-          </div>
-          <div class="data-buttons">
-            <a href="#" class="button-carDetails">Details</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Display if there are no matches -->
-      <p class="no-cars">No results.</p>
-    </div>
+    <div class="listings">${template ? html`${template}` : nothing}</div>
   </section>
 `;
 
+const carTemplate = (car) => html`
+  <div class="listing">
+    <div class="preview">
+      <img src=${car.imageUrl} />
+    </div>
+    <h2>${car.brand} ${car.model}</h2>
+    <div class="info">
+      <div class="data-info">
+        <h3>Year: ${car.year}</h3>
+        <h3>Price: ${car.price} $</h3>
+      </div>
+      <div class="data-buttons">
+        <a href="/details/${car._id}" class="button-carDetails">Details</a>
+      </div>
+    </div>
+  </div>
+`;
+
+const noCarTemplate = () => html` <p class="no-cars">No results.</p> `;
+
 export const searchPage = (ctx) => {
-  ctx.render(searchTemplate());
+  ctx.render(searchTemplate(search));
+
+  async function search() {
+    const input = document.querySelector("#search-input");
+
+    const cars = await getSearchedCars(input.value);
+
+    return cars.length > 0
+      ? ctx.render(
+          searchTemplate(
+            search,
+            cars.map((c) => carTemplate(c))
+          )
+        )
+      : ctx.render(searchTemplate(search, noCarTemplate()));
+  }
 };
