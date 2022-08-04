@@ -75,9 +75,9 @@ export const editPage = (ctx) => {
     const brand = formData.get("brand");
     const model = formData.get("model");
     const description = formData.get("description");
-    const year = formData.get("year");
+    const year = Number(formData.get("year"));
     const imageUrl = formData.get("imageUrl");
-    const price = formData.get("price");
+    const price = Number(formData.get("price"));
 
     if (
       brand == "" ||
