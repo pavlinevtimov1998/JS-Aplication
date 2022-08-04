@@ -1,4 +1,4 @@
-import { getOne } from "../api/data.js";
+import { deleteCar, getOne } from "../api/data.js";
 import { html, until, nothing } from "../lib.js";
 
 const detailsTemplate = (tempalte) => html`
@@ -8,7 +8,7 @@ const detailsTemplate = (tempalte) => html`
   </section>
 `;
 
-const carTemplate = (car, userId) => html`
+const carTemplate = (car, userId, onDelete) => html`
   <div class="details-info">
     <img src=${car.imageUrl} />
     <hr />
@@ -24,7 +24,7 @@ const carTemplate = (car, userId) => html`
     ${userId == car._ownerId
       ? html`<div class="listings-buttons">
           <a href="/edit/${car._id}" class="button-list">Edit</a>
-          <a href="javascript:void(0)" class="button-list">Delete</a>
+          <a @click=${onDelete} href="javascript:void(0)" class="button-list">Delete</a>
         </div>`
       : nothing}
   </div>
@@ -38,6 +38,12 @@ export const detailsPage = (ctx) => {
   async function getCar() {
     const car = await getOne(ctx.params.id);
 
-    return carTemplate(car, userId);
+    return carTemplate(car, userId, onDelete);
+  }
+
+  async function onDelete() {
+    await deleteCar(ctx.params.id);
+
+    ctx.page.redirect("/catalog");
   }
 };

@@ -26,3 +26,7 @@ export const createCar = (data) => {
 export const editCar = (id, data) => {
   return api.putRequest(endpoints.getOne + id, data);
 };
+
+export const deleteCar = (id) => {
+  return api.delRequest(endpoints.getOne + id);
+};
