@@ -1,5 +1,5 @@
 import { getOne } from "../api/data.js";
-import { html, until } from "../lib.js";
+import { html, until, nothing } from "../lib.js";
 
 const detailsTemplate = (tempalte) => html`
   <section id="listing-details">
@@ -8,7 +8,7 @@ const detailsTemplate = (tempalte) => html`
   </section>
 `;
 
-const carTemplate = (car) => html`
+const carTemplate = (car, userId) => html`
   <div class="details-info">
     <img src=${car.imageUrl} />
     <hr />
@@ -21,19 +21,23 @@ const carTemplate = (car) => html`
 
     <p class="description-para">${car.description}</p>
 
-    <div class="listings-buttons">
-      <a href="/edit/${car._id}" class="button-list">Edit</a>
-      <a href="javascript:void(0)" class="button-list">Delete</a>
-    </div>
+    ${userId == car._ownerId
+      ? html`<div class="listings-buttons">
+          <a href="/edit/${car._id}" class="button-list">Edit</a>
+          <a href="javascript:void(0)" class="button-list">Delete</a>
+        </div>`
+      : nothing}
   </div>
 `;
 
 export const detailsPage = (ctx) => {
+  const userId = ctx.userData() ? ctx.userData().id : undefined;
+
   ctx.render(detailsTemplate(getCar()));
 
   async function getCar() {
     const car = await getOne(ctx.params.id);
 
-    return carTemplate(car);
+    return carTemplate(car, userId);
   }
 };
