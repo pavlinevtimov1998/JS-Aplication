@@ -1,6 +1,6 @@
 # JS Aplication
  
-<h1><i>Single Page Applications maded by me for this course.</i></h1> 
+<h1><i>Single Page Applications madе by me for this course.</i></h1> 
 
 - [x] [01. Movies](3.%20Single%20Page%20Applications/Movies)
 - [x] [02. SoftTerest](4.%20Architecture%20and%20Testing/SoftTerest)
