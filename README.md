@@ -1,6 +1,6 @@
 # JS Aplication
  
-<h1><i>Single Page Applications for this course.</i></h1> 
+<h1><i>Single Page Applications maded by me for this course.</i></h1> 
 <h6><i>every app has separate package.json and Readme.md</i></h6>
 
 - [x] [01. Movies](3.%20Single%20Page%20Applications/Movies)
