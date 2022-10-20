@@ -14,3 +14,7 @@
 - [x] [10. Pet Care](Exam%20Preparation/6.%20Exam/Pet%20Care)
 - [x] [11. Car Tube](Exam%20Preparation/7.%20Exam/CarTube)
 - [x] [12. Clear Career](Exam/Clear%20Career)
+
+<h1><i>Certificate</i></h1>
+
+![JS Applications - June 2022 - Certificate](https://user-images.githubusercontent.com/98184923/196928372-c50a2d55-7ece-45a9-bdf6-6c1a8806d656.jpeg)
